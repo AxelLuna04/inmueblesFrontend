@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Inmuebles a tu Alcance · Iniciar sesión</title>
+  <link rel="stylesheet" href="/assets/css/login.css" />
+  <link rel="icon" href="/images/logo.png">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__content">
+      <a class="brand" href="/">
+        <img src="/images/logo.jpg" alt="Inmuebles a tu Alcance" class="brand__logo">
+        <span class="brand__name">Inmuebles a tu Alcance</span>
+      </a>
+      <nav class="topbar__actions">
+        <a class="btn btn--ghost" href="/pages/login.html" aria-current="page">Iniciar Sesión</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="card">
+      <h1 class="card__title">Bienvenid@</h1>
+      <p class="card__subtitle">Ingresa para continuar</p>
+
+      <form id="loginForm" class="form" novalidate>
+        <div class="form__group">
+          <label for="correo">Correo</label>
+          <input id="correo" name="correo" type="email" placeholder="tu@email.com" autocomplete="email" required>
+          <small class="error" data-err-for="correo"></small>
+        </div>
+
+        <div class="form__group">
+          <label for="contrasenia">Contraseña</label>
+          <input id="contrasenia" name="contrasenia" type="password" placeholder="••••••••" autocomplete="current-password" required>
+          <small class="error" data-err-for="contrasenia"></small>
+        </div>
+
+        <button id="btnLogin" class="btn btn--primary" type="submit">
+          <span class="btn__label">Iniciar Sesión</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+
+        <p id="formError" class="form__error" role="alert" hidden></p>
+      </form>
+
+      <p class="hint">
+        ¿No tienes cuenta? <a href="/pages/registro.html">Regístrate</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© <span id="year"></span> Inmuebles a tu Alcance</small>
+  </footer>
+
+  <script type="module" src="/assets/js/auth.js"></script>
+</body>
+</html>
