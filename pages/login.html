@@ -1,61 +1,70 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Inmuebles a tu Alcance · Iniciar sesión</title>
-  <link rel="stylesheet" href="/assets/css/login.css" />
-  <link rel="icon" href="/images/logo.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Inmuebles a tu Alcance</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- Iconos, estilos, scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/src/css/styles.css">
+    <script type="module" src="/src/js/login.js"></script>
 </head>
+
 <body>
-  <header class="topbar">
-    <div class="topbar__content">
-      <a class="brand" href="/">
-        <img src="/images/logo.jpg" alt="Inmuebles a tu Alcance" class="brand__logo">
-        <span class="brand__name">Inmuebles a tu Alcance</span>
-      </a>
-      <nav class="topbar__actions">
-        <a class="btn btn--ghost" href="/pages/login.html" aria-current="page">Iniciar Sesión</a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="main">
-    <section class="card">
-      <h1 class="card__title">Bienvenid@</h1>
-      <p class="card__subtitle">Ingresa para continuar</p>
-
-      <form id="loginForm" class="form" novalidate>
-        <div class="form__group">
-          <label for="correo">Correo</label>
-          <input id="correo" name="correo" type="email" placeholder="tu@email.com" autocomplete="email" required>
-          <small class="error" data-err-for="correo"></small>
+  <header class="main-header">
+        <div class="header-left">
+            <a href="/" class="brand-link" title="Volver al inicio">
+                <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
+                <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
+                    <i class="fa-solid fa-building"></i> Inmuebles
+                </div>
+            </a>
+            <h1 class="site-title">Bienvenid@ a Inmuebles a tu Alcance</h1>
         </div>
+    </header>
 
-        <div class="form__group">
-          <label for="contrasenia">Contraseña</label>
-          <input id="contrasenia" name="contrasenia" type="password" placeholder="••••••••" autocomplete="current-password" required>
-          <small class="error" data-err-for="contrasenia"></small>
-        </div>
+  <!-- Contenido Principal con Fondo Borroso -->
+  <main class="login-main">
+      <div class="login-card">
+          <h2 class="login-title">Iniciar Sesión</h2>
+          <p class="login-subtitle">Ingresa tus datos para continuar</p>
 
-        <button id="btnLogin" class="btn btn--primary" type="submit">
-          <span class="btn__label">Iniciar Sesión</span>
-          <span class="btn__spinner" aria-hidden="true"></span>
-        </button>
+          <form id="loginForm" class="login-form">
+              
+              <!-- Input Correo -->
+              <div class="form-group">
+                  <label for="correo">Correo Electrónico</label>
+                  <div class="input-wrapper">
+                      <input type="email" id="correo" class="form-input" placeholder="ejemplo@correo.com" required>
+                      <i class="fa-solid fa-envelope input-icon"></i>
+                  </div>
+              </div>
 
-        <p id="formError" class="form__error" role="alert" hidden></p>
-      </form>
+              <!-- Input Contraseña con Ojo -->
+              <div class="form-group">
+                  <label for="contrasenia">Contraseña</label>
+                  <div class="input-wrapper">
+                      <input type="password" id="contrasenia" class="form-input" placeholder="••••••••" required>
+                      <i class="fa-solid fa-eye input-icon toggle-password" id="togglePassword"></i>
+                  </div>
+              </div>
 
-      <p class="hint">
-        ¿No tienes cuenta? <a href="/pages/registro.html">Regístrate</a>
-      </p>
-    </section>
+              <div class="form-actions">
+                  <button type="submit" id="btnLogin" class="btn btn-login full-width">Iniciar Sesión</button>
+              </div>
+
+              <p id="formError" class="error-message" role="alert"  hidden></p>
+          </form>
+
+          <div class="login-footer">
+              <p>¿No tienes cuenta? <a href="/pages/registro.html">Regístrate aquí</a></p>
+          </div>
+      </div>
   </main>
-
-  <footer class="footer">
-    <small>© <span id="year"></span> Inmuebles a tu Alcance</small>
-  </footer>
-
-  <script type="module" src="/assets/js/auth.js"></script>
 </body>
 </html>

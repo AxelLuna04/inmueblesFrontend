@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Cuenta - Inmuebles a tu Alcance</title>
+    
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos Globales -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="/" class="brand-link" title="Volver al inicio">
+                <img src="/images/logo.jpg" alt="Logo" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
+                <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
+                    <i class="fa-solid fa-building"></i> Inmuebles
+                </div>
+            </a>
+            <h1 class="site-title">Registro de Cuenta</h1>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="register-main">
+        <div class="register-card">
+            
+            <form id="registerForm" class="register-form">
+                
+                <!-- SECCIÓN SUPERIOR: 2 COLUMNAS -->
+                <div class="top-section-grid">
+                    
+                    <!-- COLUMNA IZQUIERDA: DATOS PERSONALES -->
+                    <div class="personal-data-col">
+                        <h2 class="section-subtitle title-blue">Datos Personales</h2>
+                        
+                        <!-- Tipo de Usuario -->
+                        <div class="form-group blue-box">
+                            <label for="tipoUsuario">Tipo de Usuario</label>
+                            <select id="tipoUsuario" class="form-input" required>
+                                <option value="cliente">Cliente</option>
+                                <option value="vendedor">Vendedor</option>
+                            </select>
+                        </div>
+
+                        <!-- Nombre -->
+                        <div class="form-group blue-box">
+                            <label for="nombre">Nombre(s)</label>
+                            <input type="text" id="nombre" class="form-input" required>
+                        </div>
+
+                        <!-- Apellidos -->
+                        <div class="form-group blue-box">
+                            <label for="apellidos">Apellidos</label>
+                            <input type="text" id="apellidos" class="form-input" required>
+                        </div>
+
+                        <!-- Correo -->
+                        <div class="form-group blue-box">
+                            <label for="correo">Correo Electrónico</label>
+                            <input type="email" id="correo" class="form-input" required>
+                        </div>
+
+                        <!-- Contraseña -->
+                        <div class="form-group blue-box">
+                            <label for="contrasenia">Contraseña</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="contrasenia" class="form-input" required>
+                                <i class="fa-solid fa-eye input-icon toggle-password" onclick="togglePass('contrasenia', this)"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="password-guide">
+                            <p>Tu contraseña deberá incluir:</p>
+                            <ul>
+                                <li id="rule-length"><i class="fa-solid fa-circle"></i> Mínimo 8 caracteres</li>
+                                <li id="rule-upper"><i class="fa-solid fa-circle"></i> Una mayúscula (A-Z)</li>
+                                <li id="rule-lower"><i class="fa-solid fa-circle"></i> Una minúscula (a-z)</li>
+                                <li id="rule-number"><i class="fa-solid fa-circle"></i> Un número (0-9)</li>
+                            </ul>
+                        </div>
+
+                        <!-- Confirmar Contraseña -->
+                        <div class="form-group blue-box">
+                            <label for="confirmarContrasenia">Confirmar Contraseña</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="confirmarContrasenia" class="form-input" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COLUMNA DERECHA: FOTO DE PERFIL -->
+                    <div class="profile-photo-col">
+                        <h2 class="section-subtitle title-blue">Foto de Perfil</h2>
+                        <div class="photo-uploader-box">
+                            <div class="photo-preview" id="photoPreview">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <!-- Input file oculto -->
+                        <input type="file" id="fotoPerfil" accept=".jpg, .jpeg, .png, .webp" hidden>
+                            
+                            <!-- Botón actualizado según tu solicitud -->
+                            <button type="button" class="btn btn-register" onclick="document.getElementById('fotoPerfil').click()">
+                                Cargar Foto
+                            </button>
+                            
+                            <small class="upload-hint">Formato JPG/JPEG, Máx 1MB</small>
+                            <p id="fileError" class="error-text"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN INFERIOR: CONFIGURAR AGENDA -->
+                <div id="agendaSection" class="agenda-section hidden">
+                    <h2 class="section-subtitle title-blue">Configurar Agenda</h2>
+                    
+                    <div class="agenda-grid">
+                        
+                        <!-- 1. Disponibilidad -->
+                        <!-- Agregada clase blue-box -->
+                        <div class="agenda-item item-days form-group blue-box">
+                            <label>Disponibilidad <span class="info-text">(Seleccione días disponibles)</span></label>
+                            <div class="days-container">
+                                <button type="button" class="day-btn" data-day="L">L</button>
+                                <button type="button" class="day-btn" data-day="M">M</button>
+                                <button type="button" class="day-btn" data-day="X">M</button>
+                                <button type="button" class="day-btn" data-day="J">J</button>
+                                <button type="button" class="day-btn" data-day="V">V</button>
+                                <button type="button" class="day-btn" data-day="S">S</button>
+                                <button type="button" class="day-btn" data-day="D">D</button>
+                            </div>
+                            <input type="hidden" id="diasSeleccionados" name="diasSeleccionados">
+                        </div>
+
+                        <!-- 2. Horario de Atención -->
+                        <div class="agenda-item item-hours form-group blue-box">
+                            <label>Horario de Atención</label>
+                            <div class="hours-inputs">
+                                <select id="horaInicio" class="form-input">
+                                    <option value="" disabled selected>Hora Inicio</option>
+                                    <!-- JS llena esto -->
+                                </select>
+                                <select id="horaFin" class="form-input">
+                                    <option value="" disabled selected>Hora Máxima</option>
+                                    <!-- JS llena esto -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 3. Duración Visitas -->
+                        <div class="agenda-item item-duration form-group blue-box">
+                            <label>Duración Visitas</label>
+                            <select id="duracionVisita" class="form-input">
+                                <option value="30">30 minutos</option>
+                                <option value="60">60 minutos (1 hr)</option>
+                                <option value="90">90 minutos (1.5 hrs)</option>
+                                <option value="120">120 minutos (2 hrs)</option>
+                            </select>
+                        </div>
+
+                        <!-- 4. Espacio Vacío -->
+                        <div class="agenda-item item-empty"></div>
+                    </div>
+                </div>
+
+                <!-- Botón de Envío -->
+                <div class="form-actions-register">
+                    <button type="submit" class="btn btn-primary-rect">Crear Cuenta</button>
+                </div>
+                
+                <p id="mainError" class="error-message" hidden></p>
+            </form>
+        </div>
+    </main>
+
+    <!-- SCRIPTS LÓGICOS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. GENERAR HORAS
+            const horas = [];
+            for(let i=7; i<=20; i++) { 
+                const suffix = i >= 12 ? 'PM' : 'AM';
+                const val = i > 12 ? i - 12 : i;
+                horas.push(`${val}:00 ${suffix}`);
+            }
+            const selectsHora = [document.getElementById('horaInicio'), document.getElementById('horaFin')];
+            selectsHora.forEach(sel => {
+                horas.forEach(h => {
+                    const opt = document.createElement('option');
+                    opt.value = h;
+                    opt.textContent = h;
+                    sel.appendChild(opt);
+                });
+            });
+
+            // 2. TOGGLE TIPO DE USUARIO
+            const tipoUsuario = document.getElementById('tipoUsuario');
+            const agendaSection = document.getElementById('agendaSection');
+            
+            tipoUsuario.addEventListener('change', (e) => {
+                if(e.target.value === 'vendedor') {
+                    agendaSection.classList.remove('hidden');
+                    agendaSection.style.opacity = '0';
+                    setTimeout(() => agendaSection.style.opacity = '1', 50);
+                } else {
+                    agendaSection.classList.add('hidden');
+                }
+            });
+
+            // 3. BOTONES DE DÍAS
+            const dayBtns = document.querySelectorAll('.day-btn');
+            dayBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    btn.classList.toggle('active');
+                });
+            });
+
+            // 4. VALIDACIÓN DE CONTRASEÑA
+            const passInput = document.getElementById('contrasenia');
+            const rules = {
+                length: { regex: /.{8,}/, el: document.getElementById('rule-length') },
+                upper: { regex: /[A-Z]/, el: document.getElementById('rule-upper') },
+                lower: { regex: /[a-z]/, el: document.getElementById('rule-lower') },
+                number: { regex: /[0-9]/, el: document.getElementById('rule-number') }
+            };
+
+            passInput.addEventListener('input', () => {
+                const val = passInput.value;
+                for (const key in rules) {
+                    const rule = rules[key];
+                    if (rule.regex.test(val)) {
+                        rule.el.classList.add('valid');
+                        rule.el.classList.remove('invalid');
+                    } else {
+                        rule.el.classList.remove('valid');
+                        rule.el.classList.add('invalid');
+                    }
+                }
+            });
+
+            // 5. CARGA DE FOTO
+            const fotoInput = document.getElementById('fotoPerfil');
+            const preview = document.getElementById('photoPreview');
+            const fileError = document.getElementById('fileError');
+
+            fotoInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                fileError.textContent = "";
+                
+                if (file) {
+                    if (file.size > 1024 * 1024) { 
+                        fileError.textContent = "La imagen excede 1MB";
+                        fotoInput.value = ""; 
+                        return;
+                    }
+                    if (!['image/jpeg', 'image/jpg'].includes(file.type)) {
+                        fileError.textContent = "Solo se permiten archivos JPG/JPEG";
+                        fotoInput.value = "";
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                        preview.innerHTML = `<img src="${ev.target.result}" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">`;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        function togglePass(id, icon) {
+            const input = document.getElementById(id);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+    </script>
+</body>
+</html>
