@@ -1,10 +1,10 @@
 // src/api/listingsService.js
 const API_BASE = import.meta.env.VITE_API_BASE || "/api";
 
-const PUBLICATIONS_URL = `${API_BASE}/v1/publicaciones`;
+const LISTINGS_URL = `${API_BASE}/v1/publicaciones`;
 // TO DO Más adelante: mis publicaciones y admin
-const MY_PUBLICATIONS_URL    = `${API_BASE}/v1/mis-publicaciones`;
-const ADMIN_PUBLICATIONS_URL = `${API_BASE}/v1/admin/publicaciones`;
+const MY_LISTINGS_URL    = `${API_BASE}/v1/mis-publicaciones`;
+const ADMIN_LISTINGS_URL = `${API_BASE}/v1/admin/publicaciones`;
 
 // --------------------------------------
 // Datos de prueba (simulan PublicacionCard)
@@ -82,7 +82,7 @@ export async function fetchPublicListings({ page = 0, size = 12, q = "" } = {}) 
   if (q) params.append("q", q);
 
   try {
-    const res = await fetch(`${PUBLICATIONS_URL}?${params.toString()}`);
+    const res = await fetch(`${LISTINGS_URL}?${params.toString()}`);
     if (!res.ok) throw new Error("HTTP error");
     return await res.json(); // Page<PublicacionCard>
   } catch (err) {

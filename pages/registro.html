@@ -14,10 +14,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Estilos Globales -->
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="/src/css/styles.css">
+    <script type="module" src="/src/js/register.js"></script>
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
 
@@ -25,7 +26,8 @@
     <header class="main-header">
         <div class="header-left">
             <a href="/" class="brand-link" title="Volver al inicio">
-                <img src="/images/logo.jpg" alt="Logo" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
+                <!-- TO DO -->
+                <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
                 <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
                     <i class="fa-solid fa-building"></i> Inmuebles
                 </div>
@@ -51,8 +53,8 @@
                         <div class="form-group blue-box">
                             <label for="tipoUsuario">Tipo de Usuario</label>
                             <select id="tipoUsuario" class="form-input" required>
-                                <option value="cliente">Cliente</option>
-                                <option value="vendedor">Vendedor</option>
+                                <option value="CLIENTE">Cliente</option>
+                                <option value="VENDEDOR">Vendedor</option>
                             </select>
                         </div>
 
@@ -68,10 +70,10 @@
                             <input type="text" id="apellidos" class="form-input" required>
                         </div>
 
-                        <!-- Correo -->
+                        <!-- Fecha de Nacimiento -->
                         <div class="form-group blue-box">
-                            <label for="correo">Correo Electrónico</label>
-                            <input type="email" id="correo" class="form-input" required>
+                            <label for="fechaNacimiento">Fecha de Nacimiento</label>
+                            <input type="date" id="fechaNacimiento" class="form-input" required min="1900-01-01" max="2007-01-01">
                         </div>
 
                         <!-- Contraseña -->
@@ -79,7 +81,7 @@
                             <label for="contrasenia">Contraseña</label>
                             <div class="input-wrapper">
                                 <input type="password" id="contrasenia" class="form-input" required>
-                                <i class="fa-solid fa-eye input-icon toggle-password" onclick="togglePass('contrasenia', this)"></i>
+                                <i class="fa-solid fa-eye input-icon toggle-password"  id="togglePassword"></i>
                             </div>
                         </div>
                         
@@ -98,12 +100,14 @@
                             <label for="confirmarContrasenia">Confirmar Contraseña</label>
                             <div class="input-wrapper">
                                 <input type="password" id="confirmarContrasenia" class="form-input" required>
+                                <i id="matchIcon" class="input-icon fa-solid" style="right: 15px; display: none;"></i>
                             </div>
                         </div>
                     </div>
 
                     <!-- COLUMNA DERECHA: FOTO DE PERFIL -->
                     <div class="profile-photo-col">
+
                         <h2 class="section-subtitle title-blue">Foto de Perfil</h2>
                         <div class="photo-uploader-box">
                             <div class="photo-preview" id="photoPreview">
@@ -113,12 +117,26 @@
                         <input type="file" id="fotoPerfil" accept=".jpg, .jpeg, .png, .webp" hidden>
                             
                             <!-- Botón actualizado según tu solicitud -->
+                <!-- TO DO -->
                             <button type="button" class="btn btn-register" onclick="document.getElementById('fotoPerfil').click()">
                                 Cargar Foto
                             </button>
                             
                             <small class="upload-hint">Formato JPG/JPEG, Máx 1MB</small>
                             <p id="fileError" class="error-text"></p>
+                        </div>
+                        
+                        <h2 class="section-subtitle title-blue">Datos de Contacto</h2>
+                        <!-- Teléfono -->
+                        <div class="form-group blue-box">
+                            <label for="telefono">Número de Teléfono</label>
+                            <input type="number" id="telefono" class="form-input" required min="0">
+                        </div><!-- NO NEGATIVOS, FORMATO TELÉFONO? -->
+
+                        <!-- Correo -->
+                        <div class="form-group blue-box">
+                            <label for="correo">Correo Electrónico</label>
+                            <input type="email" id="correo" class="form-input" required>
                         </div>
                     </div>
                 </div>
@@ -185,114 +203,5 @@
             </form>
         </div>
     </main>
-
-    <!-- SCRIPTS LÓGICOS -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // 1. GENERAR HORAS
-            const horas = [];
-            for(let i=7; i<=20; i++) { 
-                const suffix = i >= 12 ? 'PM' : 'AM';
-                const val = i > 12 ? i - 12 : i;
-                horas.push(`${val}:00 ${suffix}`);
-            }
-            const selectsHora = [document.getElementById('horaInicio'), document.getElementById('horaFin')];
-            selectsHora.forEach(sel => {
-                horas.forEach(h => {
-                    const opt = document.createElement('option');
-                    opt.value = h;
-                    opt.textContent = h;
-                    sel.appendChild(opt);
-                });
-            });
-
-            // 2. TOGGLE TIPO DE USUARIO
-            const tipoUsuario = document.getElementById('tipoUsuario');
-            const agendaSection = document.getElementById('agendaSection');
-            
-            tipoUsuario.addEventListener('change', (e) => {
-                if(e.target.value === 'vendedor') {
-                    agendaSection.classList.remove('hidden');
-                    agendaSection.style.opacity = '0';
-                    setTimeout(() => agendaSection.style.opacity = '1', 50);
-                } else {
-                    agendaSection.classList.add('hidden');
-                }
-            });
-
-            // 3. BOTONES DE DÍAS
-            const dayBtns = document.querySelectorAll('.day-btn');
-            dayBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    btn.classList.toggle('active');
-                });
-            });
-
-            // 4. VALIDACIÓN DE CONTRASEÑA
-            const passInput = document.getElementById('contrasenia');
-            const rules = {
-                length: { regex: /.{8,}/, el: document.getElementById('rule-length') },
-                upper: { regex: /[A-Z]/, el: document.getElementById('rule-upper') },
-                lower: { regex: /[a-z]/, el: document.getElementById('rule-lower') },
-                number: { regex: /[0-9]/, el: document.getElementById('rule-number') }
-            };
-
-            passInput.addEventListener('input', () => {
-                const val = passInput.value;
-                for (const key in rules) {
-                    const rule = rules[key];
-                    if (rule.regex.test(val)) {
-                        rule.el.classList.add('valid');
-                        rule.el.classList.remove('invalid');
-                    } else {
-                        rule.el.classList.remove('valid');
-                        rule.el.classList.add('invalid');
-                    }
-                }
-            });
-
-            // 5. CARGA DE FOTO
-            const fotoInput = document.getElementById('fotoPerfil');
-            const preview = document.getElementById('photoPreview');
-            const fileError = document.getElementById('fileError');
-
-            fotoInput.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                fileError.textContent = "";
-                
-                if (file) {
-                    if (file.size > 1024 * 1024) { 
-                        fileError.textContent = "La imagen excede 1MB";
-                        fotoInput.value = ""; 
-                        return;
-                    }
-                    if (!['image/jpeg', 'image/jpg'].includes(file.type)) {
-                        fileError.textContent = "Solo se permiten archivos JPG/JPEG";
-                        fotoInput.value = "";
-                        return;
-                    }
-                    const reader = new FileReader();
-                    reader.onload = (ev) => {
-                        preview.innerHTML = `<img src="${ev.target.result}" style="width:100%; height:100%; object-fit:cover; border-radius:10px;">`;
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        });
-
-        function togglePass(id, icon) {
-            const input = document.getElementById(id);
-            if (input.type === "password") {
-                input.type = "text";
-                icon.classList.remove("fa-eye");
-                icon.classList.add("fa-eye-slash");
-            } else {
-                input.type = "password";
-                icon.classList.remove("fa-eye-slash");
-                icon.classList.add("fa-eye");
-            }
-        }
-    </script>
 </body>
 </html>

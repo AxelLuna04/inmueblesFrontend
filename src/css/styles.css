@@ -327,7 +327,7 @@ body {
     width: 100vw;
     height: 100vh;
     /* Asegúrate de que la ruta sea correcta desde el CSS */
-    background-image: url('/images/background_houses_collage_login.jpg');
+    background-image: url('/src/assets/images/background-houses-collage.jpg');
     background-size: cover;
     background-position: center;
     filter: blur(8px); /* El efecto borroso */
@@ -483,7 +483,7 @@ body {
     content: "";
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    background-image: url('/images/background_houses_collage_login.jpg');
+    background-image: url('/src/assets/images/background-houses-collage.jpg');
     background-size: cover;
     background-position: center;
     filter: blur(8px);
@@ -516,7 +516,7 @@ body {
 /* --- GRID PRINCIPAL --- */
 .top-section-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 1.875rem; /* ~30px */
     margin-bottom: 1.875rem;
     align-items: start; 
@@ -607,6 +607,34 @@ body {
 .password-guide li.valid i { color: green; }
 .password-guide li.invalid { color: #d9534f; }
 
+/* Estados de validación visual */
+.form-input.match-success {
+    border-color: #28a745 !important;
+    background-color: #f0fff4;
+}
+.form-input.match-error {
+    border-color: #d9534f !important;
+    background-color: #fff8f8;
+}
+
+/* Iconos de estado */
+.fa-circle-check { color: #28a745; }
+.fa-circle-xmark { color: #d9534f; }
+
+
+/* Ocultar flechas en input type number */
+/* Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 /* --- AGENDA --- */
 .agenda-section {
     margin-top: 1.25rem;
@@ -619,7 +647,7 @@ body {
 .agenda-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.25rem 1.875rem;
+    gap: 0.5rem 1.875rem;
 }
 
 /* Botones Días */
