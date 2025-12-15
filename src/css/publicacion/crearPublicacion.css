@@ -1,0 +1,13 @@
+:root {
+    --color-primary-dark: #2264A4;
+    --color-primary-light: #118BFF;
+    --color-secondary-bg: #9FCDF9;
+    --color-text-placeholder: #999999;
+    --color-white: #FFFFFF;
+
+    /* Nombres exactos de Google Fonts */
+    --font-title: 'Nunito Sans', sans-serif;
+    --font-card: 'Roboto Condensed', sans-serif;
+    --font-btn: 'Inter', sans-serif;
+}
+
