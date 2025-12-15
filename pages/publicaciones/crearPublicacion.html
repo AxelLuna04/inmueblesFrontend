@@ -9,28 +9,69 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jaldi">
     <!-- ICONOS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="/src/css/styles.css">
+    <!--link rel="stylesheet" href="/src/css/styles.css"-->
     <link rel="stylesheet" href="/src/css/header.css">
+    <link rel="stylesheet" href="/src/css/publicacion/crearPublicacion.css">
 </head>
 <body>
-    <body>
-        <header class="main-header">
-            <div class="header-left">
-                <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
-                <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
-                    <i class="fa-solid fa-building"></i> Inmuebles
-                </div>
-                
-                <h1 class="site-title">Publica tu inmueble</h1>
+    <header class="main-header">
+        <div class="header-left">
+            <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
+            <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
+                <i class="fa-solid fa-building"></i> Inmuebles
             </div>
-        </header>
-    
-        <div>
-
+            
+            <h1 class="site-title">Publica tu inmueble</h1>
         </div>
+    </header>
+
+    <main class="crear-publi-main">
+        <form class="formulario" id="crearPubliForm">
+            <div class="titulo-card"> <!-- Titulo-->
+                <label for="titulo">Titulo de la publicación</label>
+                <input class="titulo-input" type="text" id="titulo" required>
+            </div>
+
+            <div class="section-grid"> <!--Se divide en dos-->
+                <div class="card"> <!--Precio-->
+                    <label for="precio">Precio</label>
+                    <input class="input" type="number" id="precio" required>
+                </div>
+
+                <div class="card"> <!--Tipo-->
+                    <select class="checkbox" id="tipoInmueble" required>
+                        <option value="None">Tipo de Inmueble</option>
+                    </select>
+                    <div> <!--Caracteristicas-->
+
+                    </div>
+                </div>
+
+                <div class="card"> <!--Caracteristicas generales-->
+                    <div class="carac-generales"> <!--Numero de habitaciones-->
+                        <label for="numeroHabitaciones">Número de habitaciones:</label>
+                        <input class="input" type="number" id="numeroHabitaciones" required>
+                    </div>
+                    <div class="carac-generales"> <!--Numero de baños completos-->
+                        <label for="numeroBanosCompletos">Número de baños completos:</label>
+                        <input class="input" type="number" id="numeroBanosCompletos" required>
+                    </div>
+                    <div class="carac-generales"> <!--Numero de excusados-->
+                        <label for="numeroExcusados">Número de excusados:</label>
+                        <input class="input" type="number" id="numeroExcusados" required>
+                    </div>
+                </div>
+
+                <div class="card"> <!--Descripcion-->
+                    <label for="descripcion">Describe tu inmueble:</label>
+                    <input class="input" type="text" id="descripcion" required>
+                </div>
+            </div>
+        </form>
+    </main>
 </body>
 </html>
