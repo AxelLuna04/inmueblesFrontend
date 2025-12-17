@@ -1,6 +1,6 @@
 const URL_BASE = "/api/v1";
 const URL_TIPOS = `${URL_BASE}/tipos-inmueble`;
-const URL_CARACTERISTICAS = (idTipo) => `${URL_TIPO}/${idTipo}/caracteristicas`;
+const URL_CARACTERISTICAS = (idTipo) => `${URL_TIPOS}/${idTipo}/caracteristicas`;
 const URL_CREAR_PUBLICACION = `${URL_BASE}/publicaciones`;
 
 //HELPERS
@@ -93,7 +93,7 @@ async function cargarTipos(){
     state.tipos = await res.json();
   
     tipoInmuebleSelect.innerHTML = state.tipos.map(t =>
-      `<option value="${t.id}">${escapeHtml(t.caracteristica ?? String(t.id))}</option>`
+      `<option value="${t.id}">${escapeHtml(t.tipo ?? String(t.id))}</option>`
     ).join("");
 }
 
