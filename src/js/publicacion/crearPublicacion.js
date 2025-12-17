@@ -211,7 +211,8 @@ function renderFotos(){
 }
 
 //MAPA
-//TODO
+
+
 window.setDireccionSeleccionada = function(direccionDto){
     state.direccion = direccionDto;
 };
@@ -268,4 +269,14 @@ async function onSubmitCrearPublicacion(e){
       console.error(err);
       alert(err.message || "Error al crear publicación.");
     }
+}
+
+//SANITIZAME ESTA
+function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
 }
