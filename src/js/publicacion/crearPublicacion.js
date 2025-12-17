@@ -143,10 +143,10 @@ function renderCaracteristicas(){
 function renderFotos(){
     state.fotoUrls.forEach(URL.revokeObjectURL);
     state.fotoUrls = [];
-    photosGrid.innerHTML = "";
+    fotosGrid.innerHTML = "";
   
     if (!state.fotos || state.fotos.length === 0){
-        photosMeta.textContent = "Ninguna foto seleccionada";
+        fotoMeta.textContent = "Ninguna foto seleccionada";
         return;
     }
   
