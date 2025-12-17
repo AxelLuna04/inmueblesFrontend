@@ -20,3 +20,70 @@ export async function loginRequest(correo, contrasenia) {
   }
   return response.json();
 }
+
+export async function registerRequest(datos, fotoFile) {
+  const formData = new FormData();
+  // datos es un objeto que cumple RegistroRequest
+  const jsonBlob = new Blob([JSON.stringify(datos)], {
+    type: "application/json",
+  });
+  formData.append("datos", jsonBlob);
+  if (fotoFile) {
+    formData.append("foto", fotoFile);
+  }
+
+  const response = await fetch(`${API_BASE}/v1/auth/register`, {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!response.ok) {
+    try {
+      const body = await response.json();
+      throw new Error(body.message || "Error al registrarse.");
+    } catch {
+      throw new Error("Error al registrarse.");
+    }
+  }
+
+  // RegistroResponse { mensaje, tipoUsuario, id, verificado }
+  return response.json();
+}
+
+export async function saveAgendaRequest(idVendedor, agendaPayload) {
+  const {
+    lunes, martes, miercoles, jueves, viernes, sabado, domingo,
+    horarioAtencionInicio,
+    horarioAtencionFin,
+    duracionVisita,
+  } = agendaPayload;
+
+  const response = await fetch(`${API_BASE}/v1/auth/${idVendedor}/agenda`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      lunes, martes, miercoles, jueves, viernes, sabado, domingo,
+      horarioAtencionInicio,
+      horarioAtencionFin,
+      duracionVisita,
+    }),
+  });
+
+  if (!response.ok) {
+    try {
+      const body = await response.json();
+      throw new Error(body.message || "Error al registrar la agenda.");
+    } catch {
+      throw new Error("Error al registrar la agenda.");
+    }
+  }
+
+  return response.json(); // ConfigurarAgendaResponse (o lo que devuelva)
+}
+
+
+export async function verifyEmailRequest(correo, codigoVerificacion) {
+  const response = await fetch(`${API_BASE}/v1/auth/verify`, {
+
+  });
+}
