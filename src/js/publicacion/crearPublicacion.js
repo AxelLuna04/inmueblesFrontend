@@ -46,7 +46,7 @@ const fotoMeta = $("fotosMeta");
 const buscarBtn = $('btnBuscar');
 const direccionInput = $('direccionInput');
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", inicializar);
 
 async function inicializar(){
     cargarEventos();
