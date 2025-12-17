@@ -33,6 +33,12 @@
     align-items: start;
 }
 
+.fotos-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: .75rem;
+  }
+
 .section-foto {
     order: 1;
 }
@@ -93,4 +99,17 @@
     border: none;
     border-bottom: 2px solid black;  
     outline: none;
+}
+
+/*TEXTO*/
+.texto-carac-error {
+    margin-top: 10px;
+    color: brown;
+}
+
+/*FOTOS*/
+.photo-thumb img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }

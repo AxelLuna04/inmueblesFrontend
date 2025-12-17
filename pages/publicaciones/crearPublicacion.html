@@ -13,9 +13,7 @@
     <!-- ICONOS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!--link rel="stylesheet" href="/src/css/styles.css"-->
-    <link rel="stylesheet" href="/src/css/header.css">
-    <link rel="stylesheet" href="/src/css/buttons.css">
+    <link rel="stylesheet" href="/src/css/styles.css">
     <link rel="stylesheet" href="/src/css/publicacion/crearPublicacion.css">
 </head>
 <body>
@@ -39,16 +37,23 @@
 
             <div class="section-grid"> <!--Se divide en dos-->
                 <div> <!--Lado izquierdo-->
+                    <div class="card"> <!--Tipo operación-->
+                        <select class="checkbox" id="tipoOperacionSelect" required>
+                            <option value="None">Tipo de Operación</option>
+                            <option value="Venta">Venta</option>
+                            <option value="Renta">Renta</option>
+                        </select>
+                    </div>
                     <div class="card"> <!--Precio-->
                         <label for="precio">Precio</label>
                         <input class="input" type="number" id="precio" required>
                     </div>
                     <div class="card"> <!--Tipo-->
-                        <select class="checkbox" id="tipoInmueble" required>
+                        <select class="checkbox" id="tipoInmuebleSelect" required>
                             <option value="None">Tipo de Inmueble</option>
                         </select>
-                        <div> <!--Caracteristicas-->
-    
+                        <div id="caracteristicasContainer"> <!--Caracteristicas-->
+
                         </div>
                     </div>
                     <div class="card"> <!--Caracteristicas generales-->
@@ -73,8 +78,11 @@
                 <div> <!--Lado derecho-->
                     <div class="card"><!--Fotos-->
                         <label>Fotos</label>
-                        <input type="image/*" id="fotos" name="inputFotos" multiple hidden>
-                        <p>Ninguna foto seleccionada</p>
+                        <input type="image/*" id="fotos" name="fotosInput" multiple hidden>
+                        <p id="fotosMeta">Ninguna foto seleccionada</p>
+                        <div class="fotos-grid" id="fotosGrid">
+                            
+                        </div>
                         <button class="btn btn-cargar-fotos" type="button" id="btnCargarFotos">Cargar fotos</button>
                     </div>
                     <div class="card"><!--Mapa-->
