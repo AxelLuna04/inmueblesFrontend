@@ -218,19 +218,21 @@ function renderFotos(){
 }
 
 //MAPA
-// 1)Cargarlo, creo
-const map = L.map('map', { zoomControl: true }).setView([19.541796353862402, -96.92721517586615], 12); // La Facu, claro que sí
-
+// 1)Inicializarlo
+const mapa = L.map('map', { zoomControl: true }).setView([19.541796353862402, -96.92721517586615], 12); // La Facu, claro que sí
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-maxZoom: 19,
-attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(mapa);
 
-let marker;
+let marker = null;
+
+setTimeout(() => map.invalidateSize(), 0);
 
 // 2) Buscar en Nominatim (geocoding)
 async function geocode(text) {
     if (!text) return;
+
     const url = new URL('https://nominatim.openstreetmap.org/search');
     url.searchParams.set('q', text);
     url.searchParams.set('format', 'jsonv2');
@@ -238,55 +240,64 @@ async function geocode(text) {
     url.searchParams.set('limit', '1');
     url.searchParams.set('accept-language', 'es');
     
-    const res = await fetch(url, {
-        headers: {
-            'Accept': 'application/json'
-        }
-    });
+    const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
     if (!res.ok) throw new Error('Error al consultar Nominatim');
     const arr = await res.json();
-    return arr[0]; // el mejor resultado
+    return arr[0] ?? null;
+}
+
+async function reverseGeocode(lat, lon) {
+    const url = new URL("https://nominatim.openstreetmap.org/reverse");
+    url.searchParams.set("lat", String(lat));
+    url.searchParams.set("lon", String(lon));
+    url.searchParams.set("format", "jsonv2");
+    url.searchParams.set("addressdetails", "1");
+    url.searchParams.set("accept-language", "es");
+
+    const res = await fetch(url, { headers: { Accept: "application/json" } });
+    if (!res.ok) throw new Error("Error al consultar Nominatim (reverse)");
+    return await res.json();
 }
 
 function mapAddress(n) {
     const a = n.address || {};
     return {
-        formatted_address: n.display_name || null,
-        line1: [a.road, a.house_number].filter(Boolean).join(' ') || null,
-        sublocality: a.suburb || a.neighbourhood || a.quarter || a.village || null, // colonia/barrio
-        locality: a.town || a.city || a.city_district || a.state_district || null, // ciudad/localidad
-        admin_area_2: a.county || a.municipality || null, // municipio/alcaldía
-        admin_area_1: a.state || null, // estado
-        postal_code: a.postcode || null,
-        country_code: a.country_code ? a.country_code.toUpperCase() : null,
-        lat: n.lat ? parseFloat(n.lat) : null,
-        lng: n.lon ? parseFloat(n.lon) : null,
-        provider: 'osm-nominatim',
-        provider_place_id: n.osm_id ? String(n.osm_id) : null,
-        raw: n // por si quieres guardar el JSON completo
+        formattedAddress: n.display_name || null,
+        line1: [a.road, a.house_number].filter(Boolean).join(" ") || null,
+        sublocality: a.suburb || a.neighbourhood || a.quarter || a.village || null,
+        locality: a.town || a.city || a.city_district || a.state_district || null,
+        adminArea2: a.county || a.municipality || null,
+        adminArea1: a.state || null,
+        postalCode: a.postcode || null,
+        countryCode: a.country_code ? a.country_code.toUpperCase() : null,
+        lat: n.lat ? Number(n.lat) : null,
+        lng: n.lon ? Number(n.lon) : null,
+        provider: "osm-nominatim",
+        providerPlaceId: n.osm_id ? String(n.osm_id) : null,
+        raw: n
     };
+}
+
+function setMarker(lat, lon, popupText = null) {
+    if (!marker) marker = L.marker([lat, lon]).addTo(map);
+    else marker.setLatLng([lat, lon]);
+
+    if (popupText) marker.bindPopup(popupText).openPopup();
+    map.setView([lat, lon], 17);
 }
 
 async function doSearch() {
     try {
-        const text = q.value.trim();
+        const text = direccionInput.value.trim();
         if (!text) return;
+
         const result = await geocode(text);
-        if (!result) {
-            alert('Sin resultados');
-            return;
-        }
+        if (!result) return alert('Sin resultados');
     
         // 3) Poner marcador en el mapa
         const lat = parseFloat(result.lat);
         const lon = parseFloat(result.lon);
-        if (!marker) {
-            marker = L.marker([lat, lon]).addTo(map);
-        } else {
-            marker.setLatLng([lat, lon]);
-        }
-        marker.bindPopup(result.display_name).openPopup();
-        map.setView([lat, lon], 17);
+        setMarker(lat, long, result.display_name);
 
         const dto = mapAddress(result);
         state.direccion = dto;
@@ -297,13 +308,37 @@ async function doSearch() {
 } 
     
 buscarBtn.addEventListener('click', doSearch);
-q.addEventListener('keydown', (ev) => {
-    if (ev.key === "Enter") { ev.preventDefault(); doSearch(); }
+
+direccionInput.addEventListener('keydown', (ev) => {
+    if (ev.key === "Enter") {
+        ev.preventDefault();
+        doSearch();
+    }
 });
 
-window.setDireccionSeleccionada = function(direccionDto){
-    state.direccion = direccionDto;
-};
+map.on("click", async (ev) => {
+    try {
+      const { lat, lng } = ev.latlng;
+      setMarker(lat, lng, "Buscando dirección...");
+
+      const result = await reverseGeocode(lat, lng);
+      if (!result) return;
+
+      direccionInput.value = result.display_name || direccionInput.value;
+      setMarker(lat, lng, result.display_name || null);
+
+      const dto = mapAddress({
+        ...result,
+        lat: String(lat),
+        lon: String(lng)
+      });
+
+      state.direccion = dto;
+    } catch (e) {
+      console.error(e);
+      alert(e.message || "Error obteniendo dirección del punto");
+    }
+});
 
 //LO IMPORTANTE
 async function onSubmitCrearPublicacion(e){
