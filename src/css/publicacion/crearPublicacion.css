@@ -1,6 +1,7 @@
 :root {
     --color-bg-gray: #DFDFDF;
     --color-white: #FFFFFF;
+    --color-principal-1: #2264A4;
     --font-card: 'Jaldi', sans-serif;
 }
 
@@ -26,55 +27,60 @@
 /* Grid */
 .section-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    /*gap: 1.875rem; /* ~30px */
+    grid-template-columns: 1fr 1fr;
+    gap: 1.875rem; /* ~30px */
     /*margin-bottom: 1.875rem;*/
-    align-items: start; 
+    align-items: start;
 }
 
-.titulo-card, .card{
+.section-foto {
+    order: 1;
+}
+
+.card{
+    padding: 0.5rem 0.5rem 1rem;
     display: flex;
     flex-direction: column;
-    width: 100%; 
-    padding: 0.5rem 0.5rem 1rem;
+    width: 100%;
     margin-top: 0;
     margin-bottom: 1rem;
-
     background-color: var(--color-white);
-
     font-family: var(--font-card);
-    font-size: 1.5rem;
-}
-
-.card {
-    width: 50%;
-    padding-top: 0%;
-
     font-size: 1.3rem;
 }
 
-.carac-generales {
+.card-titulo {
+    font-size: 1.5rem;
+}
+
+.flex-row {
     display: flex;
     flex-direction: row;
 }
 
 /* Inputs */
-.titulo-input, .input{
-    padding: 0.75rem;
-
-    font-size: 2rem;
-
+.input{
+    padding: 0.1rem;
+    font-size: 1rem;
     background: transparent;
     border: none;
     border-bottom: 2px solid black;
     outline: none;
-
     box-sizing: border-box;
 }
 
-.input {
-    padding: 0.1rem;
+.input-row {
+    margin-left: 1rem;
+}
+
+.input-titulo {
+    padding: 0.75rem;
     font-size: 1rem;
+}
+
+.input-direccion {
+    margin-left: 1rem;
+    flex: 1;
 }
 
 .checkbox {

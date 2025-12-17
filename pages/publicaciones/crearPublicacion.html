@@ -15,6 +15,7 @@
 
     <!--link rel="stylesheet" href="/src/css/styles.css"-->
     <link rel="stylesheet" href="/src/css/header.css">
+    <link rel="stylesheet" href="/src/css/buttons.css">
     <link rel="stylesheet" href="/src/css/publicacion/crearPublicacion.css">
 </head>
 <body>
@@ -31,44 +32,61 @@
 
     <main class="crear-publi-main">
         <form class="formulario" id="crearPubliForm">
-            <div class="titulo-card"> <!-- Titulo-->
+            <div class="card card-titulo"> <!-- Titulo-->
                 <label for="titulo">Titulo de la publicación</label>
-                <input class="titulo-input" type="text" id="titulo" required>
+                <input class="input input-titulo" type="text" id="titulo" required>
             </div>
 
             <div class="section-grid"> <!--Se divide en dos-->
-                <div class="card"> <!--Precio-->
-                    <label for="precio">Precio</label>
-                    <input class="input" type="number" id="precio" required>
-                </div>
-
-                <div class="card"> <!--Tipo-->
-                    <select class="checkbox" id="tipoInmueble" required>
-                        <option value="None">Tipo de Inmueble</option>
-                    </select>
-                    <div> <!--Caracteristicas-->
-
+                <div> <!--Lado izquierdo-->
+                    <div class="card"> <!--Precio-->
+                        <label for="precio">Precio</label>
+                        <input class="input" type="number" id="precio" required>
+                    </div>
+                    <div class="card"> <!--Tipo-->
+                        <select class="checkbox" id="tipoInmueble" required>
+                            <option value="None">Tipo de Inmueble</option>
+                        </select>
+                        <div> <!--Caracteristicas-->
+    
+                        </div>
+                    </div>
+                    <div class="card"> <!--Caracteristicas generales-->
+                        <div class="flex-row"> <!--Numero de habitaciones-->
+                            <label for="numeroHabitaciones">Número de habitaciones:</label>
+                            <input class="input input-row" type="number" id="numeroHabitaciones" required>
+                        </div>
+                        <div class="flex-row"> <!--Numero de baños completos-->
+                            <label for="numeroBanosCompletos">Número de baños completos:</label>
+                            <input class="input input-row" type="number" id="numeroBanosCompletos" required>
+                        </div>
+                        <div class="flex-row"> <!--Numero de excusados-->
+                            <label for="numeroExcusados">Número de excusados:</label>
+                            <input class="input input-row" type="number" id="numeroExcusados" required>
+                        </div>
+                    </div>
+                    <div class="card"> <!--Descripcion-->
+                        <label for="descripcion">Describe tu inmueble:</label>
+                        <input class="input" type="text" id="descripcion" required>
                     </div>
                 </div>
-
-                <div class="card"> <!--Caracteristicas generales-->
-                    <div class="carac-generales"> <!--Numero de habitaciones-->
-                        <label for="numeroHabitaciones">Número de habitaciones:</label>
-                        <input class="input" type="number" id="numeroHabitaciones" required>
+                <div> <!--Lado derecho-->
+                    <div class="card"><!--Fotos-->
+                        <label>Fotos</label>
+                        <input type="image/*" id="fotos" name="inputFotos" multiple hidden>
+                        <p>Ninguna foto seleccionada</p>
+                        <button class="btn btn-cargar-fotos" type="button" id="btnCargarFotos">Cargar fotos</button>
                     </div>
-                    <div class="carac-generales"> <!--Numero de baños completos-->
-                        <label for="numeroBanosCompletos">Número de baños completos:</label>
-                        <input class="input" type="number" id="numeroBanosCompletos" required>
+                    <div class="card"><!--Mapa-->
+                        <div class="flex-row">
+                            <label for="direccion">Dirección:</label>
+                            <input class="input input-direccion" type="text" id="direccion" required>
+                            <button class="btn btn-buscar-direccion" type="button" id="btnBuscar">Buscar</button>
+                        </div>
+                        <div id="mapa">
+                            <!--TO DO-->
+                        </div>
                     </div>
-                    <div class="carac-generales"> <!--Numero de excusados-->
-                        <label for="numeroExcusados">Número de excusados:</label>
-                        <input class="input" type="number" id="numeroExcusados" required>
-                    </div>
-                </div>
-
-                <div class="card"> <!--Descripcion-->
-                    <label for="descripcion">Describe tu inmueble:</label>
-                    <input class="input" type="text" id="descripcion" required>
                 </div>
             </div>
         </form>
