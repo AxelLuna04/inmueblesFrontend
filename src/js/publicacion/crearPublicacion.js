@@ -173,13 +173,12 @@ function renderFotos(){
     
         const remove = document.createElement("button");
         remove.type = "button";
-        remove.className = "photo-remove";
+        remove.className = "btn btn-remove-photos";
         remove.textContent = "×";
         remove.title = "Quitar foto";
         remove.addEventListener("click", () => {
             state.fotos.splice(idx, 1);
     
-            // ajusta indicePortada si quitaste algo antes o la portada misma
             if (state.fotos.length === 0)
                 state.indicePortada = 0;
             else if (state.indicePortada === idx)
@@ -193,22 +192,11 @@ function renderFotos(){
     
         // selector de portada (radio)
         const portadaWrap = document.createElement("label");
-        portadaWrap.style.position = "absolute";
-        portadaWrap.style.left = ".35rem";
-        portadaWrap.style.bottom = ".35rem";
-        portadaWrap.style.background = "rgba(0,0,0,.55)";
-        portadaWrap.style.color = "#fff";
-        portadaWrap.style.padding = ".25rem .5rem";
-        portadaWrap.style.borderRadius = ".5rem";
-        portadaWrap.style.fontSize = ".85rem";
-        portadaWrap.style.cursor = "pointer";
-        portadaWrap.style.display = "flex";
-        portadaWrap.style.alignItems = "center";
-        portadaWrap.style.gap = ".35rem";
+        portadaWrap.className = "raddio-button"
     
         portadaWrap.innerHTML = `
             <input type="radio" name="portada" ${state.indicePortada === idx ? "checked" : ""} />
-            <span>Portada</span>
+            <span class="text-portrait">Portada</span>
         `;
     
         portadaWrap.querySelector("input").addEventListener("change", () => {
@@ -224,11 +212,11 @@ function renderFotos(){
 
 //MAPA
 // 1)Inicializarlo
-const mapa = L.map('map', { zoomControl: true }).setView([19.541796353862402, -96.92721517586615], 12); // La Facu, claro que sí
+const map = L.map('map', { zoomControl: true }).setView([19.541796353862402, -96.92721517586615], 12); // La Facu, claro que sí
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(mapa);
+}).addTo(map);
 
 let marker = null;
 
@@ -302,7 +290,7 @@ async function doSearch() {
         // 3) Poner marcador en el mapa
         const lat = parseFloat(result.lat);
         const lon = parseFloat(result.lon);
-        setMarker(lat, long, result.display_name);
+        setMarker(lat, lon, result.display_name);
 
         const dto = mapAddress(result);
         state.direccion = dto;

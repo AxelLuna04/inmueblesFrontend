@@ -92,28 +92,6 @@ body {
     color: var(--color-white);
 }
 
-.btn-cargar-fotos {
-    background-color: var(--color-primary-dark);
-    color: var(--color-white);
-    width: 25%;
-    padding: 7px;
-    align-self: center;
-}
-
-.btn-cargar-fotos:hover {
-    opacity: 0.9;
-    transform: translateY(0);
-}
-
-.btn-buscar-direccion {
-    background-color: var(--color-primary-dark);
-    color: var(--color-white);
-    width: 15%;
-    font-size: 0.9rem;
-    padding: 7px;
-    margin-left: 1rem;
-}
-
 .btn-buscar-direccion:hover {
     opacity: 0.9;
     transform: translateY(0);
