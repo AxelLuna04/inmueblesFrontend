@@ -1,5 +1,5 @@
 // src/js/app.js
-import { fetchPublicListings, mapPublicCardToFront } from "../api/listingsService.js";
+import { fetchPublicListings, mapPublicCardToFront } from "../../api/listingsService.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("propertiesContainer");
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!card) return;
     const id = card.dataset.id;
     if (!id) return;
-    window.location.href = `/pages/detalle-publicacion.html?id=${id}`;
+    window.location.href = `/pages/public/listing-details.html?id=${id}`;
   });
 
   loadPage(true);

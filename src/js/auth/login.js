@@ -1,7 +1,7 @@
 
-import { loginRequest } from '../api/authService.js';
-import { auth, goHomeByRole } from '../utils/authManager.js';
-import { enablePasswordToggle } from "../utils/togglePassword.js";
+import { loginRequest } from '../../api/authService.js';
+import { auth, goHomeByRole } from '../../utils/authManager.js';
+import { enablePasswordToggle } from "../../utils/togglePassword.js";
 
 // --- Funciones de Ayuda Visual (UI Helpers) ---
 // Se mantienen aquí porque son específicas de cómo se ve este formulario
