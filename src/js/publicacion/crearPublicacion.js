@@ -39,6 +39,7 @@ const tipoOperacionSelect = $("tipoOperacionSelect")
 const tipoInmuebleSelect = $("tipoInmuebleSelect");
 const caracsContainer = $("caracteristicasContainer");
 
+const cargarFotosbtn = $("btnCargarFotos");
 const fotosInput = $("fotosInput");
 const fotosGrid = $("fotosGrid");
 const fotoMeta = $("fotosMeta");
@@ -86,6 +87,10 @@ function cargarEventos(){
   
     form.addEventListener("submit", onSubmitCrearPublicacion);
 }
+
+cargarFotosbtn.addEventListener("click", () => {
+    fotosInput.click();
+});
 
 async function cargarTipos(){
     const res = await fetch(URL_TIPOS);
@@ -151,9 +156,9 @@ function renderFotos(){
     }
   
     if (state.fotos.length == 1) 
-        photosMeta.textContent = `${state.fotos.length} foto seleccionada`;
+        fotoMeta.textContent = `${state.fotos.length} foto seleccionada`;
     else
-        photosMeta.textContent = `${state.fotos.length} fotos seleccionadas`;
+        fotoMeta.textContent = `${state.fotos.length} fotos seleccionadas`;
     
     state.fotos.forEach((file, idx) => {
         const url = URL.createObjectURL(file);
@@ -213,7 +218,7 @@ function renderFotos(){
         card.appendChild(img);
         card.appendChild(remove);
         card.appendChild(portadaWrap);
-        photosGrid.appendChild(card);
+        fotosGrid.appendChild(card);
     });
 }
 
