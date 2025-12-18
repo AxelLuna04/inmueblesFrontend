@@ -85,10 +85,10 @@ export async function refreshIfNeeded() {
 export function goHomeByRole(rol) {
   switch (rol) {
     case "ADMIN":    
-      window.location.href = "/pages/admin-dashboard.html"; // Ajusta a tu ruta real
+      window.location.href = "/pages/admin/dashboard.html";
       break;
     case "VENDEDOR": 
-      window.location.href = "/pages/vendedor-dashboard.html"; // Ajusta a tu ruta real
+      window.location.href = "/pages/lister/dashboard.html";
       break;
     default:         
       window.location.href = "/"; 

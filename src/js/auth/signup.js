@@ -1,5 +1,5 @@
-import { registerRequest, saveAgendaRequest } from "../api/authService.js";
-import { enablePasswordToggle } from "../utils/togglePassword.js";
+import { registerRequest, saveAgendaRequest } from "../../api/authService.js";
+import { enablePasswordToggle } from "../../utils/togglePassword.js";
 
 const MAX_BYTES = 10 * 1024 * 1024; // 10MB como el backend
 const ALLOWED_MIMES = ["image/jpeg", "image/png", "image/webp"];
