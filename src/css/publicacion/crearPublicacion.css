@@ -57,6 +57,11 @@
     transform: translateY(0);
 }
 
+.btn-publish {
+    background-color: #118BFF;
+    color: white;
+}
+
 /*Raddio buttons*/
 .radio-button {
     position: absolute;
@@ -103,6 +108,12 @@
     background-color: var(--color-white);
     font-family: var(--font-card);
     font-size: 1.3rem;
+}
+
+.card-publish{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
 }
 
 .card-titulo {
@@ -169,9 +180,10 @@
 }
 
 /*MAPA*/
-#mapa{
+#map{
     height: 320px;
     width: 100%;
     border-radius: 12px;
     overflow: hidden;
+    margin-top: 1rem;
 }
