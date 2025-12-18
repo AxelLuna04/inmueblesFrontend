@@ -3,6 +3,9 @@ const URL_TIPOS = `${URL_BASE}/tipos-inmueble`;
 const URL_CARACTERISTICAS = (idTipo) => `${URL_TIPOS}/${idTipo}/caracteristicas`;
 const URL_CREAR_PUBLICACION = `${URL_BASE}/publicaciones`;
 
+//TEMPORAL
+const JWT = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdWx0cml4ODRAZ21haWwuY29tIiwicm9sIjoiVkVOREVET1IiLCJpYXQiOjE3NjYwOTExMTgsImV4cCI6MTc2NjA5MjAxOH0.G5WSFhw7GGfQC3iWbkmhJAVDYvnc6DkDLQ56z9pGnxA";
+
 //HELPERS
 const $ = (id) => document.getElementById(id);
 
@@ -370,7 +373,11 @@ async function onSubmitCrearPublicacion(e){
     try{
       const res = await fetch(URL_CREAR_PUBLICACION, {
         method: "POST",
-        body: fd
+        //TEMPORAL: Sólo para probar que si se guarda, luego se tiene que quitar esto.
+        headers: {
+            Authorization: `Bearer ${JWT}`
+        },
+        body: fd,
       });
   
       if (!res.ok){

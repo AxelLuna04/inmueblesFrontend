@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { resolve } from 'node:path';
 
 export default defineConfig({
   server: {
@@ -23,7 +24,7 @@ export default defineConfig({
         // listerDashboard: resolve(__dirname, 'pages/lister/dashboard.html'),
         // profile: resolve(__dirname, 'pages/shared/profile.html'),
         // listingDetails: resolve(__dirname, 'pages/public/listing-details.html'),
-      },
-    },
+      }
+    }
   }
 });
