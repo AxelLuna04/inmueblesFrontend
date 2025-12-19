@@ -43,7 +43,10 @@ const state = {
     photos: [],
     fotoUrls: [],
     portrait: 0,
-    address: null
+    address: null,
+    bedrooms: 0,
+    bathrooms: 0,
+    idType: 1,
 };
 
 //ELEMENTOS
@@ -53,8 +56,6 @@ const operationType = $("operationTypeSelect")
 const price = $("priceInput")
 const inmuebleType = $("inmuebleTypeSelect");
 const characteristicsContainer = $("characteristicsContainer");
-const bedroomsNumber = $('bedroomsNumberInput');
-const bathroomsNumber = $('bathroomsNumberInput');
 const toiletsNumber = $('toiletsNumberInput');
 const description = $('descriptionTextArea');
 
@@ -71,9 +72,17 @@ const counterDescription = $('counterDescriptionSpan')
 
 const notification = $('notification');
 
+const bedroomsNumberDiv = $('bedroomsNumberDiv');
+var bedroomsNumberLabel = null;
+var bedroomsNumberInput = null;
+const bathroomsNumberDiv = $('bathroomsNumberDiv');
+var bathroomNumberLabel = null;
+var bathroomsNumberInput = null;
+
 document.addEventListener("DOMContentLoaded", inicializar);
 
 async function inicializar(){
+    initBedBathInputs();
     cargarEventos();
 
     await cargarTipos();
@@ -82,17 +91,53 @@ async function inicializar(){
     renderCaracteristicas();
 
     renderFotos();
+
+    addBedroomsInput();
+    addBathroomsInput();
 }
 
 function cargarEventos(){
     inmuebleType.addEventListener("change", async () => {
-      const idTipo = intOrNull(inmuebleType.value);
-      if (!idTipo) return;
-      await cargarCaracteristicas(idTipo);
-      // conserva solo las seleccionadas que sigan existiendo en el nuevo tipo
-      const idsDisponibles = new Set(state.caracteristicas.map(c => c.id));
-      state.selectedCharacs = new Set([...state.selectedCharacs].filter(id => idsDisponibles.has(id)));
-      renderCaracteristicas();
+        const idTipo = intOrNull(inmuebleType.value);
+        if (!idTipo) return;
+        await cargarCaracteristicas(idTipo);
+        // conserva solo las seleccionadas que sigan existiendo en el nuevo tipo
+        const idsDisponibles = new Set(state.caracteristicas.map(c => c.id));
+        state.selectedCharacs = new Set([...state.selectedCharacs].filter(id => idsDisponibles.has(id)));
+        renderCaracteristicas();
+
+        switch (idTipo) {
+            case 1:
+                addBedroomsInput();
+                addBathroomsInput();
+                break;
+            case 2:
+                addBedroomsInput();
+                addBathroomsInput();
+                break;
+            case 3:
+                addBathroomsInput();
+                removeBedroomsInput();
+
+                state.bedrooms = 1;
+                break;
+            case 4:
+                removeBedroomsInput();
+                removeBathroomsInput();
+
+                state.bedrooms = 0;
+                state.bathrooms = 0;
+                break;
+            case 5:
+                removeBedroomsInput();
+                removeBathroomsInput();
+
+                state.bedrooms = 0;
+                state.bathrooms = 0;
+                break;
+        }
+
+        state.idType = idTipo;
     });
   
     photosInput.addEventListener("change", (e) => {
@@ -126,6 +171,30 @@ function cargarEventos(){
     title.addEventListener("input", ()=> {
         var length = intOrNull(title.value.length);
         counterTitle.textContent = `${length}/50`;
+    })
+}
+
+function initBedBathInputs() {
+    bedroomsNumberLabel = document.createElement("label");
+    bedroomsNumberLabel.innerHTML = 'Número de habitaciones';
+    bedroomsNumberInput = document.createElement("input");
+    bedroomsNumberInput.classList.add("input");
+    bedroomsNumberInput.classList.add("input-row");
+    bedroomsNumberInput.type= "number";
+    bedroomsNumberInput.id = "bedroomsNumberInput";
+    bedroomsNumberInput.addEventListener("input", ()=> {
+        state.bedrooms = intOrNull(bedroomsNumberInput.value);
+    })
+
+    bathroomNumberLabel = document.createElement("label");
+    bathroomNumberLabel.innerHTML = 'Número de baños completos';
+    bathroomsNumberInput = document.createElement("input");
+    bathroomsNumberInput.classList.add("input");
+    bathroomsNumberInput.classList.add("input-row");
+    bathroomsNumberInput.type= "number";
+    bathroomsNumberInput.id = "bathroomsNumberInput";
+    bathroomsNumberInput.addEventListener("input", ()=> {
+        state.bathrooms = intOrNull(bathroomsNumberInput.value);
     })
 }
 
@@ -245,6 +314,34 @@ function renderFotos(){
         card.appendChild(portadaWrap);
         photosGrid.appendChild(card);
     });
+}
+
+function addBedroomsInput() {
+    if (bedroomsNumberDiv.children.length != 2) {
+        bedroomsNumberDiv.appendChild(bedroomsNumberLabel);
+        bedroomsNumberDiv.appendChild(bedroomsNumberInput);
+    }
+}
+
+function addBathroomsInput() {
+    if (bathroomsNumberDiv.children.length != 2) {
+        bathroomsNumberDiv.appendChild(bathroomNumberLabel);
+        bathroomsNumberDiv.appendChild(bathroomsNumberInput);
+    }
+}
+
+function removeBedroomsInput() {
+    if (bedroomsNumberDiv.children.length == 2) {
+        bedroomsNumberDiv.removeChild(bedroomsNumberLabel);
+        bedroomsNumberDiv.removeChild(bedroomsNumberInput);
+    }
+}
+
+function removeBathroomsInput() {
+    if (bathroomsNumberDiv.children.length == 2) {
+        bathroomsNumberDiv.removeChild(bathroomNumberLabel);
+        bathroomsNumberDiv.removeChild(bathroomsNumberInput)
+    }
 }
 
 //MAPA
@@ -386,8 +483,8 @@ async function postPublication(){
         descripcion: description.value.trim(),
         precio: floatOrNull(price.value),
     
-        numeroHabitaciones: intOrNull(bedroomsNumber.value),
-        numeroBanosCompletos: intOrNull(bathroomsNumber.value),
+        numeroHabitaciones: intOrNull(state.bedrooms),
+        numeroBanosCompletos: intOrNull(state.bathrooms),
         numeroExcusados: intOrNull(toiletsNumber.value),
     
         idTipoInmueble: intOrNull(inmuebleType.value),
@@ -462,8 +559,6 @@ function validateForm() {
 
     let titleLabel = $('titleLabel');
     let priceLabel = $('priceLabel');
-    let bedroomsNumberDiv = $('bedroomsNumberDiv');
-    let bathroomsNumberDiv = $('bathroomsNumberDiv');
     let toiletsNumberDiv = $('toiletsNumberDiv');
     let descriptionLabel = $('descriptionLabel');
 
@@ -492,11 +587,11 @@ function validateForm() {
         price.classList.add('invalid');
         pass = false;
     }
-    if (!intOrNull(bedroomsNumber.value)) {
+    if (!intOrNull(state.bedrooms) && state.idType < 3) {
         bedroomsNumberDiv.classList.add('invalid');
         pass = false;
     }
-    if (!intOrNull(bathroomsNumber.value)) {
+    if (!intOrNull(state.bathrooms) && state.idType < 4) {
         bathroomsNumberDiv.classList.add('invalid');
         pass = false;
     }
