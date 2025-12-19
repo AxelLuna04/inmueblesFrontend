@@ -33,11 +33,14 @@
         </div>
     </header>
 
+    <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
+
     <main class="crear-publi-main">
         <form class="formulario" id="crearPubliForm">
-            <div class="card card-titulo"> <!-- Titulo-->
-                <label for="titulo">Titulo de la publicación</label>
-                <input class="input input-titulo" type="text" id="titulo" required>
+            <div class="card card-titulo"> <!-- Title-->
+                <label for="title">Titulo de la publicación</label>
+                <input class="input input-titulo" type="text" id="titleInput" maxlength="50" required>
+                <span class="text-lenght" id="counterTitleSpan">0/50</span>
             </div>
 
             <div class="section-grid"> <!--Se divide en dos-->
@@ -76,9 +79,10 @@
                             <input class="input input-row" type="number" id="numeroExcusados" required>
                         </div>
                     </div>
-                    <div class="card"> <!--Descripcion-->
-                        <label for="descripcion">Describe tu inmueble:</label>
-                        <input class="input" type="text" id="descripcion" required>
+                    <div class="card"> <!--Description-->
+                        <label for="description">Describe tu inmueble:</label>
+                        <textarea class="input textarea" type="text" id="descriptionTextArea" maxlength="200" required></textarea>
+                        <span class="text-lenght" id="counterDescriptionSpan">0/200</span>
                     </div>
                 </div>
                 <div> <!--Lado derecho-->
@@ -102,6 +106,7 @@
                     </div>
                     <div class="card-publish">
                         <button class="btn btn-publish">Publicar</button>
+                        <button type="button" class="btn" id="btnNotifMala">Notif mala</button>
                     </div>
                 </div>
             </div>

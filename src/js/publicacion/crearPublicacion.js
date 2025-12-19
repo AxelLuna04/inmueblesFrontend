@@ -50,6 +50,14 @@ const fotoMeta = $("fotosMeta");
 const buscarBtn = $('btnBuscar');
 const direccionInput = $('direccionInput');
 
+const title = $('titleInput');
+const counterTitle = $('counterTitleSpan')
+const description = $('descriptionTextArea');
+const counterDescription = $('counterDescriptionSpan')
+
+const notification = $('notification');
+const btnNotifMala = $('btnNotifMala');
+
 document.addEventListener("DOMContentLoaded", inicializar);
 
 async function inicializar(){
@@ -89,11 +97,28 @@ function cargarEventos(){
     });
   
     form.addEventListener("submit", onSubmitCrearPublicacion);
-}
 
-cargarFotosbtn.addEventListener("click", () => {
-    fotosInput.click();
-});
+    cargarFotosbtn.addEventListener("click", () => {
+        fotosInput.click();
+    });
+
+    description.addEventListener("input", ()=> {
+        var length = intOrNull(description.value.length);
+        counterDescription.textContent = `${length}/200`;
+        
+        description.style.height = "auto";
+        description.style.height = description.scrollHeight + "px";
+    })
+
+    title.addEventListener("input", ()=> {
+        var length = intOrNull(title.value.length);
+        counterTitle.textContent = `${length}/50`;
+    })
+
+    btnNotifMala.addEventListener("click", ()=> {
+        showNotif("Notificación mala!");
+    })
+}
 
 async function cargarTipos(){
     const res = await fetch(URL_TIPOS);
@@ -392,6 +417,26 @@ async function onSubmitCrearPublicacion(e){
       console.error(err);
       alert(err.message || "Error al crear publicación.");
     }
+}
+
+//VALIDATIONS
+let notifTime = null;
+function showNotif(message, duration = 3000) {
+    if (!notification) return;
+
+    clearTimeout(notifTime);
+
+    notification.textContent = message;
+
+    notification.classList.remove('notif-shows');
+    void notification.offsetWidth;
+
+    notification.classList.add('notif-shows');
+
+    notifTime = setTimeout(() => {
+        notification.classList.remove('notif-shows');
+        notification.classList.add('notif-hides');
+    }, duration);
 }
 
 //SANITIZAME ESTA

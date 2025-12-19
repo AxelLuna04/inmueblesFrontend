@@ -1,5 +1,6 @@
 :root {
     --color-bg-gray: #DFDFDF;
+    --color-red: #DD0E0E;
     --font-card: 'Jaldi', sans-serif;
 }
 
@@ -150,6 +151,14 @@
     flex: 1;
 }
 
+.textarea{
+    height: auto;
+    resize: vertical;
+    font: var(--font-card);
+    font-size: 1.2rem;
+    color: #3a3a3a;
+}
+
 .checkbox {
     padding-top: 0.75rem;
     padding-bottom: 0.5rem;
@@ -172,6 +181,11 @@
     font-size: 1rem;
 }
 
+.text-lenght {
+    color:gray;
+    font-size: 1.2rem;
+}
+
 /*FOTOS*/
 .photo-thumb img{
     width: 100%;
@@ -186,4 +200,31 @@
     border-radius: 12px;
     overflow: hidden;
     margin-top: 1rem;
+}
+
+/*NOTIFICATION*/
+.notif {
+    transform: translateX(120%);
+    position: fixed;
+    top: 70px;
+    right: -10px;
+    min-width: 280;
+    max-width: 420px;
+    padding: 22px 26px;
+    border-radius: 14px;
+    background: #DD0E0E;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 14px 30px rgba(0,0,0,.25);
+    z-index: 9999;
+    transition: transform .35s ease;
+    pointer-events: none;
+}
+
+.notif-shows {
+    transform: translateX(0);
+}
+
+.notif-hides {
+    transform: translateX(120%);
 }
