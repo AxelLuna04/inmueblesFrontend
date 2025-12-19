@@ -36,10 +36,10 @@
     <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <main class="post-publication-main">
-        <form class="form" id="crearPubliForm">
-            <div class="card card-tittle"> <!-- Title-->
-                <label for="title">Titulo de la publicación</label>
-                <input class="input input-tittle" type="text" id="titleInput" maxlength="50" required>
+        <form class="form" id="postPubliForm">
+            <div class="card card-title"> <!-- Title-->
+                <label for="title" id="titleLabel">Titulo de la publicación</label>
+                <input class="input input-title" type="text" id="titleInput" maxlength="50">
                 <span class="text-lenght" id="counterTitleSpan">0/50</span>
             </div>
 
@@ -53,8 +53,8 @@
                         </select>
                     </div>
                     <div class="card"> <!--Price-->
-                        <label for="price">Precio</label>
-                        <input class="input" type="number" id="priceInput" required>
+                        <label for="price" id="priceLabel">Precio</label>
+                        <input class="input" type="number" id="priceInput">
                     </div>
                     <div class="card"> <!--Inmueble type-->
                         <label>Tipo de Inmueble:</label>
@@ -66,22 +66,22 @@
                         </div>
                     </div>
                     <div class="card"> <!--Common characteristics-->
-                        <div class="flex-row"> <!--Bedrooms number-->
+                        <div class="flex-row" id="bedroomsNumberDiv"> <!--Bedrooms number-->
                             <label for="bedroomsNumberInput">Número de habitaciones:</label>
-                            <input class="input input-row" type="number" id="bedroomsNumberInput" required>
+                            <input class="input input-row" type="number" id="bedroomsNumberInput">
                         </div>
-                        <div class="flex-row"> <!--Bathrooms number-->
+                        <div class="flex-row" id="bathroomsNumberDiv"> <!--Bathrooms number-->
                             <label for="bathroomsNumberInput">Número de baños completos:</label>
-                            <input class="input input-row" type="number" id="bathroomsNumberInput" required>
+                            <input class="input input-row" type="number" id="bathroomsNumberInput">
                         </div>
-                        <div class="flex-row"> <!--Toilets number-->
+                        <div class="flex-row" id="toiletsNumberDiv"> <!--Toilets number-->
                             <label for="toiletsNumberInput">Número de excusados:</label>
-                            <input class="input input-row" type="number" id="toiletsNumberInput" required>
+                            <input class="input input-row" type="number" id="toiletsNumberInput">
                         </div>
                     </div>
                     <div class="card"> <!--Description-->
-                        <label for="descriptionTextArea">Describe tu inmueble:</label>
-                        <textarea class="input textarea" type="text" id="descriptionTextArea" maxlength="200" required></textarea>
+                        <label for="descriptionTextArea" id="descriptionLabel">Describe tu inmueble:</label>
+                        <textarea class="input textarea" type="text" id="descriptionTextArea" maxlength="200"></textarea>
                         <span class="text-lenght" id="counterDescriptionSpan">0/200</span>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                     <div class="card"><!--Map-->
                         <div class="flex-row">
                             <label for="addressInput">Dirección:</label>
-                            <input class="input input-direction" type="text" id="addressInput" required>
+                            <input class="input input-direction" type="text" id="addressInput">
                             <button class="btn btn-search-address" type="button" id="searchBtn">Buscar</button>
                         </div>
                         <div id="map">

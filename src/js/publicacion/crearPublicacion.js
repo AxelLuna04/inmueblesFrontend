@@ -1,18 +1,18 @@
 const URL_BASE = "/api/v1";
 const URL_TIPOS = `${URL_BASE}/tipos-inmueble`;
 const URL_CARACTERISTICAS = (idTipo) => `${URL_TIPOS}/${idTipo}/caracteristicas`;
-const URL_CREAR_PUBLICACION = `${URL_BASE}/publicaciones`;
+const URL_POST_PUBLICATION = `${URL_BASE}/publicaciones`;
 
 const COLOR_GREEN = "green";
 const COLOR_RED = "red";
 
 //TEMPORAL
-const JWT = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdWx0cml4ODRAZ21haWwuY29tIiwicm9sIjoiVkVOREVET1IiLCJpYXQiOjE3NjYwOTExMTgsImV4cCI6MTc2NjA5MjAxOH0.G5WSFhw7GGfQC3iWbkmhJAVDYvnc6DkDLQ56z9pGnxA";
+const JWT = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdWx0cml4ODRAZ21haWwuY29tIiwicm9sIjoiVkVOREVET1IiLCJpYXQiOjE3NjYxMjYyMzEsImV4cCI6MTc2NjEyNzEzMX0.BxqGl0xuK7P_-mi1Hj45t9GHmxFM1DNdgBPGXUCG6uk";
 
 //HELPERS
 const $ = (id) => document.getElementById(id);
 
-function intOrNull(v){
+function intOrNull(v) {
     if (v === null || v === undefined) return null;
     const s = String(v).trim();
     if (s === "") return null;
@@ -20,7 +20,7 @@ function intOrNull(v){
     return Number.isFinite(n) ? n : null;
 }
 
-function floatOrNull(v){
+function floatOrNull(v) {
     if (v === null || v === undefined) return null;
     const s = String(v).trim();
     if (s === "") return null;
@@ -28,19 +28,26 @@ function floatOrNull(v){
     return Number.isFinite(n) ? n : null;
 }
 
-//ESTADO
+function stringOrNull(v) {
+    if (v === null || v === undefined) return null
+    const s = String(v).trim();
+    if (s === "") return null;
+    return v;
+}
+
+//STATE
 const state = {
     tipos: [],
     caracteristicas: [],
-    selectedCaracs: new Set(),
-    fotos: [],
+    selectedCharacs: new Set(),
+    photos: [],
     fotoUrls: [],
-    indicePortada: 0,
-    direccion: null
+    portrait: 0,
+    address: null
 };
 
 //ELEMENTOS
-const form = $("crearPubliForm");
+const form = $("postPubliForm");
 const title = $('titleInput');
 const operationType = $("operationTypeSelect")
 const price = $("priceInput")
@@ -84,7 +91,7 @@ function cargarEventos(){
       await cargarCaracteristicas(idTipo);
       // conserva solo las seleccionadas que sigan existiendo en el nuevo tipo
       const idsDisponibles = new Set(state.caracteristicas.map(c => c.id));
-      state.selectedCaracs = new Set([...state.selectedCaracs].filter(id => idsDisponibles.has(id)));
+      state.selectedCharacs = new Set([...state.selectedCharacs].filter(id => idsDisponibles.has(id)));
       renderCaracteristicas();
     });
   
@@ -92,11 +99,11 @@ function cargarEventos(){
       const nuevas = Array.from(e.target.files || []).filter(f => f.type.startsWith("image/"));
   
       const MAX_FOTOS = 12;
-      state.fotos = state.fotos.concat(nuevas).slice(0, MAX_FOTOS);
+      state.photos = state.photos.concat(nuevas).slice(0, MAX_FOTOS);
   
       // si te quedaste sin fotos antes y agregaste, portada vuelve a 0
-      if (state.fotos.length === 0) state.indicePortada = 0;
-      if (state.indicePortada >= state.fotos.length) state.indicePortada = 0;
+      if (state.photos.length === 0) state.portrait = 0;
+      if (state.portrait >= state.photos.length) state.portrait = 0;
   
       renderFotos();
       photosInput.value = ""; // permite volver a seleccionar la misma foto
@@ -150,7 +157,7 @@ function renderCaracteristicas(){
     for (const c of state.caracteristicas){
       const id = c.id;
       const nombre = c.caracteristica ?? `Característica ${id}`;
-      const checked = state.selectedCaracs.has(id) ? "checked" : "";
+      const checked = state.selectedCharacs.has(id) ? "checked" : "";
   
       const item = document.createElement("label");
       item.style.display = "flex";
@@ -167,8 +174,8 @@ function renderCaracteristicas(){
       checkbox.addEventListener("change", () => {
         const caracId = intOrNull(checkbox.dataset.caracId);
         if (!caracId) return;
-        if (checkbox.checked) state.selectedCaracs.add(caracId);
-        else state.selectedCaracs.delete(caracId);
+        if (checkbox.checked) state.selectedCharacs.add(caracId);
+        else state.selectedCharacs.delete(caracId);
       });
   
       characteristicsContainer.appendChild(item);
@@ -180,17 +187,17 @@ function renderFotos(){
     state.fotoUrls = [];
     photosGrid.innerHTML = "";
   
-    if (!state.fotos || state.fotos.length === 0){
+    if (!state.photos || state.photos.length === 0){
         photoMeta.textContent = "Ninguna foto seleccionada";
         return;
     }
   
-    if (state.fotos.length == 1) 
-        photoMeta.textContent = `${state.fotos.length} foto seleccionada`;
+    if (state.photos.length == 1) 
+        photoMeta.textContent = `${state.photos.length} foto seleccionada`;
     else
-        photoMeta.textContent = `${state.fotos.length} fotos seleccionadas`;
+        photoMeta.textContent = `${state.photos.length} fotos seleccionadas`;
     
-    state.fotos.forEach((file, idx) => {
+    state.photos.forEach((file, idx) => {
         const url = URL.createObjectURL(file);
         state.fotoUrls.push(url);
     
@@ -207,14 +214,14 @@ function renderFotos(){
         remove.textContent = "×";
         remove.title = "Quitar foto";
         remove.addEventListener("click", () => {
-            state.fotos.splice(idx, 1);
+            state.photos.splice(idx, 1);
     
-            if (state.fotos.length === 0)
-                state.indicePortada = 0;
-            else if (state.indicePortada === idx)
-                state.indicePortada = 0;
-            else if (idx < state.indicePortada)
-                state.indicePortada -= 1;
+            if (state.photos.length === 0)
+                state.portrait = 0;
+            else if (state.portrait === idx)
+                state.portrait = 0;
+            else if (idx < state.portrait)
+                state.portrait -= 1;
     
             renderFotos();
             URL.revokeObjectURL(url);
@@ -225,12 +232,12 @@ function renderFotos(){
         portadaWrap.className = "raddio-button"
     
         portadaWrap.innerHTML = `
-            <input type="radio" name="portada" ${state.indicePortada === idx ? "checked" : ""} />
+            <input type="radio" name="portada" ${state.portrait === idx ? "checked" : ""} />
             <span class="text-portrait">Portada</span>
         `;
     
         portadaWrap.querySelector("input").addEventListener("change", () => {
-            state.indicePortada = idx;
+            state.portrait = idx;
         });
     
         card.appendChild(img);
@@ -323,7 +330,7 @@ async function doSearch() {
         setMarker(lat, lon, result.display_name);
 
         const dto = mapAddress(result);
-        state.direccion = dto;
+        state.address = dto;
     } catch (e) {
         console.error(e);
         alert(e.message || 'Error buscando dirección');
@@ -356,49 +363,45 @@ map.on("click", async (ev) => {
         lon: String(lng)
       });
 
-      state.direccion = dto;
+      state.address = dto;
     } catch (e) {
       console.error(e);
       alert(e.message || "Error obteniendo dirección del punto");
     }
 });
 
-//LO IMPORTANTE
+//POST
 async function onSubmitCrearPublicacion(e){
     e.preventDefault();
-  
-    // arma el objeto CrearPublicacionRequest
-    const datos = {
-        titulo: $("titulo").value.trim(),
-        tipoOperacion: $("tipoOperacionSelect").value.trim(), // "RENTA" o "VENTA"
-        descripcion: $("descripcion").value.trim(),
-        precio: floatOrNull($("precio").value),
+
+    let valid = validateForm();
+
+    if (valid) await postPublication();
+}
+
+async function postPublication(){
+    const data = {
+        titulo: title.value.trim(),
+        tipoOperacion: operationType.value.trim(), // "RENTA" or "VENTA"
+        descripcion: description.value.trim(),
+        precio: floatOrNull(price.value),
     
-        numeroHabitaciones: intOrNull($("numeroHabitaciones")?.value),
-        numeroBanosCompletos: intOrNull($("numeroBanosCompletos")?.value),
-        numeroExcusados: intOrNull($("numeroExcusados")?.value),
+        numeroHabitaciones: intOrNull(bedroomsNumber.value),
+        numeroBanosCompletos: intOrNull(bathroomsNumber.value),
+        numeroExcusados: intOrNull(toiletsNumber.value),
     
         idTipoInmueble: intOrNull(inmuebleType.value),
-        direccion: state.direccion,
-        caracteristicasIds: Array.from(state.selectedCaracs),
-        indicePortada: state.indicePortada
+        direccion: state.address,
+        caracteristicasIds: Array.from(state.selectedCharacs),
+        indicePortada: state.portrait
     };
   
-    //Validaciones
-    if (!datos.titulo) return alert("Falta el título.");
-    if (!datos.tipoOperacion) return alert("Falta tipo de operación.");
-    if (!datos.descripcion) return alert("Falta descripción.");
-    if (datos.precio === null) return alert("Falta precio válido.");
-    if (!datos.idTipoInmueble) return alert("Falta tipo de inmueble.");
-    if (!datos.direccion) return alert("Falta la dirección (selecciónala en el mapa).");
-    if (!state.fotos || state.fotos.length === 0) return alert("Debes subir al menos 1 foto.");
-  
     const fd = new FormData();
-    fd.append("datos", new Blob([JSON.stringify(datos)], { type: "application/json" }));
-    state.fotos.forEach(f => fd.append("fotos", f));
+    fd.append("datos", new Blob([JSON.stringify(data)], { type: "application/json" }));
+    state.photos.forEach(f => fd.append("fotos", f));
   
     try{
-      const res = await fetch(URL_CREAR_PUBLICACION, {
+      const res = await fetch(URL_POST_PUBLICATION, {
         method: "POST",
         //TEMPORAL: Sólo para probar que si se guarda, luego se tiene que quitar esto.
         headers: {
@@ -409,15 +412,17 @@ async function onSubmitCrearPublicacion(e){
   
       if (!res.ok){
         const text = await res.text().catch(() => "");
-        throw new Error(`Error al crear publicación (${res.status}). ${text}`);
+        showNotif("Error del servidor, inténtelo de nuevo más tarde.", COLOR_RED, 50000);
+        //DEVELOPMENT
+        console.error(`Error del servidor - (${res.status}): ${text}`)
       }
   
       const creado = await res.json();
-      alert("Publicación creada correctamente.");
+      showNotif("¡Has creado una publicación exitosamente! Te notificaremos cuando un administrador la verifique", COLOR_GREEN, 5000);
       // TODO
     }catch(err){
-      console.error(err);
-      alert(err.message || "Error al crear publicación.");
+      console.error(`Error del front: ${err}`);
+      showNotif("No se pudo crear la publicación, inténtelo de nuevo más tarde.", COLOR_RED, 50000);
     }
 }
 
@@ -453,7 +458,76 @@ function showNotif(message, color, duration = 3000) {
 
 /* The goat */
 function validateForm() {
+    let pass = true;
 
+    let titleLabel = $('titleLabel');
+    let priceLabel = $('priceLabel');
+    let bedroomsNumberDiv = $('bedroomsNumberDiv');
+    let bathroomsNumberDiv = $('bathroomsNumberDiv');
+    let toiletsNumberDiv = $('toiletsNumberDiv');
+    let descriptionLabel = $('descriptionLabel');
+
+    titleLabel.classList.remove('invalid');
+    title.classList.remove('invalid');
+    operationType.classList.remove('invalid');
+    priceLabel.classList.remove('invalid');
+    price.classList.remove('invalid');
+    bedroomsNumberDiv.classList.remove('invalid');
+    bathroomsNumberDiv.classList.remove('invalid');
+    toiletsNumberDiv.classList.remove('invalid');
+    descriptionLabel.classList.remove('invalid');
+    description.classList.remove('invalid');
+
+    if (!stringOrNull(title.value)) {
+        titleLabel.classList.add('invalid');
+        title.classList.add('invalid');
+        pass = false;
+    }
+    if (!stringOrNull(operationType.value) || operationType.value === "NONE") {
+        operationType.classList.add('invalid');
+        pass = false;
+    }
+    if (!floatOrNull(price.value)) {
+        priceLabel.classList.add('invalid');
+        price.classList.add('invalid');
+        pass = false;
+    }
+    if (!intOrNull(bedroomsNumber.value)) {
+        bedroomsNumberDiv.classList.add('invalid');
+        pass = false;
+    }
+    if (!intOrNull(bathroomsNumber.value)) {
+        bathroomsNumberDiv.classList.add('invalid');
+        pass = false;
+    }
+    if (!intOrNull(toiletsNumber.value)) {
+        toiletsNumberDiv.classList.add('invalid');
+        pass = false;
+    }
+    if (!stringOrNull(description.value)) {
+        descriptionLabel.classList.add('invalid');
+        description.classList.add('invalid');
+        pass = false;
+    }
+
+    if (!pass) {
+        showNotif("¡Llena todos los campos!", COLOR_RED);
+        return pass;
+    }
+
+    if (!intOrNull(state.photos.length)) {
+        pass = false;
+        showNotif("¡No has subido ninguna foto!", COLOR_RED);
+        return pass;
+    }
+
+    if (!stringOrNull(state.address)) {
+        pass = false;
+        showNotif("¡No has indicado ninguna dirección!", COLOR_RED);
+        return pass;
+    }
+
+    return true;
 }
 
 //SANITIZAME ESTA
