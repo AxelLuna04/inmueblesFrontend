@@ -3,6 +3,9 @@ const URL_TIPOS = `${URL_BASE}/tipos-inmueble`;
 const URL_CARACTERISTICAS = (idTipo) => `${URL_TIPOS}/${idTipo}/caracteristicas`;
 const URL_CREAR_PUBLICACION = `${URL_BASE}/publicaciones`;
 
+const COLOR_GREEN = "green";
+const COLOR_RED = "red";
+
 //TEMPORAL
 const JWT = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdWx0cml4ODRAZ21haWwuY29tIiwicm9sIjoiVkVOREVET1IiLCJpYXQiOjE3NjYwOTExMTgsImV4cCI6MTc2NjA5MjAxOH0.G5WSFhw7GGfQC3iWbkmhJAVDYvnc6DkDLQ56z9pGnxA";
 
@@ -38,6 +41,7 @@ const state = {
 
 //ELEMENTOS
 const form = $("crearPubliForm");
+const title = $('titleInput');
 const tipoOperacionSelect = $("tipoOperacionSelect")
 const tipoInmuebleSelect = $("tipoInmuebleSelect");
 const caracsContainer = $("caracteristicasContainer");
@@ -50,13 +54,12 @@ const fotoMeta = $("fotosMeta");
 const buscarBtn = $('btnBuscar');
 const direccionInput = $('direccionInput');
 
-const title = $('titleInput');
+
 const counterTitle = $('counterTitleSpan')
 const description = $('descriptionTextArea');
 const counterDescription = $('counterDescriptionSpan')
 
 const notification = $('notification');
-const btnNotifMala = $('btnNotifMala');
 
 document.addEventListener("DOMContentLoaded", inicializar);
 
@@ -113,10 +116,6 @@ function cargarEventos(){
     title.addEventListener("input", ()=> {
         var length = intOrNull(title.value.length);
         counterTitle.textContent = `${length}/50`;
-    })
-
-    btnNotifMala.addEventListener("click", ()=> {
-        showNotif("Notificación mala!");
     })
 }
 
@@ -420,16 +419,26 @@ async function onSubmitCrearPublicacion(e){
 }
 
 //VALIDATIONS
+
+/*Notification*/
 let notifTime = null;
-function showNotif(message, duration = 3000) {
+function showNotif(message, color, duration = 3000) {
     if (!notification) return;
 
     clearTimeout(notifTime);
 
     notification.textContent = message;
 
-    notification.classList.remove('notif-shows');
+    notification.classList.remove('notif-hides');
     void notification.offsetWidth;
+
+    if (color == COLOR_RED) {
+        notification.classList.remove('notif-good');
+        notification.classList.add('notif-bad');
+    } else if (color == COLOR_GREEN) {
+        notification.classList.remove('notif-bad');
+        notification.classList.add('notif-good');
+    }
 
     notification.classList.add('notif-shows');
 
@@ -437,6 +446,11 @@ function showNotif(message, duration = 3000) {
         notification.classList.remove('notif-shows');
         notification.classList.add('notif-hides');
     }, duration);
+}
+
+/* The goat */
+function validateForm() {
+
 }
 
 //SANITIZAME ESTA

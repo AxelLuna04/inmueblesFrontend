@@ -1,6 +1,7 @@
 :root {
     --color-bg-gray: #DFDFDF;
     --color-red: #DD0E0E;
+    --color-green: #1CB01C;
     --font-card: 'Jaldi', sans-serif;
 }
 
@@ -227,4 +228,12 @@
 
 .notif-hides {
     transform: translateX(120%);
+}
+
+.notif-good {
+    background: var(--color-green);
+}
+
+.notif-bad {
+    background: var(--color-red);
 }
