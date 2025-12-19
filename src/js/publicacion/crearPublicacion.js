@@ -42,21 +42,24 @@ const state = {
 //ELEMENTOS
 const form = $("crearPubliForm");
 const title = $('titleInput');
-const tipoOperacionSelect = $("tipoOperacionSelect")
-const tipoInmuebleSelect = $("tipoInmuebleSelect");
-const caracsContainer = $("caracteristicasContainer");
+const operationType = $("operationTypeSelect")
+const price = $("priceInput")
+const inmuebleType = $("inmuebleTypeSelect");
+const characteristicsContainer = $("characteristicsContainer");
+const bedroomsNumber = $('bedroomsNumberInput');
+const bathroomsNumber = $('bathroomsNumberInput');
+const toiletsNumber = $('toiletsNumberInput');
+const description = $('descriptionTextArea');
 
-const cargarFotosbtn = $("btnCargarFotos");
-const fotosInput = $("fotosInput");
-const fotosGrid = $("fotosGrid");
-const fotoMeta = $("fotosMeta");
+const photosInput = $("photosInput");
+const photoMeta = $("photosMeta");
+const photosGrid = $("photosGrid");
+const uploadPhotosBtn = $("uploadPhotosBtn");
 
-const buscarBtn = $('btnBuscar');
-const direccionInput = $('direccionInput');
-
+const address = $('addressInput');
+const searchBtn = $('searchBtn');
 
 const counterTitle = $('counterTitleSpan')
-const description = $('descriptionTextArea');
 const counterDescription = $('counterDescriptionSpan')
 
 const notification = $('notification');
@@ -67,7 +70,7 @@ async function inicializar(){
     cargarEventos();
 
     await cargarTipos();
-    const idTipo = intOrNull(tipoInmuebleSelect.value);
+    const idTipo = intOrNull(inmuebleType.value);
     if (idTipo) await cargarCaracteristicas(idTipo);
     renderCaracteristicas();
 
@@ -75,8 +78,8 @@ async function inicializar(){
 }
 
 function cargarEventos(){
-    tipoInmuebleSelect.addEventListener("change", async () => {
-      const idTipo = intOrNull(tipoInmuebleSelect.value);
+    inmuebleType.addEventListener("change", async () => {
+      const idTipo = intOrNull(inmuebleType.value);
       if (!idTipo) return;
       await cargarCaracteristicas(idTipo);
       // conserva solo las seleccionadas que sigan existiendo en el nuevo tipo
@@ -85,7 +88,7 @@ function cargarEventos(){
       renderCaracteristicas();
     });
   
-    fotosInput.addEventListener("change", (e) => {
+    photosInput.addEventListener("change", (e) => {
       const nuevas = Array.from(e.target.files || []).filter(f => f.type.startsWith("image/"));
   
       const MAX_FOTOS = 12;
@@ -96,13 +99,13 @@ function cargarEventos(){
       if (state.indicePortada >= state.fotos.length) state.indicePortada = 0;
   
       renderFotos();
-      fotosInput.value = ""; // permite volver a seleccionar la misma foto
+      photosInput.value = ""; // permite volver a seleccionar la misma foto
     });
   
     form.addEventListener("submit", onSubmitCrearPublicacion);
 
-    cargarFotosbtn.addEventListener("click", () => {
-        fotosInput.click();
+    uploadPhotosBtn.addEventListener("click", () => {
+        photosInput.click();
     });
 
     description.addEventListener("input", ()=> {
@@ -124,7 +127,7 @@ async function cargarTipos(){
     if (!res.ok) throw new Error("No se pudieron cargar los tipos de inmueble.");
     state.tipos = await res.json();
   
-    tipoInmuebleSelect.innerHTML = state.tipos.map(t =>
+    inmuebleType.innerHTML = state.tipos.map(t =>
       `<option value="${t.id}">${escapeHtml(t.tipo ?? String(t.id))}</option>`
     ).join("");
 }
@@ -137,10 +140,10 @@ async function cargarCaracteristicas(idTipo){
 }
 
 function renderCaracteristicas(){
-    caracsContainer.innerHTML = "";
+    characteristicsContainer.innerHTML = "";
   
     if (!state.caracteristicas || state.caracteristicas.length === 0){
-      caracsContainer.innerHTML = `<p class="texto-carac-error">No se encontraron características</p>`;
+      characteristicsContainer.innerHTML = `<p class="text-charac-error">No se encontraron características</p>`;
       return;
     }
   
@@ -168,24 +171,24 @@ function renderCaracteristicas(){
         else state.selectedCaracs.delete(caracId);
       });
   
-      caracsContainer.appendChild(item);
+      characteristicsContainer.appendChild(item);
     }
 }
 
 function renderFotos(){
     state.fotoUrls.forEach(URL.revokeObjectURL);
     state.fotoUrls = [];
-    fotosGrid.innerHTML = "";
+    photosGrid.innerHTML = "";
   
     if (!state.fotos || state.fotos.length === 0){
-        fotoMeta.textContent = "Ninguna foto seleccionada";
+        photoMeta.textContent = "Ninguna foto seleccionada";
         return;
     }
   
     if (state.fotos.length == 1) 
-        fotoMeta.textContent = `${state.fotos.length} foto seleccionada`;
+        photoMeta.textContent = `${state.fotos.length} foto seleccionada`;
     else
-        fotoMeta.textContent = `${state.fotos.length} fotos seleccionadas`;
+        photoMeta.textContent = `${state.fotos.length} fotos seleccionadas`;
     
     state.fotos.forEach((file, idx) => {
         const url = URL.createObjectURL(file);
@@ -233,7 +236,7 @@ function renderFotos(){
         card.appendChild(img);
         card.appendChild(remove);
         card.appendChild(portadaWrap);
-        fotosGrid.appendChild(card);
+        photosGrid.appendChild(card);
     });
 }
 
@@ -308,7 +311,7 @@ function setMarker(lat, lon, popupText = null) {
 
 async function doSearch() {
     try {
-        const text = direccionInput.value.trim();
+        const text = address.value.trim();
         if (!text) return;
 
         const result = await geocode(text);
@@ -327,9 +330,9 @@ async function doSearch() {
     }
 } 
     
-buscarBtn.addEventListener('click', doSearch);
+searchBtn.addEventListener('click', doSearch);
 
-direccionInput.addEventListener('keydown', (ev) => {
+address.addEventListener('keydown', (ev) => {
     if (ev.key === "Enter") {
         ev.preventDefault();
         doSearch();
@@ -344,7 +347,7 @@ map.on("click", async (ev) => {
       const result = await reverseGeocode(lat, lng);
       if (!result) return;
 
-      direccionInput.value = result.display_name || direccionInput.value;
+      address.value = result.display_name || address.value;
       setMarker(lat, lng, result.display_name || null);
 
       const dto = mapAddress({
@@ -375,7 +378,7 @@ async function onSubmitCrearPublicacion(e){
         numeroBanosCompletos: intOrNull($("numeroBanosCompletos")?.value),
         numeroExcusados: intOrNull($("numeroExcusados")?.value),
     
-        idTipoInmueble: intOrNull(tipoInmuebleSelect.value),
+        idTipoInmueble: intOrNull(inmuebleType.value),
         direccion: state.direccion,
         caracteristicasIds: Array.from(state.selectedCaracs),
         indicePortada: state.indicePortada

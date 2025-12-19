@@ -35,71 +35,71 @@
 
     <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
 
-    <main class="crear-publi-main">
-        <form class="formulario" id="crearPubliForm">
-            <div class="card card-titulo"> <!-- Title-->
+    <main class="post-publication-main">
+        <form class="form" id="crearPubliForm">
+            <div class="card card-tittle"> <!-- Title-->
                 <label for="title">Titulo de la publicación</label>
-                <input class="input input-titulo" type="text" id="titleInput" maxlength="50" required>
+                <input class="input input-tittle" type="text" id="titleInput" maxlength="50" required>
                 <span class="text-lenght" id="counterTitleSpan">0/50</span>
             </div>
 
-            <div class="section-grid"> <!--Se divide en dos-->
-                <div> <!--Lado izquierdo-->
-                    <div class="card"> <!--Tipo operación-->
-                        <select class="checkbox" id="tipoOperacionSelect" required>
-                            <option value="None">Tipo de Operación</option>
+            <div class="section-grid"> <!--Split-->
+                <div> <!--Left column-->
+                    <div class="card"> <!--Operation type-->
+                        <select class="checkbox" id="operationTypeSelect" required>
+                            <option value="NONE">Tipo de Operación</option>
                             <option value="VENTA">Venta</option>
                             <option value="RENTA">Renta</option>
                         </select>
                     </div>
-                    <div class="card"> <!--Precio-->
-                        <label for="precio">Precio</label>
-                        <input class="input" type="number" id="precio" required>
+                    <div class="card"> <!--Price-->
+                        <label for="price">Precio</label>
+                        <input class="input" type="number" id="priceInput" required>
                     </div>
-                    <div class="card"> <!--Tipo inmueble-->
+                    <div class="card"> <!--Inmueble type-->
                         <label>Tipo de Inmueble:</label>
-                        <select class="checkbox" id="tipoInmuebleSelect" required>
-                            <option value="None">Tipo de Inmueble</option>
+                        <select class="checkbox" id="inmuebleTypeSelect" required>
+                            <option value="NONE">Tipo de Inmueble</option>
                         </select>
-                        <div id="caracteristicasContainer"> <!--Caracteristicas-->
+                        <div id="characteristicsContainer"> <!--Characteristics-->
 
                         </div>
                     </div>
-                    <div class="card"> <!--Caracteristicas generales-->
-                        <div class="flex-row"> <!--Numero de habitaciones-->
-                            <label for="numeroHabitaciones">Número de habitaciones:</label>
-                            <input class="input input-row" type="number" id="numeroHabitaciones" required>
+                    <div class="card"> <!--Common characteristics-->
+                        <div class="flex-row"> <!--Bedrooms number-->
+                            <label for="bedroomsNumberInput">Número de habitaciones:</label>
+                            <input class="input input-row" type="number" id="bedroomsNumberInput" required>
                         </div>
-                        <div class="flex-row"> <!--Numero de baños completos-->
-                            <label for="numeroBanosCompletos">Número de baños completos:</label>
-                            <input class="input input-row" type="number" id="numeroBanosCompletos" required>
+                        <div class="flex-row"> <!--Bathrooms number-->
+                            <label for="bathroomsNumberInput">Número de baños completos:</label>
+                            <input class="input input-row" type="number" id="bathroomsNumberInput" required>
                         </div>
-                        <div class="flex-row"> <!--Numero de excusados-->
-                            <label for="numeroExcusados">Número de excusados:</label>
-                            <input class="input input-row" type="number" id="numeroExcusados" required>
+                        <div class="flex-row"> <!--Toilets number-->
+                            <label for="toiletsNumberInput">Número de excusados:</label>
+                            <input class="input input-row" type="number" id="toiletsNumberInput" required>
                         </div>
                     </div>
                     <div class="card"> <!--Description-->
-                        <label for="description">Describe tu inmueble:</label>
+                        <label for="descriptionTextArea">Describe tu inmueble:</label>
                         <textarea class="input textarea" type="text" id="descriptionTextArea" maxlength="200" required></textarea>
                         <span class="text-lenght" id="counterDescriptionSpan">0/200</span>
                     </div>
                 </div>
-                <div> <!--Lado derecho-->
-                    <div class="card"><!--Fotos-->
+                <div> <!--Right column-->
+                    <div class="card"><!--Photos-->
                         <label>Fotos</label>
-                        <input type="file" id="fotosInput" multiple hidden>
-                        <p id="fotosMeta">Ninguna foto seleccionada</p>
-                        <div class="fotos-grid" id="fotosGrid">
-                            
+                        <input type="file" id="photosInput" multiple hidden>
+                        <p id="photosMeta">Ninguna foto seleccionada</p>
+                        <div class="photos-grid" id="photosGrid">
+                            <!--Photos tumbails added dynamically-->
                         </div>
-                        <button class="btn btn-cargar-fotos" type="button" id="btnCargarFotos">Cargar fotos</button>
+                        <button class="btn btn-upload-photos" type="button" id="uploadPhotosBtn">Cargar fotos</button>
                     </div>
-                    <div class="card"><!--Mapa-->
+                    <div class="card"><!--Map-->
                         <div class="flex-row">
-                            <label for="direccionInput">Dirección:</label>
-                            <input class="input input-direccion" type="text" id="direccionInput" required>
-                            <button class="btn btn-buscar-direccion" type="button" id="btnBuscar">Buscar</button>
+                            <label for="addressInput">Dirección:</label>
+                            <input class="input input-direction" type="text" id="addressInput" required>
+                            <button class="btn btn-search-address" type="button" id="searchBtn">Buscar</button>
                         </div>
                         <div id="map">
                         </div>

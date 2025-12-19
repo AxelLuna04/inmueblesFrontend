@@ -12,19 +12,19 @@
 }
 
 /* Background de la vista */
-.crear-publi-main {
+.post-publication-main {
     background-color: var(--color-bg-gray);
     min-height: 100vh;
     padding: 1rem;
 }
 
-.formulario {
+.form {
     margin-left: 5rem;
     margin-right: 5rem;
 }
 
 /*Botones*/
-.btn-cargar-fotos {
+.btn-upload-photos {
     background-color: var(--color-primary-dark);
     color: var(--color-white);
     width: 25%;
@@ -32,12 +32,12 @@
     align-self: center;
 }
 
-.btn-cargar-fotos:hover {
+.btn-upload-photos:hover {
     opacity: 0.9;
     transform: translateY(0);
 }
 
-.btn-buscar-direccion {
+.btn-search-address {
     background-color: var(--color-primary-dark);
     color: var(--color-white);
     width: 15%;
@@ -90,13 +90,13 @@
     align-items: start;
 }
 
-.fotos-grid{
+.photos-grid{
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: .75rem;
   }
 
-.section-foto {
+.section-photo {
     order: 1;
 }
 
@@ -118,7 +118,7 @@
     width: 100%;
 }
 
-.card-titulo {
+.card-tittle {
     font-size: 1.5rem;
 }
 
@@ -142,12 +142,12 @@
     margin-left: 1rem;
 }
 
-.input-titulo {
+.input-tittle {
     padding: 0.75rem;
     font-size: 1rem;
 }
 
-.input-direccion {
+.input-direction {
     margin-left: 1rem;
     flex: 1;
 }
@@ -172,8 +172,8 @@
     outline: none;
 }
 
-/*TEXTO*/
-.texto-carac-error {
+/*TEXTS*/
+.text-charac-error {
     margin-top: 10px;
     color: brown;
 }
@@ -187,14 +187,14 @@
     font-size: 1.2rem;
 }
 
-/*FOTOS*/
+/*PHOTOS*/
 .photo-thumb img{
     width: 100%;
     height: 150px;
     object-fit: cover;
 }
 
-/*MAPA*/
+/*MAP*/
 #map{
     height: 320px;
     width: 100%;
