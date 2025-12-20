@@ -1,7 +1,8 @@
-const URL_BASE = "/api/v1";
-const URL_TYPES = `${URL_BASE}/tipos-inmueble`;
-const URL_CHARACTERISTICS = (idType) => `${URL_TYPES}/${idType}/caracteristicas`;
-const URL_POST_PUBLICATION = `${URL_BASE}/publicaciones`;
+import { postPublication } from('../../api/publicationService');
+import {
+    getPropertyTypes,
+    getCharacteristics
+ } from('../../api/catalogueService');
 
 const COLOR_GREEN = "green";
 const COLOR_RED = "red";
@@ -276,20 +277,25 @@ function removeToiletsInput() {
 
 //TYPES AND CHARACTERISTICS
 async function loadTypes(){
-    const res = await fetch(URL_TYPES);
-    if (!res.ok) throw new Error("No se pudieron cargar los tipos de inmueble.");
-    state.types = await res.json();
-  
-    propertyType.innerHTML = state.types.map(t =>
-      `<option value="${t.id}">${escapeHtml(t.tipo ?? String(t.id))}</option>`
-    ).join("");
+    try {
+        const res = getPropertyTypes;
+        state.types = await res.json();
+
+        propertyType.innerHTML = state.types.map(t =>
+            `<option value="${t.id}">${escapeHtml(t.tipo ?? String(t.id))}</option>`
+        ).join("");
+    } catch(err) {
+        showNotif(err.text, COLOR_RED);
+    }
 }
 
 async function loadCharacteristics(idType){
-    const res = await fetch(URL_CHARACTERISTICS(idType));
-    if (!res.ok) throw new Error("No se pudieron cargar las características.");
-
-    state.characteristics = await res.json();
+    try {
+        const res = await getCharacteristics(idType);
+        state.characteristics = await res.json();
+    } catch(err) {
+        showNotif(err.text, COLOR_RED);
+    }
 }
 
 function renderCharacteristics(){
@@ -541,27 +547,13 @@ async function postPublication(){
     state.photos.forEach(f => fd.append("fotos", f));
   
     try{
-      const res = await fetch(URL_POST_PUBLICATION, {
-        method: "POST",
-        headers: {
-            Authorization: "Bearer " + localStorage.getItem("accessToken"),
-        },
-        body: fd,
-      });
-  
-      if (!res.ok){
-        const text = await res.text().catch(() => "");
-        showNotif("Error del servidor, inténtelo de nuevo más tarde.", COLOR_RED, 50000);
-        //DEVELOPMENT
-        console.error(`Error del servidor - (${res.status}): ${text}`)
-      }
-  
-      const creado = await res.json();
+      await postPublication(fd);
+
       showNotif("¡Has creado una publicación exitosamente! Te notificaremos cuando un administrador la verifique", COLOR_GREEN, 5000);
-      // TODO
     }catch(err){
-      console.error(`Error del front: ${err}`);
-      showNotif("No se pudo crear la publicación, inténtelo de nuevo más tarde.", COLOR_RED, 50000);
+        if (err instanceof ErrorApi) return showNotif(err.message, COLOR_RED, 5000);
+        console.error(`Error del front: ${err}`);
+        showNotif("No se pudo crear la publicación, inténtelo de nuevo más tarde.", COLOR_RED, 5000);
     }
 }
 
