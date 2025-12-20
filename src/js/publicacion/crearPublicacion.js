@@ -1,10 +1,11 @@
 const URL_BASE = "/api/v1";
-const URL_TIPOS = `${URL_BASE}/tipos-inmueble`;
-const URL_CARACTERISTICAS = (idTipo) => `${URL_TIPOS}/${idTipo}/caracteristicas`;
+const URL_TYPES = `${URL_BASE}/tipos-inmueble`;
+const URL_CHARACTERISTICS = (idType) => `${URL_TYPES}/${idType}/caracteristicas`;
 const URL_POST_PUBLICATION = `${URL_BASE}/publicaciones`;
 
 const COLOR_GREEN = "green";
 const COLOR_RED = "red";
+const COLOR_ORANGE = "orange";
 
 //TEMPORAL
 const JWT = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdWx0cml4ODRAZ21haWwuY29tIiwicm9sIjoiVkVOREVET1IiLCJpYXQiOjE3NjYxMjYyMzEsImV4cCI6MTc2NjEyNzEzMX0.BxqGl0xuK7P_-mi1Hj45t9GHmxFM1DNdgBPGXUCG6uk";
@@ -37,16 +38,16 @@ function stringOrNull(v) {
 
 //STATE
 const state = {
-    tipos: [],
-    caracteristicas: [],
+    types: [],
+    characteristics: [],
     selectedCharacs: new Set(),
     photos: [],
-    fotoUrls: [],
-    portrait: 0,
+    photosUrls: [],
+    idPortrait: 0,
     address: null,
     bedrooms: 0,
     bathrooms: 0,
-    idType: 1,
+    idType: 0,
 };
 
 //ELEMENTOS
@@ -54,7 +55,7 @@ const form = $("postPubliForm");
 const title = $('titleInput');
 const operationType = $("operationTypeSelect")
 const price = $("priceInput")
-const inmuebleType = $("inmuebleTypeSelect");
+const propertyType = $("propertyTypeSelect");
 const characteristicsContainer = $("characteristicsContainer");
 const toiletsNumber = $('toiletsNumberInput');
 const description = $('descriptionTextArea');
@@ -79,34 +80,38 @@ const bathroomsNumberDiv = $('bathroomsNumberDiv');
 var bathroomNumberLabel = null;
 var bathroomsNumberInput = null;
 
-document.addEventListener("DOMContentLoaded", inicializar);
+//OTHER ELEMENTS
+var marker = null;
+var map = null;
 
-async function inicializar(){
-    initBedBathInputs();
-    cargarEventos();
+document.addEventListener("DOMContentLoaded", innit);
 
-    await cargarTipos();
-    const idTipo = intOrNull(inmuebleType.value);
-    if (idTipo) await cargarCaracteristicas(idTipo);
-    renderCaracteristicas();
+//INITIALIZATE PAGE
+async function innit(){
+    loadEvents();
+    innitBedBathInputs();
 
-    renderFotos();
+    await loadTypes();
+    state.idType = intOrNull(propertyType.value);
+    if (state.idType) await loadCharacteristics(state.idType);
+    renderCharacteristics();
 
-    addBedroomsInput();
-    addBathroomsInput();
+    renderPhotos();
+
+    innitMap();
 }
 
-function cargarEventos(){
-    inmuebleType.addEventListener("change", async () => {
-        const idTipo = intOrNull(inmuebleType.value);
-        if (!idTipo) return;
-        await cargarCaracteristicas(idTipo);
-        // conserva solo las seleccionadas que sigan existiendo en el nuevo tipo
-        const idsDisponibles = new Set(state.caracteristicas.map(c => c.id));
-        state.selectedCharacs = new Set([...state.selectedCharacs].filter(id => idsDisponibles.has(id)));
-        renderCaracteristicas();
+function loadEvents(){
+    propertyType.addEventListener("change", async () => {
+        if (!propertyType.value) return;
+        state.idType = intOrNull(propertyType.value);
 
-        switch (idTipo) {
+        await loadCharacteristics(state.idType);
+        let idsCharacsAvailables = new Set(state.characteristics.map(c => c.id));
+        state.selectedCharacs = new Set([...state.selectedCharacs].filter(id => idsCharacsAvailables.has(id)));
+        renderCharacteristics();
+
+        switch (state.idType) {
             case 1:
                 addBedroomsInput();
                 addBathroomsInput();
@@ -137,7 +142,14 @@ function cargarEventos(){
                 break;
         }
 
-        state.idType = idTipo;
+        searchBtn.addEventListener('click', doSearch);
+
+        address.addEventListener('keydown', (ev) => {
+            if (ev.key === "Enter") {
+                ev.preventDefault();
+                doSearch();
+            }
+        });
     });
   
     photosInput.addEventListener("change", (e) => {
@@ -146,12 +158,11 @@ function cargarEventos(){
       const MAX_FOTOS = 12;
       state.photos = state.photos.concat(nuevas).slice(0, MAX_FOTOS);
   
-      // si te quedaste sin fotos antes y agregaste, portada vuelve a 0
-      if (state.photos.length === 0) state.portrait = 0;
-      if (state.portrait >= state.photos.length) state.portrait = 0;
+      if (state.photos.length === 0) state.idPortrait = 0;
+      if (state.idPortrait >= state.photos.length) state.idPortrait = 0;
   
-      renderFotos();
-      photosInput.value = ""; // permite volver a seleccionar la misma foto
+      renderPhotos();
+      photosInput.value = "";
     });
   
     form.addEventListener("submit", onSubmitCrearPublicacion);
@@ -174,7 +185,8 @@ function cargarEventos(){
     })
 }
 
-function initBedBathInputs() {
+//BEDROOMS AND BATHROOMS
+function innitBedBathInputs() {
     bedroomsNumberLabel = document.createElement("label");
     bedroomsNumberLabel.innerHTML = 'Número de habitaciones';
     bedroomsNumberInput = document.createElement("input");
@@ -196,124 +208,9 @@ function initBedBathInputs() {
     bathroomsNumberInput.addEventListener("input", ()=> {
         state.bathrooms = intOrNull(bathroomsNumberInput.value);
     })
-}
 
-async function cargarTipos(){
-    const res = await fetch(URL_TIPOS);
-    if (!res.ok) throw new Error("No se pudieron cargar los tipos de inmueble.");
-    state.tipos = await res.json();
-  
-    inmuebleType.innerHTML = state.tipos.map(t =>
-      `<option value="${t.id}">${escapeHtml(t.tipo ?? String(t.id))}</option>`
-    ).join("");
-}
-
-async function cargarCaracteristicas(idTipo){
-    const res = await fetch(URL_CARACTERISTICAS(idTipo));
-    if (!res.ok) throw new Error("No se pudieron cargar las características.");
-
-    state.caracteristicas = await res.json();
-}
-
-function renderCaracteristicas(){
-    characteristicsContainer.innerHTML = "";
-  
-    if (!state.caracteristicas || state.caracteristicas.length === 0){
-      characteristicsContainer.innerHTML = `<p class="text-charac-error">No se encontraron características</p>`;
-      return;
-    }
-  
-    for (const c of state.caracteristicas){
-      const id = c.id;
-      const nombre = c.caracteristica ?? `Característica ${id}`;
-      const checked = state.selectedCharacs.has(id) ? "checked" : "";
-  
-      const item = document.createElement("label");
-      item.style.display = "flex";
-      item.style.alignItems = "center";
-      item.style.gap = ".6rem";
-      item.style.cursor = "pointer";
-  
-      item.innerHTML = `
-        <input type="checkbox" data-carac-id="${id}" ${checked} />
-        <span>${escapeHtml(nombre)}</span>
-      `;
-  
-      const checkbox = item.querySelector("input");
-      checkbox.addEventListener("change", () => {
-        const caracId = intOrNull(checkbox.dataset.caracId);
-        if (!caracId) return;
-        if (checkbox.checked) state.selectedCharacs.add(caracId);
-        else state.selectedCharacs.delete(caracId);
-      });
-  
-      characteristicsContainer.appendChild(item);
-    }
-}
-
-function renderFotos(){
-    state.fotoUrls.forEach(URL.revokeObjectURL);
-    state.fotoUrls = [];
-    photosGrid.innerHTML = "";
-  
-    if (!state.photos || state.photos.length === 0){
-        photoMeta.textContent = "Ninguna foto seleccionada";
-        return;
-    }
-  
-    if (state.photos.length == 1) 
-        photoMeta.textContent = `${state.photos.length} foto seleccionada`;
-    else
-        photoMeta.textContent = `${state.photos.length} fotos seleccionadas`;
-    
-    state.photos.forEach((file, idx) => {
-        const url = URL.createObjectURL(file);
-        state.fotoUrls.push(url);
-    
-        const card = document.createElement("div");
-        card.className = "photo-thumb";
-    
-        const img = document.createElement("img");
-        img.src = url;
-        img.alt = file.name;
-    
-        const remove = document.createElement("button");
-        remove.type = "button";
-        remove.className = "btn btn-remove-photos";
-        remove.textContent = "×";
-        remove.title = "Quitar foto";
-        remove.addEventListener("click", () => {
-            state.photos.splice(idx, 1);
-    
-            if (state.photos.length === 0)
-                state.portrait = 0;
-            else if (state.portrait === idx)
-                state.portrait = 0;
-            else if (idx < state.portrait)
-                state.portrait -= 1;
-    
-            renderFotos();
-            URL.revokeObjectURL(url);
-        });
-    
-        // selector de portada (radio)
-        const portadaWrap = document.createElement("label");
-        portadaWrap.className = "raddio-button"
-    
-        portadaWrap.innerHTML = `
-            <input type="radio" name="portada" ${state.portrait === idx ? "checked" : ""} />
-            <span class="text-portrait">Portada</span>
-        `;
-    
-        portadaWrap.querySelector("input").addEventListener("change", () => {
-            state.portrait = idx;
-        });
-    
-        card.appendChild(img);
-        card.appendChild(remove);
-        card.appendChild(portadaWrap);
-        photosGrid.appendChild(card);
-    });
+    addBedroomsInput();
+    addBathroomsInput();
 }
 
 function addBedroomsInput() {
@@ -344,19 +241,161 @@ function removeBathroomsInput() {
     }
 }
 
-//MAPA
-// 1)Inicializarlo
-const map = L.map('map', { zoomControl: true }).setView([19.541796353862402, -96.92721517586615], 12); // La Facu, claro que sí
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+//TYPES AND CHARACTERISTICS
+async function loadTypes(){
+    const res = await fetch(URL_TYPES);
+    if (!res.ok) throw new Error("No se pudieron cargar los tipos de inmueble.");
+    state.types = await res.json();
+  
+    propertyType.innerHTML = state.types.map(t =>
+      `<option value="${t.id}">${escapeHtml(t.tipo ?? String(t.id))}</option>`
+    ).join("");
+}
 
-let marker = null;
+async function loadCharacteristics(idType){
+    const res = await fetch(URL_CHARACTERISTICS(idType));
+    if (!res.ok) throw new Error("No se pudieron cargar las características.");
 
-setTimeout(() => map.invalidateSize(), 0);
+    state.characteristics = await res.json();
+}
 
-// 2) Buscar en Nominatim (geocoding)
+function renderCharacteristics(){
+    characteristicsContainer.innerHTML = "";
+  
+    if (!state.characteristics || state.characteristics.length === 0){
+      characteristicsContainer.innerHTML = `<p class="text-charac-error">No se encontraron características</p>`;
+      return;
+    }
+  
+    for (const c of state.characteristics){
+      const id = c.id;
+      const nombre = c.caracteristica ?? `Característica ${id}`;
+      const checked = state.selectedCharacs.has(id) ? "checked" : "";
+  
+      const item = document.createElement("label");
+      item.style.display = "flex";
+      item.style.alignItems = "center";
+      item.style.gap = ".6rem";
+      item.style.cursor = "pointer";
+  
+      item.innerHTML = `
+        <input type="checkbox" data-carac-id="${id}" ${checked} />
+        <span>${escapeHtml(nombre)}</span>
+      `;
+  
+      const checkbox = item.querySelector("input");
+      checkbox.addEventListener("change", () => {
+        const caracId = intOrNull(checkbox.dataset.caracId);
+        if (!caracId) return;
+        if (checkbox.checked) state.selectedCharacs.add(caracId);
+        else state.selectedCharacs.delete(caracId);
+      });
+  
+      characteristicsContainer.appendChild(item);
+    }
+}
+
+//PHOTOS
+function renderPhotos(){
+    state.photosUrls.forEach(URL.revokeObjectURL);
+    state.photosUrls = [];
+    photosGrid.innerHTML = "";
+  
+    if (!state.photos || state.photos.length === 0){
+        photoMeta.textContent = "Ninguna foto seleccionada";
+        return;
+    }
+  
+    if (state.photos.length == 1) 
+        photoMeta.textContent = `${state.photos.length} foto seleccionada`;
+    else
+        photoMeta.textContent = `${state.photos.length} fotos seleccionadas`;
+    
+    state.photos.forEach((file, idx) => {
+        const url = URL.createObjectURL(file);
+        state.photosUrls.push(url);
+    
+        const card = document.createElement("div");
+        card.className = "photo-thumb";
+    
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = file.name;
+    
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "btn btn-remove-photos";
+        remove.textContent = "×";
+        remove.title = "Quitar foto";
+        remove.addEventListener("click", () => {
+            state.photos.splice(idx, 1);
+    
+            if (state.photos.length === 0)
+                state.idPortrait = 0;
+            else if (state.idPortrait === idx)
+                state.idPortrait = 0;
+            else if (idx < state.idPortrait)
+                state.idPortrait -= 1;
+    
+            renderPhotos();
+            URL.revokeObjectURL(url);
+        });
+    
+        // portrait
+        const portraitWrap = document.createElement("label");
+        portraitWrap.className = "raddio-button"
+    
+        portraitWrap.innerHTML = `
+            <input type="radio" name="portada" ${state.idPortrait === idx ? "checked" : ""} />
+            <span class="text-portrait">Portada</span>
+        `;
+    
+        portraitWrap.querySelector("input").addEventListener("change", () => {
+            state.idPortrait = idx;
+        });
+    
+        card.appendChild(img);
+        card.appendChild(remove);
+        card.appendChild(portraitWrap);
+        photosGrid.appendChild(card);
+    });
+}
+
+//MAP
+function innitMap() {
+    map = L.map('map', { zoomControl: true }).setView([19.541796353862402, -96.92721517586615], 12); // La Facu, claro que sí
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    
+    setTimeout(() => map.invalidateSize(), 0);
+
+    map.on("click", async (ev) => {
+        try {
+          const { lat, lng } = ev.latlng;
+          setMarker(lat, lng, "Buscando dirección...");
+    
+          const result = await reverseGeocode(lat, lng);
+          if (!result) return;
+    
+          address.value = result.display_name || address.value;
+          setMarker(lat, lng, result.display_name || null);
+    
+          const dto = mapAddress({
+            ...result,
+            lat: String(lat),
+            lon: String(lng)
+          });
+    
+          state.address = dto;
+        } catch (e) {
+            console.error(`Error del front: ${err}`);
+            showNotif("No se pudo obtener la dirección en el puntero.", COLOR_RED, 5000);
+        }
+    });
+}
+
 async function geocode(text) {
     if (!text) return;
 
@@ -368,7 +407,10 @@ async function geocode(text) {
     url.searchParams.set('accept-language', 'es');
     
     const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
-    if (!res.ok) throw new Error('Error al consultar Nominatim');
+    if (!res.ok) {
+        showNotif("No se pudo obtener la dirección de nominatim.", COLOR_RED, 5000);
+        throw new Error('Error al consultar Nominatim');
+    }
     const arr = await res.json();
     return arr[0] ?? null;
 }
@@ -382,7 +424,9 @@ async function reverseGeocode(lat, lon) {
     url.searchParams.set("accept-language", "es");
 
     const res = await fetch(url, { headers: { Accept: "application/json" } });
-    if (!res.ok) throw new Error("Error al consultar Nominatim (reverse)");
+    if (!res.ok) {
+        showNotif("No se pudo obtener la dirección de nominatim (reverse).", COLOR_RED, 5000);
+    }
     return await res.json();
 }
 
@@ -419,9 +463,8 @@ async function doSearch() {
         if (!text) return;
 
         const result = await geocode(text);
-        if (!result) return alert('Sin resultados');
+        if (!result) return showNotif("No se encontró ninguna dirección.", COLOR_ORANGE, 5000);
     
-        // 3) Poner marcador en el mapa
         const lat = parseFloat(result.lat);
         const lon = parseFloat(result.lon);
         setMarker(lat, lon, result.display_name);
@@ -429,43 +472,10 @@ async function doSearch() {
         const dto = mapAddress(result);
         state.address = dto;
     } catch (e) {
-        console.error(e);
-        alert(e.message || 'Error buscando dirección');
+        console.error("Error del front: " + e);
+        showNotif("No se pudo encontrar la dirección.", COLOR_RED, 5000);
     }
 } 
-    
-searchBtn.addEventListener('click', doSearch);
-
-address.addEventListener('keydown', (ev) => {
-    if (ev.key === "Enter") {
-        ev.preventDefault();
-        doSearch();
-    }
-});
-
-map.on("click", async (ev) => {
-    try {
-      const { lat, lng } = ev.latlng;
-      setMarker(lat, lng, "Buscando dirección...");
-
-      const result = await reverseGeocode(lat, lng);
-      if (!result) return;
-
-      address.value = result.display_name || address.value;
-      setMarker(lat, lng, result.display_name || null);
-
-      const dto = mapAddress({
-        ...result,
-        lat: String(lat),
-        lon: String(lng)
-      });
-
-      state.address = dto;
-    } catch (e) {
-      console.error(e);
-      alert(e.message || "Error obteniendo dirección del punto");
-    }
-});
 
 //POST
 async function onSubmitCrearPublicacion(e){
@@ -487,10 +497,10 @@ async function postPublication(){
         numeroBanosCompletos: intOrNull(state.bathrooms),
         numeroExcusados: intOrNull(toiletsNumber.value),
     
-        idTipoInmueble: intOrNull(inmuebleType.value),
+        idTipoInmueble: intOrNull(propertyType.value),
         direccion: state.address,
         caracteristicasIds: Array.from(state.selectedCharacs),
-        indicePortada: state.portrait
+        indicePortada: state.idPortrait
     };
   
     const fd = new FormData();
