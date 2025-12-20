@@ -7,8 +7,6 @@ const COLOR_GREEN = "green";
 const COLOR_RED = "red";
 const COLOR_ORANGE = "orange";
 
-//TEMPORAL
-const JWT = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdWx0cml4ODRAZ21haWwuY29tIiwicm9sIjoiVkVOREVET1IiLCJpYXQiOjE3NjYxMjYyMzEsImV4cCI6MTc2NjEyNzEzMX0.BxqGl0xuK7P_-mi1Hj45t9GHmxFM1DNdgBPGXUCG6uk";
 
 //HELPERS
 const $ = (id) => document.getElementById(id);
@@ -47,7 +45,8 @@ const state = {
     address: null,
     bedrooms: 0,
     bathrooms: 0,
-    idType: 0,
+    toilets: 0,
+    idType: 0
 };
 
 //ELEMENTOS
@@ -57,7 +56,6 @@ const operationType = $("operationTypeSelect")
 const price = $("priceInput")
 const propertyType = $("propertyTypeSelect");
 const characteristicsContainer = $("characteristicsContainer");
-const toiletsNumber = $('toiletsNumberInput');
 const description = $('descriptionTextArea');
 
 const photosInput = $("photosInput");
@@ -79,6 +77,9 @@ var bedroomsNumberInput = null;
 const bathroomsNumberDiv = $('bathroomsNumberDiv');
 var bathroomNumberLabel = null;
 var bathroomsNumberInput = null;
+const toiletsNumberDiv = $('toiletsNumberDiv');
+var toiletsNumberLabel = null;
+var toiletsNumberInput = null;
 
 //OTHER ELEMENTS
 var marker = null;
@@ -89,7 +90,7 @@ document.addEventListener("DOMContentLoaded", innit);
 //INITIALIZATE PAGE
 async function innit(){
     loadEvents();
-    innitBedBathInputs();
+    inniCommonCharacInputs();
 
     await loadTypes();
     state.idType = intOrNull(propertyType.value);
@@ -115,18 +116,22 @@ function loadEvents(){
             case 1:
                 addBedroomsInput();
                 addBathroomsInput();
+                addToiletsInput();
                 break;
             case 2:
                 addBedroomsInput();
                 addBathroomsInput();
+                addToiletsInput();
                 break;
             case 3:
                 addBathroomsInput();
+                addToiletsInput();
                 removeBedroomsInput();
 
                 state.bedrooms = 1;
                 break;
             case 4:
+                addToiletsInput();
                 removeBedroomsInput();
                 removeBathroomsInput();
 
@@ -136,9 +141,11 @@ function loadEvents(){
             case 5:
                 removeBedroomsInput();
                 removeBathroomsInput();
+                removeToiletsInput();
 
                 state.bedrooms = 0;
                 state.bathrooms = 0;
+                state.toilets = 0;
                 break;
         }
 
@@ -186,7 +193,7 @@ function loadEvents(){
 }
 
 //BEDROOMS AND BATHROOMS
-function innitBedBathInputs() {
+function inniCommonCharacInputs() {
     bedroomsNumberLabel = document.createElement("label");
     bedroomsNumberLabel.innerHTML = 'Número de habitaciones';
     bedroomsNumberInput = document.createElement("input");
@@ -209,8 +216,20 @@ function innitBedBathInputs() {
         state.bathrooms = intOrNull(bathroomsNumberInput.value);
     })
 
+    toiletsNumberLabel = document.createElement("label");
+    toiletsNumberLabel.innerHTML = 'Número de excusados completos';
+    toiletsNumberInput = document.createElement("input");
+    toiletsNumberInput.classList.add("input");
+    toiletsNumberInput.classList.add("input-row");
+    toiletsNumberInput.type= "number";
+    toiletsNumberInput.id = "toiletsNumberInput";
+    toiletsNumberInput.addEventListener("input", ()=> {
+        state.toilets = intOrNull(toiletsNumberInput.value);
+    })
+
     addBedroomsInput();
     addBathroomsInput();
+    addToiletsInput();
 }
 
 function addBedroomsInput() {
@@ -227,6 +246,13 @@ function addBathroomsInput() {
     }
 }
 
+function addToiletsInput() {
+    if (toiletsNumberDiv.children.length != 2) {
+        toiletsNumberDiv.appendChild(toiletsNumberLabel);
+        toiletsNumberDiv.appendChild(toiletsNumberInput);
+    }
+}
+
 function removeBedroomsInput() {
     if (bedroomsNumberDiv.children.length == 2) {
         bedroomsNumberDiv.removeChild(bedroomsNumberLabel);
@@ -238,6 +264,13 @@ function removeBathroomsInput() {
     if (bathroomsNumberDiv.children.length == 2) {
         bathroomsNumberDiv.removeChild(bathroomNumberLabel);
         bathroomsNumberDiv.removeChild(bathroomsNumberInput)
+    }
+}
+
+function removeToiletsInput() {
+    if (toiletsNumberDiv.children.length == 2) {
+        toiletsNumberDiv.removeChild(toiletsNumberLabel);
+        toiletsNumberDiv.removeChild(toiletsNumberInput);
     }
 }
 
@@ -510,9 +543,8 @@ async function postPublication(){
     try{
       const res = await fetch(URL_POST_PUBLICATION, {
         method: "POST",
-        //TEMPORAL: Sólo para probar que si se guarda, luego se tiene que quitar esto.
         headers: {
-            Authorization: `Bearer ${JWT}`
+            Authorization: "Bearer " + localStorage.getItem("accessToken"),
         },
         body: fd,
       });
@@ -569,7 +601,6 @@ function validateForm() {
 
     let titleLabel = $('titleLabel');
     let priceLabel = $('priceLabel');
-    let toiletsNumberDiv = $('toiletsNumberDiv');
     let descriptionLabel = $('descriptionLabel');
 
     titleLabel.classList.remove('invalid');
@@ -605,7 +636,7 @@ function validateForm() {
         bathroomsNumberDiv.classList.add('invalid');
         pass = false;
     }
-    if (!intOrNull(toiletsNumber.value)) {
+    if (!intOrNull(state.toilets) && state.idType < 5) {
         toiletsNumberDiv.classList.add('invalid');
         pass = false;
     }
