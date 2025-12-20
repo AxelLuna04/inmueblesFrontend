@@ -1,7 +1,7 @@
 const API_BASE = import.meta.env.VITE_API_BASE + "/v1" || '/api/v1';
 const URL_POST_PUBLICATION = `${API_BASE}/publicaciones`;
 
-export async function postPublication(data) {
+export async function postPublicationApi(data) {
     const res = await fetch(URL_POST_PUBLICATION, {
         method: "POST",
         headers: {

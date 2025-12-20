@@ -1,8 +1,8 @@
-import { postPublication } from('../../api/publicationService');
+import { postPublicationApi } from '../../api/publicationService.js';
 import {
     getPropertyTypes,
     getCharacteristics
- } from('../../api/catalogueService');
+ } from '../../api/catalogueService.js';
 
 const COLOR_GREEN = "green";
 const COLOR_RED = "red";
@@ -278,14 +278,14 @@ function removeToiletsInput() {
 //TYPES AND CHARACTERISTICS
 async function loadTypes(){
     try {
-        const res = getPropertyTypes;
+        const res = await getPropertyTypes();
         state.types = await res.json();
 
         propertyType.innerHTML = state.types.map(t =>
             `<option value="${t.id}">${escapeHtml(t.tipo ?? String(t.id))}</option>`
         ).join("");
     } catch(err) {
-        showNotif(err.text, COLOR_RED);
+        showNotif(err.message, COLOR_RED);
     }
 }
 
@@ -294,7 +294,7 @@ async function loadCharacteristics(idType){
         const res = await getCharacteristics(idType);
         state.characteristics = await res.json();
     } catch(err) {
-        showNotif(err.text, COLOR_RED);
+        showNotif(err.message, COLOR_RED);
     }
 }
 
@@ -547,7 +547,7 @@ async function postPublication(){
     state.photos.forEach(f => fd.append("fotos", f));
   
     try{
-      await postPublication(fd);
+      await postPublicationApi(fd);
 
       showNotif("¡Has creado una publicación exitosamente! Te notificaremos cuando un administrador la verifique", COLOR_GREEN, 5000);
     }catch(err){
