@@ -532,6 +532,9 @@ async function postPublication(){
       await postPublicationApi(fd);
 
       showNotif("¡Has creado una publicación exitosamente! Te notificaremos cuando un administrador la verifique", COLOR_GREEN, 5000);
+      setTimeout(() => {
+        window.location.href = "/pages/seller/dashboard.html";
+      }, 5500);
     }catch(err){
         if (err.name === "ErrorApi") return showNotif(err.message, COLOR_RED, 5000);
         console.error(`Error del front: ${err}`);
