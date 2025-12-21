@@ -13,9 +13,10 @@ export function floatOrNull(v) {
     return Number.isFinite(n) ? n : null;
 }
 
-export function stringOrNull(v) {
-    if (v === null || v === undefined) return null
+export function intOrNull(v) {
+    if (v === null || v === undefined) return null;
     const s = String(v).trim();
     if (s === "") return null;
-    return v;
+    const n = parseInt(s, 10);
+    return Number.isFinite(n) ? n : null;
 }

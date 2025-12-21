@@ -5,9 +5,9 @@ import {
  } from '../../api/catalogueService.js';
  import {
     stringOrNull,
-    intOrNull,
-    floatOrNull
- } from '../utils/helpers.js';
+    floatOrNull,
+    intOrNull
+ } from '../../utils/helpers.js';
 
 const COLOR_GREEN = "green";
 const COLOR_RED = "red";
