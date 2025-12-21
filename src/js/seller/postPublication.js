@@ -534,7 +534,7 @@ async function postPublication(){
     
         numeroHabitaciones: intOrNull(state.bedrooms),
         numeroBanosCompletos: intOrNull(state.bathrooms),
-        numeroExcusados: intOrNull(toiletsNumber.value),
+        numeroExcusados: intOrNull(state.toilets),
     
         idTipoInmueble: intOrNull(propertyType.value),
         direccion: state.address,
@@ -551,7 +551,7 @@ async function postPublication(){
 
       showNotif("¡Has creado una publicación exitosamente! Te notificaremos cuando un administrador la verifique", COLOR_GREEN, 5000);
     }catch(err){
-        if (err instanceof ErrorApi) return showNotif(err.message, COLOR_RED, 5000);
+        if (err.name === "ErrorApi") return showNotif(err.message, COLOR_RED, 5000);
         console.error(`Error del front: ${err}`);
         showNotif("No se pudo crear la publicación, inténtelo de nuevo más tarde.", COLOR_RED, 5000);
     }
