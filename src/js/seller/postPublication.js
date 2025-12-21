@@ -3,6 +3,11 @@ import {
     getPropertyTypes,
     getCharacteristics
  } from '../../api/catalogueService.js';
+ import {
+    stringOrNull,
+    intOrNull,
+    floatOrNull
+ } from '../utils/helpers.js';
 
 const COLOR_GREEN = "green";
 const COLOR_RED = "red";
@@ -11,29 +16,6 @@ const COLOR_ORANGE = "orange";
 
 //HELPERS
 const $ = (id) => document.getElementById(id);
-
-function intOrNull(v) {
-    if (v === null || v === undefined) return null;
-    const s = String(v).trim();
-    if (s === "") return null;
-    const n = parseInt(s, 10);
-    return Number.isFinite(n) ? n : null;
-}
-
-function floatOrNull(v) {
-    if (v === null || v === undefined) return null;
-    const s = String(v).trim();
-    if (s === "") return null;
-    const n = Number(s);
-    return Number.isFinite(n) ? n : null;
-}
-
-function stringOrNull(v) {
-    if (v === null || v === undefined) return null
-    const s = String(v).trim();
-    if (s === "") return null;
-    return v;
-}
 
 //STATE
 const state = {
