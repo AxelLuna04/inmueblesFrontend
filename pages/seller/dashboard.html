@@ -24,7 +24,7 @@
                 <i class="fa-solid fa-building"></i> Inmuebles
             </div>
             
-            <h1 class="site-title">Bienvenid@ a Inmuebles a tu Alcance</h1>
+            <h1 class="site-title">Tus publicaciones</h1>
         </div>
         
         <div class="header-actions">
@@ -39,21 +39,21 @@
         </div>
 
         <div class="filters-container">
-            <div class="filter-box">
-                <span>Tipo Inmueble</span>
-                <i class="fa-solid fa-caret-down"></i>
+            <div> <!--Lister Type Selector-->
+                <select class="filter-box" id="listerTypeSelect">
+                    <option value="NONE">Tipo de Inmueble</option>
+                    <option value="Casa">Casa</option>
+                    <option value = "Departamento">Departamento</option>
+                    <option value = "Oficina">Oficina</option>
+                    <option value = "Terreno">Terreno</option>
+                </select>
             </div>
-            <div class="filter-box">
-                <span>Tipo de Operación</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
-            <div class="filter-box">
-                <span>Rango de Precio</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
-            <div class="filter-box">
-                <span>Características</span>
-                <i class="fa-solid fa-caret-down"></i>
+            <div> <!--Operation Type Selector-->
+                <select class="filter-box" id="operationTypeSelect">
+                    <option value="NONE">Estado de la publicación</option>
+                    <option value="APROBADA">Aprobada</option>
+                    <option value="PENDIENTE">Pendiente</option>
+                </select>
             </div>
         </div>
     </nav>

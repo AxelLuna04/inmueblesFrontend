@@ -225,6 +225,14 @@ body {
     cursor: pointer; /* Cambia a manita */
 }
 
+.property-card-pending {
+    background-color: #fbff86;
+}
+
+.property-card-refuted {
+    background-color: #ea7c7c;
+}
+
 /* Hover: Levantar tarjeta */
 .property-card:hover {
     transform: translateY(-5px);

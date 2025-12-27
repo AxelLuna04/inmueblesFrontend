@@ -104,12 +104,29 @@ export function mapPublicCardToFront(card) {
     excusados: card.excusados,
     imagen: card.portada,
     tipoInmueble: card.tipoInmueble,
-    tipoOperacion: card.tipoOperacion
+    tipoOperacion: card.tipoOperacion,
+    estado: card.estado
   };
 }
 
-// Dejo stubs para luego:
-// export async function fetchMyListings(...) { ... }
+export async function fetchMyListings({ page = 0, size = 12, q = "" } = {}) {
+  const params = new URLSearchParams({ page, size });
+  if (q) params.append("q", q);
+
+  try {
+    const res = await fetch(`${MY_LISTINGS_URL}?${params.toString()}`,{
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+      },
+    });
+    if (!res.ok) throw new Error("HTTP error");
+    return await res.json();
+  } catch (err) {
+    console.warn("Fallo la API, usando datos de prueba locales...", err);
+    // En una app real podrías condicionar esto por entorno
+    return buildSamplePage();
+  }
+}
 // export async function fetchAdminListings(...) { ... }
 
 
