@@ -88,7 +88,7 @@ export function goHomeByRole(rol) {
       window.location.href = "/pages/admin/dashboard.html";
       break;
     case "VENDEDOR": 
-      window.location.href = "/pages/seller/dashboard.html";
+      window.location.href = "/pages/lister/dashboard.html";
       break;
     default:         
       window.location.href = "/"; 

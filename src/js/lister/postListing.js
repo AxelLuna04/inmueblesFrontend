@@ -1,4 +1,4 @@
-import { postPublicationApi } from '../../api/publicationService.js';
+import { postPublicationApi } from '../../api/listerService.js';
 import {
     getPropertyTypes,
     getCharacteristics
@@ -8,10 +8,12 @@ import {
     floatOrNull,
     intOrNull
  } from '../../utils/helpers.js';
-
-const COLOR_GREEN = "green";
-const COLOR_RED = "red";
-const COLOR_ORANGE = "orange";
+ import {
+    showNotif,
+    NOTIF_GREEN,
+    NOTIF_RED,
+    NOTIF_ORANGE
+  } from '../../utils/notifications.js';
 
 
 //HELPERS
@@ -267,7 +269,7 @@ async function loadTypes(){
             `<option value="${t.id}">${escapeHtml(t.tipo ?? String(t.id))}</option>`
         ).join("");
     } catch(err) {
-        showNotif(err.message, COLOR_RED);
+        showNotif(notification, err.message, NOTIF_RED);
     }
 }
 
@@ -276,7 +278,7 @@ async function loadCharacteristics(idType){
         const res = await getCharacteristics(idType);
         state.characteristics = await res.json();
     } catch(err) {
-        showNotif(err.message, COLOR_RED);
+        showNotif(notification, err.message, NOTIF_RED);
     }
 }
 
@@ -412,7 +414,7 @@ function innitMap() {
           state.address = dto;
         } catch (e) {
             console.error(`Error del front: ${err}`);
-            showNotif("No se pudo obtener la dirección en el puntero.", COLOR_RED, 5000);
+            showNotif(notification, "No se pudo obtener la dirección en el puntero.", NOTIF_RED, 5000);
         }
     });
 }
@@ -429,7 +431,7 @@ async function geocode(text) {
     
     const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
     if (!res.ok) {
-        showNotif("No se pudo obtener la dirección de nominatim.", COLOR_RED, 5000);
+        showNotif(notification, "No se pudo obtener la dirección de nominatim.", NOTIF_RED, 5000);
         throw new Error('Error al consultar Nominatim');
     }
     const arr = await res.json();
@@ -446,7 +448,7 @@ async function reverseGeocode(lat, lon) {
 
     const res = await fetch(url, { headers: { Accept: "application/json" } });
     if (!res.ok) {
-        showNotif("No se pudo obtener la dirección de nominatim (reverse).", COLOR_RED, 5000);
+        showNotif(notification, "No se pudo obtener la dirección de nominatim (reverse).", NOTIF_RED, 5000);
     }
     return await res.json();
 }
@@ -484,7 +486,7 @@ async function doSearch() {
         if (!text) return;
 
         const result = await geocode(text);
-        if (!result) return showNotif("No se encontró ninguna dirección.", COLOR_ORANGE, 5000);
+        if (!result) return showNotif(notification, "No se encontró ninguna dirección.", NOTIF_ORANGE, 5000);
     
         const lat = parseFloat(result.lat);
         const lon = parseFloat(result.lon);
@@ -494,7 +496,7 @@ async function doSearch() {
         state.address = dto;
     } catch (e) {
         console.error("Error del front: " + e);
-        showNotif("No se pudo encontrar la dirección.", COLOR_RED, 5000);
+        showNotif(notification, "No se pudo encontrar la dirección.", NOTIF_RED, 5000);
     }
 } 
 
@@ -531,47 +533,18 @@ async function postPublication(){
     try{
       await postPublicationApi(fd);
 
-      showNotif("¡Has creado una publicación exitosamente! Te notificaremos cuando un administrador la verifique", COLOR_GREEN, 5000);
+      showNotif(notification, "¡Has creado una publicación exitosamente! Te notificaremos cuando un administrador la verifique", NOTIF_GREEN, 5000);
       setTimeout(() => {
         window.location.href = "/pages/seller/dashboard.html";
       }, 5500);
     }catch(err){
-        if (err.name === "ErrorApi") return showNotif(err.message, COLOR_RED, 5000);
+        if (err.name === "ErrorApi") return showNotif(err.message, NOTIF_RED, 5000);
         console.error(`Error del front: ${err}`);
-        showNotif("No se pudo crear la publicación, inténtelo de nuevo más tarde.", COLOR_RED, 5000);
+        showNotif(notification, "No se pudo crear la publicación, inténtelo de nuevo más tarde.", NOTIF_RED, 5000);
     }
 }
 
 //VALIDATIONS
-
-/*Notification*/
-let notifTime = null;
-function showNotif(message, color, duration = 3000) {
-    if (!notification) return;
-
-    clearTimeout(notifTime);
-
-    notification.textContent = message;
-
-    notification.classList.remove('notif-hides');
-    void notification.offsetWidth;
-
-    if (color == COLOR_RED) {
-        notification.classList.remove('notif-good');
-        notification.classList.add('notif-bad');
-    } else if (color == COLOR_GREEN) {
-        notification.classList.remove('notif-bad');
-        notification.classList.add('notif-good');
-    }
-
-    notification.classList.add('notif-shows');
-
-    notifTime = setTimeout(() => {
-        notification.classList.remove('notif-shows');
-        notification.classList.add('notif-hides');
-    }, duration);
-}
-
 /* The goat */
 function validateForm() {
     let pass = true;
@@ -624,19 +597,19 @@ function validateForm() {
     }
 
     if (!pass) {
-        showNotif("¡Llena todos los campos!", COLOR_RED);
+        showNotif(notification, "¡Llena todos los campos!", NOTIF_RED);
         return pass;
     }
 
     if (!intOrNull(state.photos.length)) {
         pass = false;
-        showNotif("¡No has subido ninguna foto!", COLOR_RED);
+        showNotif(notification, "¡No has subido ninguna foto!", NOTIF_RED);
         return pass;
     }
 
     if (!stringOrNull(state.address)) {
         pass = false;
-        showNotif("¡No has indicado ninguna dirección!", COLOR_RED);
+        showNotif(notification, "¡No has indicado ninguna dirección!", NOTIF_RED);
         return pass;
     }
 

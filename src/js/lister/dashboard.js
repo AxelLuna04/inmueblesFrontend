@@ -1,4 +1,5 @@
 import { fetchMyListings, mapPublicCardToFront } from "../../api/listingsService.js";
+import { showNotif } from '../../utils/notifications.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("propertiesContainer");
@@ -64,8 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
       currentPage = pageData.number + 1;
     } catch (err) {
       console.error(err);
-      container.innerHTML =
-        '<p style="grid-column: 1/-1; text-align: center;">Ocurrió un error al cargar las publicaciones.</p>';
+      showNotif("Ocurrió un error al cargar las publicaciones.", )
     }
   }
 
