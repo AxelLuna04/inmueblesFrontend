@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", innit);
 async function innit() {
     console.log("Inicializando página");
     
-    loadListingData();
-    loadHeaderOptions();
+    await loadListingData();
+    loadHeaderDetails();
 }
 
 async function loadListingData() {
@@ -52,8 +52,8 @@ async function loadListingData() {
     console.log("Datos del inmueble cargados");
 }
 
-function loadHeaderOptions(){
-    console.log("Cargando opciones del header");
+function loadHeaderDetails(){
+    console.log("Cargando detalles del header");
     console.log("JWT: " + state.user);
 
     if (!state.user) {
@@ -84,5 +84,7 @@ function loadHeaderOptions(){
         headerOptionsDiv.appendChild(perfilBtn);
     }
 
-    console.log("Opciones del header cargados");
+    pageTitle.innerHTML = stringOrNull(state.data.titulo);
+
+    console.log("Detalles del header cargados");
 }
