@@ -1,4 +1,4 @@
-import { postPublicationApi } from '../../api/listerService.js';
+import { postListingApi } from '../../api/listingsService.js';
 import {
     getPropertyTypes,
     getCharacteristics
@@ -506,10 +506,10 @@ async function onSubmitCrearPublicacion(e){
 
     let valid = validateForm();
 
-    if (valid) await postPublication();
+    if (valid) await postListing();
 }
 
-async function postPublication(){
+async function postListing(){
     const data = {
         titulo: title.value.trim(),
         tipoOperacion: operationType.value.trim(), // "RENTA" or "VENTA"
@@ -531,7 +531,7 @@ async function postPublication(){
     state.photos.forEach(f => fd.append("fotos", f));
   
     try{
-      await postPublicationApi(fd);
+      await postListingApi(fd);
 
       showNotif(notification, "¡Has creado una publicación exitosamente! Te notificaremos cuando un administrador la verifique", NOTIF_GREEN, 5000);
       setTimeout(() => {
