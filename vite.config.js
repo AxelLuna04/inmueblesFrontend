@@ -14,11 +14,12 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
+        listingDetails: resolve(__dirname, 'pages/public/listing-detail.html'),
 
         login: resolve(__dirname, 'pages/auth/login.html'),
         signup: resolve(__dirname, 'pages/auth/signup.html'),
         
-        postPublication: resolve(__dirname, 'pages/seller/postPublication.html'),
+        postListing: resolve(__dirname, 'pages/lister/postLiting.html'),
 
         // Ajusta/añade según tus HTML reales:
         

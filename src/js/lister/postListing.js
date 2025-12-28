@@ -2,18 +2,18 @@ import { postListingApi } from '../../api/listingsService.js';
 import {
     getPropertyTypes,
     getCharacteristics
- } from '../../api/catalogueService.js';
- import {
+} from '../../api/catalogueService.js';
+import {
     stringOrNull,
     floatOrNull,
     intOrNull
- } from '../../utils/helpers.js';
- import {
+} from '../../utils/helpers.js';
+import {
     showNotif,
     NOTIF_GREEN,
     NOTIF_RED,
     NOTIF_ORANGE
-  } from '../../utils/notifications.js';
+} from '../../utils/notifications.js';
 
 
 //HELPERS

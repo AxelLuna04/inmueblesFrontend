@@ -141,7 +141,7 @@ export async function fetchParaTi({ page = 0, size = 12 } = {}) {
 }
 
 export async function postListingApi(data) {
-  const res = await fetch(API_BASE, {
+  const res = await fetch(LISTINGS_URL, {
       method: "POST",
       headers: {
           Authorization: "Bearer " + localStorage.getItem("accessToken"),
@@ -159,4 +159,26 @@ export async function postListingApi(data) {
           throw new ErrorApi(message);
       }
   }
+}
+
+export async function getListingData(id) {
+  const res = await fetch(`${LISTINGS_URL}/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
+    }
+  });
+
+  if (!res.ok) {
+    const resJson = await res.json();
+    const message = stringOrNull(resJson.error);
+    if (res.status === 500) {
+      console.error(`Error del servidor - (${res.status}): ${message}`)
+      throw new ErrorApi("Error interno del servidor. Inténtelo de nuevo más tarde.")
+    } else {
+        throw new ErrorApi(message);
+    }
+  }
+
+  return await res.json();
 }

@@ -3,7 +3,7 @@ export const NOTIF_RED = "red";
 export const NOTIF_ORANGE = "orange";
 
 export function showNotif(notification, message, color, duration = 3000) {
-    const notifTime = null;
+    let notifTime = null;
     
     if (!notification) return;
 
