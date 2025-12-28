@@ -3,10 +3,7 @@ import { showNotif } from '../../utils/notifications.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("propertiesContainer");
-  const searchInput = document.getElementById("searchInput");
-  const searchIcon = document.querySelector(".search-icon");
 
-  let currentSearch = "";
   let currentPage = 0;
   let lastPage = false;
   let properties = [];
@@ -14,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderProperties(list) {
     if (!list.length) {
       container.innerHTML =
-        '<p style="grid-column: 1/-1; text-align: center;">No se encontraron inmuebles con los filtros actuales.</p>';
+        '<p style="grid-column: 1/-1; text-align: center;">No se encontraron inmuebles para mostrar.</p>';
       return;
     }
 
@@ -43,19 +40,13 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
   }
 
-  async function loadPage(reset = false) {
+  async function loadPage() {
     try {
-      if (reset) {
-        currentPage = 0;
-        lastPage = false;
-        container.innerHTML = "<p>Cargando inmuebles...</p>";
-      }
-      if (lastPage) return;
+      container.innerHTML = "<p>Cargando inmuebles...</p>";
 
       const pageData = await fetchMyListings({
         page: currentPage,
         size: 12,
-        q: currentSearch || ""
       });
 
       properties = pageData.content.map(mapPublicCardToFront);
@@ -65,26 +56,12 @@ document.addEventListener("DOMContentLoaded", () => {
       currentPage = pageData.number + 1;
     } catch (err) {
       console.error(err);
+      container.innerHTML = "<p>No se encontraron inmuebles para mostrar.</p>";
       showNotif("Ocurrió un error al cargar las publicaciones.", )
     }
   }
 
-  async function handleSearch() {
-    currentSearch = searchInput.value.trim();
-    await loadPage(true);
-  }
-
-  searchInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      handleSearch();
-    }
-  });
-
-  if (searchIcon) {
-    searchIcon.addEventListener("click", handleSearch);
-  }
-
-  // Click en tarjeta → detalle
+  // See details
   container.addEventListener("click", (e) => {
     const card = e.target.closest(".property-card");
     if (!card) return;
@@ -93,5 +70,5 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `/pages/public/listing-details.html?id=${id}`;
   });
 
-  loadPage(true);
+  loadPage();
 });
