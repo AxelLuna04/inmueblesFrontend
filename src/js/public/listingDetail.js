@@ -43,6 +43,8 @@ const price = $('price');
 const photoBigDiv = $('photoBigDiv');
 const photosSmallDiv = $('photosSmallDiv');
 const addressLabel = $('addressLabel');
+var map = $('map');
+var marker = null;
 const descriptionLabel = $('descriptionLabel');
 
 const notification = $('notification');
@@ -177,6 +179,7 @@ function displayListingData() {
     pageTitle.innerHTML = stringOrNull(state.title);
     price.innerHTML = "$" + stringOrNull(state.price) + " MXN";
     displayPhotos();
+    innitMap();
     addressLabel.innerHTML = stringOrNull(state.address.formattedAddress);
     descriptionLabel.innerHTML = state.description;
 
@@ -223,7 +226,9 @@ function displayPhotos() {
 }
 
 function innitMap() {
-    map = L.map('map', { zoomControl: true }).setView([19.541796353862402, -96.92721517586615], 12); // La Facu, claro que sí
+    console.log ("Inicializando mapa");
+
+    map = L.map('map', { zoomControl: true }).setView([state.address.lat, state.address.lng], 15); // La Facu, claro que sí
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -231,27 +236,20 @@ function innitMap() {
     
     setTimeout(() => map.invalidateSize(), 0);
 
-    map.on("click", async (ev) => {
-        try {
-          const { lat, lng } = ev.latlng;
-          setMarker(lat, lng, "Buscando dirección...");
-    
-          const result = await reverseGeocode(lat, lng);
-          if (!result) return;
-    
-          address.value = result.display_name || address.value;
-          setMarker(lat, lng, result.display_name || null);
-    
-          const dto = mapAddress({
-            ...result,
-            lat: String(lat),
-            lon: String(lng)
-          });
-    
-          state.address = dto;
-        } catch (e) {
-            console.error(`Error del front: ${err}`);
-            showNotif(notification, "No se pudo obtener la dirección en el puntero.", NOTIF_RED, 5000);
-        }
-    });
+    setMarker(state.address.lat, state.address.lng, "")
+
+    console.log("Mapa inicializado");
 }
+
+function setMarker(lat, lon, popupText = null) {
+    console.log ("Colocando el marcador");
+
+    if (!marker) marker = L.marker([lat, lon]).addTo(map);
+    else marker.setLatLng([lat, lon]);
+
+    if (popupText) marker.bindPopup(popupText).openPopup();
+    map.setView([lat, lon], 17);
+
+    console.log("Marcador colocado");
+}
+
