@@ -63,6 +63,8 @@ async function innit() {
     loadHeaderDetails();
     displayListingData();
     displayUserOptions();
+
+    console.log("===PÁGINA INICIALIZADA EXITOSAMENTE===");
 }
 
 async function loadListingData() {
@@ -285,7 +287,7 @@ function setMarker(lat, lon, popupText = null) {
 }
 
 function displayGeneralCharacs() {
-    console.log("Desplegando características específicas");
+    console.log("Desplegando características generales");
 
     if (state.bedrooms) {
         const bedroomsLabel = document.createElement("label");
@@ -312,7 +314,7 @@ function displayGeneralCharacs() {
         generalCharacsDiv.appendChild(toiletsLabel);
     }
 
-    console.log("Características específicas desplegadas");
+    console.log("Características generales desplegadas");
 }
 
 function displaySpecificCharacs() {
