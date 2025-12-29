@@ -1,0 +1,24 @@
+.hidden { display: none; }
+
+.chip {
+    background-color: #f0f0f0;
+    color: #555;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.page-blur-bg::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  background-image: var(--bg-auth);
+  background-size: cover;
+  background-position: center;
+  filter: blur(8px);
+  transform: scale(1.1);
+  z-index: -1;
+}
+
+

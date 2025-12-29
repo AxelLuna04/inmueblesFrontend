@@ -1,0 +1,41 @@
+/* Tarjeta de Login */
+.login-card {
+    background-color: rgba(255, 255, 255, 0.95); /* Blanco semi-transparente */
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    margin: 20px;
+}
+
+.white-main-card {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 1.875rem; /* ~30px */
+    border-radius: 1.25rem; /* ~20px */
+    box-shadow: 0 0.625rem 1.56rem rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 900px; 
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* Tarjeta */
+.property-card {
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer; /* Cambia a manita */
+}
+
+/* Hover: Levantar tarjeta */
+.property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.15);
+}

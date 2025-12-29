@@ -1,0 +1,46 @@
+/* --- BOTONES (Fuente Inter) --- */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-family: var(--font-btn);
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.btn-register {
+    background-color: var(--color-white);
+    color: var(--color-primary-dark);
+}
+
+.btn-login {
+    background-color: var(--color-primary-light);
+    color: var(--color-white);
+}
+
+.btn-primary-rect {
+    background-color: #2264A4;
+    color: white;
+    border: none;
+    border-radius: 0.5rem; 
+    padding: 0.75rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn-primary-rect:hover {
+    background-color: #1a4f85;
+    transform: translateY(-2px);
+}

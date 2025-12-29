@@ -12,7 +12,6 @@ export const auth = {
     localStorage.setItem(ROL_KEY, rol);
   },
   clear() {
-    // Mejor solo limpiar lo que tú usas, no todo el localStorage
     localStorage.removeItem(ACCESS_KEY);
     localStorage.removeItem(REFRESH_KEY);
     localStorage.removeItem(ROL_KEY);
@@ -38,6 +37,19 @@ function decodeJWT(token) {
   } catch {
     return null;
   }
+}
+
+// 👇 NUEVO: helper para que el header obtenga info de usuario
+export function getSessionInfoFromToken() {
+  const token = auth.token();
+  if (!token) return null;
+  const payload = decodeJWT(token);
+  if (!payload) return null;
+
+  const email = payload.sub || null;
+  const rol   = payload.rol || auth.role() || null;
+
+  return { email, rol };
 }
 
 
@@ -76,7 +88,7 @@ export async function refreshIfNeeded() {
       await doRefresh();
     } catch (e) {
       auth.clear();
-      window.location.href = "/pages/login.html";
+      window.location.href = "/pages/auth/login.html";
     }
   }
 }

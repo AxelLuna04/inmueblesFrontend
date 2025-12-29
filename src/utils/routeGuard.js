@@ -5,7 +5,7 @@ export async function requireAuth(rolesPermitidos = []) {
     const rol = auth.role();
 
     if (!rol) {
-        window.location.href = "/pages/login.html";
+        window.location.href = "/pages/auth/login.html";
         return;
     }
 

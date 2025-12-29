@@ -1,0 +1,107 @@
+/* Formulario */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-family: var(--font-card);
+    font-weight: 700;
+    color: #333;
+}
+
+/* Wrapper para Inputs e Iconos */
+.input-wrapper {
+    position: relative;
+}
+
+.label-info {
+    display: inline-block;
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    background-color: #F7F7F7;
+    border-radius: 10px;
+    font-family: var(--font-btn);
+    font-size: 1.2rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 40px 12px 15px; /* Espacio para el icono a la derecha */
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-family: var(--font-btn);
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+.form-input:focus {
+    border-color: var(--color-primary-light);
+    box-shadow: 0 0 5px rgba(17, 139, 255, 0.3);
+}
+
+/* Iconos dentro del input */
+.input-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 1.1rem;
+}
+
+/* Icono de ojo clickeable */
+.toggle-password {
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.toggle-password:hover {
+    color: var(--color-primary-dark);
+}
+
+.error-message {
+    color: #d9534f;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    font-family: var(--font-btn);
+}
+
+/* Input con error */
+.form-input.input-error {
+    border-color: #d9534f !important; /* Rojo urgente */
+    background-color: #fff8f8; /* Fondo sutilmente rojizo */
+    box-shadow: 0 0 0 3px rgba(217, 83, 79, 0.1); /* Resplandor rojo suave */
+    animation: shake 0.3s ease-in-out; /* Pequeña vibración */
+}
+
+/* Animación de vibración para llamar la atención */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Botón Full Width */
+.full-width {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+/* Estados de validación visual */
+.form-input.match-success {
+    border-color: #28a745 !important;
+    background-color: #f0fff4;
+}
+.form-input.match-error {
+    border-color: #d9534f !important;
+    background-color: #fff8f8;
+}
+
