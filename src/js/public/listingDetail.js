@@ -30,6 +30,7 @@ const state = {
     address: null,
     photos: [],
     characteristics: [],
+    refusedMotive: "",
 
     photosSmall: []
 }
@@ -37,6 +38,7 @@ const state = {
 //ELEMENTS
 const headerOptionsDiv = $('headerOptionsDiv');
 const dataVarDiv = $('dataVarDiv');
+const refusedMotiveDiv = $('refusedMotiveDiv');
 
 const pageTitle = $('pageTitle');
 const price = $('price');
@@ -60,7 +62,7 @@ async function innit() {
     await loadListingData();
     loadHeaderDetails();
     displayListingData();
-    loadDataVarOptions();
+    displayUserOptions();
 }
 
 async function loadListingData() {
@@ -138,8 +140,8 @@ function loadHeaderDetails(){
     console.log("Detalles del header cargados");
 }
 
-function loadDataVarOptions() {
-    console.log("Cargando opciones para desplegar en la barra de datos");
+function displayUserOptions() {
+    console.log("Desplegando opciones por usuario");
 
     switch(state.rol) {
         case "VENDEDOR":
@@ -157,9 +159,14 @@ function loadDataVarOptions() {
             `;
             dataVarDiv.appendChild(editListingBtn);
             dataVarDiv.appendChild(removeListingBtn);
+            displayRefusedMotive();
             break;
         case "ADMINISTRADOR":
-            //TODO
+            const historialBtn = document.createElement("a");
+            historialBtn.classList.add("btn", "btn-register");
+            historialBtn.href = "pages/admin/historial.html";
+            historialBtn.innerHTML = `<strong>Ver historial</strong>`;
+            dataVarDiv.appendChild(historialBtn);
             break;
         default:
             const dataListerBtn = document.createElement("a");
@@ -172,7 +179,27 @@ function loadDataVarOptions() {
             break;
     }
 
-    console.log("Opciones para desplegar en la barra de datos cargadas");
+    console.log("Opciones por usuario desplegadas");
+}
+
+function displayRefusedMotive() {
+    console.log("Desplegando la sección para ver el motivo de rechazo");
+
+    refusedMotiveDiv.classList.add("card", "card-rounded");
+    const refusedMotiveTitle = document.createElement("label");
+    refusedMotiveTitle.classList.add("text-title-section");
+    refusedMotiveTitle.innerHTML = "<strong>Motivo del rechazo:</strong>"
+    const motiveLabel = document.createElement("label");
+    motiveLabel.innerHTML = "Esta publicación no ha sido rechazada.";
+
+    if (stringOrNull(state.refusedMotive) !== null) {
+        motiveLabel.appendChild = state.refusedMotive;
+    }
+
+    refusedMotiveDiv.appendChild(refusedMotiveTitle);
+    refusedMotiveDiv.appendChild(motiveLabel);
+
+    console.log("Motivo del rechazo desplegado");
 }
 
 function displayListingData() {
