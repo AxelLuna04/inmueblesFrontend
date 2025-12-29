@@ -52,6 +52,11 @@
     padding-right: 5%;
 }
 
+.btn-remove-listing {
+    background-color: red;
+    color: var(--color-white);
+}
+
 .btn-remove-photos:hover {
     opacity: 0.9;
     transform: translateY(0);
@@ -204,4 +209,14 @@
 .invalid {
     color: var(--color-red);
     border-color: var(--color-red);
+}
+
+.data-var{
+    background-color: var(--color-secondary-bg);
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }

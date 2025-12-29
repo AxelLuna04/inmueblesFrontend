@@ -110,7 +110,7 @@ body {
 }
 
 /* --- BUSCADOR Y FILTROS --- */
-.search-bar-container {
+.search-bar-container{
     background-color: var(--color-secondary-bg);
     padding: 15px 20px;
     display: flex;

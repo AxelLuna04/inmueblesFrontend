@@ -1,5 +1,7 @@
 import {
-    stringOrNull
+    stringOrNull,
+    floatOrNull,
+    intOrNull
 } from '../../utils/helpers.js';
 import { getListingData } from '../../api/listingsService.js';
 import {
@@ -12,13 +14,28 @@ const $ = (id) => document.getElementById(id);
 
 //STATE
 const state = {
-    user: localStorage.getItem("accessToken"),
-    listing: null,
+    rol: localStorage.getItem("rol"),
+    id: 0,
+    title: "",
+    description: "",
+    price: "",
+    bedrooms: 0,
+    bathrooms: 0,
+    toilets: 0,
+    operationType: "",
+    listingType: "",
+    address: null,
+    photos: [],
+    characteristics: [],
 }
 
 //ELEMENTS
-const pageTitle = $('pageTitle');
 const headerOptionsDiv = $('headerOptionsDiv');
+const dataVarDiv = $('dataVarDiv');
+
+const pageTitle = $('pageTitle');
+const price = $('price');
+
 const notification = $('notification');
 
 //INNIT
@@ -29,6 +46,8 @@ async function innit() {
     
     await loadListingData();
     loadHeaderDetails();
+    displayListingData();
+    loadDataVarOptions();
 }
 
 async function loadListingData() {
@@ -39,7 +58,8 @@ async function loadListingData() {
 
     if (id) {
         try {
-            state.data = await getListingData(id);
+            const data = await getListingData(id);
+            insertListingData(data);
         } catch(err) {
             if (err.name === "ErrorApi") return showNotif(err.message, NOTIF_RED, 5000);
             console.error(`Error del front: ${err}`);
@@ -52,11 +72,29 @@ async function loadListingData() {
     console.log("Datos del inmueble cargados");
 }
 
+function insertListingData(data) {
+    console.log("Asignando los datos del inmueble en el estado");
+
+    state.title = stringOrNull(data.titulo) || "Publicación";
+    state.description = stringOrNull(data.descripcion) || "Descrición del inmueble";
+    state.price = floatOrNull(data.precio).toLocaleString("es-MX") || 0;
+    state.bedrooms = intOrNull(data.habitaciones) || 0;
+    state.bathrooms = intOrNull(data.banosCompletos) || 0;
+    state.toilets = intOrNull(data.excusados) || 0;
+    state.operationType = stringOrNull(data.tipoOperacion) || "OPERACIÓN";
+    state.listingType = stringOrNull(data.tipoInmueble) || "Tipo";
+    state.address = data.direccion;
+    state.photos = data.fotos;
+    state.characteristics = data.caracteristicas;
+
+    console.log("Datos del inmueble asignados en el estado");
+}
+
 function loadHeaderDetails(){
     console.log("Cargando detalles del header");
-    console.log("JWT: " + state.user);
+    console.log("ROL: " + state.rol);
 
-    if (!state.user) {
+    if (state.rol != "CLIENTE" && state.rol != "VENDEDOR") {
         const registerBtn = document.createElement("a");
         registerBtn.classList.add("btn", "btn-register");
         registerBtn.href = "pages/auth/signup.html";
@@ -84,7 +122,51 @@ function loadHeaderDetails(){
         headerOptionsDiv.appendChild(perfilBtn);
     }
 
-    pageTitle.innerHTML = stringOrNull(state.data.titulo);
-
     console.log("Detalles del header cargados");
+}
+
+function loadDataVarOptions() {
+    console.log("Cargando opciones para desplegar en la barra de datos");
+
+    switch(state.rol) {
+        case "VENDEDOR":
+            const editListingBtn = document.createElement("a");
+            editListingBtn.classList.add("btn", "btn-login");
+            editListingBtn.href = `pages/lister/editListing?id=${state.id}`;
+            editListingBtn.innerHTML = `
+                <Strong>Editar Publicación</Strong>       
+            `;
+            const removeListingBtn = document.createElement("a");
+            removeListingBtn.classList.add("btn", "btn-remove-listing");
+            //TODO
+            removeListingBtn.innerHTML = `
+                <Strong>Eliminar Publicación</Strong>          
+            `;
+            dataVarDiv.appendChild(editListingBtn);
+            dataVarDiv.appendChild(removeListingBtn);
+            break;
+        case "ADMINISTRADOR":
+            //TODO
+            break;
+        default:
+            const dataListerBtn = document.createElement("a");
+            dataListerBtn.classList.add("btn", "btn-register");
+            dataListerBtn.href = "pages/client/pay.html";
+            dataListerBtn.innerHTML = `
+                <Strong>Obtener Datos de Contacto</Strong>            
+            `;
+            dataVarDiv.appendChild(dataListerBtn);
+            break;
+    }
+
+    console.log("Opciones para desplegar en la barra de datos cargadas");
+}
+
+function displayListingData() {
+    console.log("Desplegando datos del inmueble");
+
+    pageTitle.innerHTML = stringOrNull(state.title);
+    price.innerHTML = "$" + stringOrNull(state.price) + " MXN";
+
+    console.log("Datos del inmueble desplegados");
 }
