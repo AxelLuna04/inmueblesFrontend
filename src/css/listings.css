@@ -140,6 +140,10 @@
     justify-content: center;
 }
 
+.card-characs-specific {
+    margin-top: 5px;
+}
+
 .flex-row {
     display: flex;
     flex-direction: row;
@@ -208,6 +212,22 @@
 .text-title-section {
     color: var(--color-primary-dark);
     font-size: 1.3rem;
+}
+
+.text-charac-general {
+    color: var(--color-white);
+    background-color: rgb(32, 136, 101);
+    border-radius: 5px;
+    padding: 0 5px;
+    margin: 5px;
+}
+
+.text-charac-specific {
+    color: var(--color-white);
+    background-color: var(--color-primary-light);
+    border-radius: 5px;
+    padding: 0 5px;
+    margin: 5px;
 }
 
 /*PHOTOS*/

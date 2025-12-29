@@ -46,6 +46,8 @@ const addressLabel = $('addressLabel');
 var map = $('map');
 var marker = null;
 const descriptionLabel = $('descriptionLabel');
+const generalCharacsDiv = $('generalCharacsDiv');
+const specificCharacsDiv = $('specificCharacsDiv');
 
 const notification = $('notification');
 
@@ -182,6 +184,8 @@ function displayListingData() {
     innitMap();
     addressLabel.innerHTML = stringOrNull(state.address.formattedAddress);
     descriptionLabel.innerHTML = state.description;
+    displayGeneralCharacs();
+    displaySpecificCharacs();
 
     console.log("Datos del inmueble desplegados");
 }
@@ -253,3 +257,46 @@ function setMarker(lat, lon, popupText = null) {
     console.log("Marcador colocado");
 }
 
+function displayGeneralCharacs() {
+    console.log("Desplegando características específicas");
+
+    if (state.bedrooms) {
+        const bedroomsLabel = document.createElement("label");
+        bedroomsLabel.classList.add("text-charac-general");
+        bedroomsLabel.innerHTML = `
+            Habitaciones: ${state.bedrooms}
+        `;
+        generalCharacsDiv.appendChild(bedroomsLabel);
+    }
+    if (state.bathrooms) {
+        const bathroomsLabel = document.createElement("label");
+        bathroomsLabel.classList.add("text-charac-general");
+        bathroomsLabel.innerHTML = `
+            Baños completos: ${state.bathrooms}
+        `;
+        generalCharacsDiv.appendChild(bathroomsLabel);
+    }
+    if (state.toilets) {
+        const toiletsLabel = document.createElement("label");
+        toiletsLabel.classList.add("text-charac-general");
+        toiletsLabel.innerHTML = `
+            Excusados: ${state.toilets}
+        `;
+        generalCharacsDiv.appendChild(toiletsLabel);
+    }
+
+    console.log("Características específicas desplegadas");
+}
+
+function displaySpecificCharacs() {
+    console.log("Desplegando características específicas");
+
+    state.characteristics.forEach(c => {
+        const characLabel = document.createElement("label");
+        characLabel.classList.add("text-charac-specific");
+        characLabel.innerHTML = `${c}`;
+        specificCharacsDiv.appendChild(characLabel);
+    })
+
+    console.log("Características específicas desplegadas");
+}
