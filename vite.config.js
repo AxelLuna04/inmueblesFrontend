@@ -1,4 +1,8 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
+import { resolve, dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   server: {
@@ -13,7 +17,6 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-
         login: resolve(__dirname, 'pages/auth/login.html'),
         signup: resolve(__dirname, 'pages/auth/signup.html'),
 
@@ -21,7 +24,7 @@ export default defineConfig({
         
         // adminDashboard: resolve(__dirname, 'pages/admin/dashboard.html'),
         // listerDashboard: resolve(__dirname, 'pages/lister/dashboard.html'),
-        // profile: resolve(__dirname, 'pages/shared/profile.html'),
+        profile: resolve(__dirname, 'pages/shared/profile.html'),
         // listingDetails: resolve(__dirname, 'pages/public/listing-details.html'),
       },
     },

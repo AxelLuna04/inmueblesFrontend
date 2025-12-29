@@ -1,0 +1,171 @@
+.register-main {
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    padding: 2.5rem 1.25rem; /* ~40px 20px */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.register-main::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-image: url('/src/assets/images/background-houses-collage.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px);
+    transform: scale(1.1);
+    z-index: -1;
+}
+
+.background-main {
+    background-color: #DFDFDF;
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    padding: 2.5rem 1.25rem; /* ~40px 20px */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.section-subtitle {
+    font-family: var(--font-title);
+    font-size: 1.4rem;
+    color: #333; 
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.31rem;
+}
+.section-subtitle.title-blue { color: var(--color-primary-dark); }
+
+/* --- GRID PRINCIPAL --- */
+.top-section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.875rem; /* ~30px */
+    margin-bottom: 1.875rem;
+    align-items: start; 
+}
+
+.form-group.blue-box, 
+.photo-uploader-box {
+    background-color: #D3F5FF;
+    padding: 0.93rem; /* ~15px */
+    border-radius: 0.75rem; /* ~12px */
+    margin-bottom: 1.25rem;
+    /* La sombra solicitada */
+    box-shadow: 0 0.25rem 0.625rem rgba(0,0,0,0.05); 
+    border: 1px solid rgba(0,0,0,0.02); /* Borde sutil opcional para definición */
+}
+
+/* Sobrescribimos propiedades específicas de la caja de foto para alinear con blue-box */
+.photo-uploader-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.93rem;
+    height: auto; /* Dejamos que crezca según contenido */
+}
+
+.form-group.blue-box label {
+    margin-bottom: 0.5rem;
+    display: block;
+    font-weight: 700;
+}
+
+/* Inputs dentro de caja azul */
+.blue-box .form-input {
+    background-color: #FFFFFF;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem; /* 8px */
+    height: 2.8rem; /* ~45px */
+    padding: 0 0.625rem;
+}
+
+/* Selects rectangulares */
+.blue-box select.form-input {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem top 50%;
+    background-size: 0.625rem auto;
+    padding-right: 1.875rem;
+    cursor: pointer;
+}
+
+/* --- FOTO DE PERFIL --- */
+.photo-preview {
+    width: 9.375rem; /* 150px */
+    height: 9.375rem;
+    background-color: #f0f0f0;
+    border-radius: 0.625rem; /* 10px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: #ccc;
+    overflow: hidden;
+}
+
+/* --- GUIA CONTRASEÑA --- */
+.password-guide {
+    margin-top: -0.93rem; 
+    margin-bottom: 1.25rem;
+    font-size: 0.85rem;
+    color: #666;
+    background: #f9f9f9;
+    padding: 0.625rem;
+    border-radius: 0.5rem;
+}
+.password-guide ul { list-style: none; padding: 0; margin-top: 0.31rem; }
+.password-guide li { display: flex; align-items: center; gap: 0.31rem; margin-bottom: 0.125rem; }
+.password-guide li i { font-size: 0.5rem; color: #ccc; }
+.password-guide li.valid { color: green; }
+.password-guide li.valid i { color: green; }
+.password-guide li.invalid { color: #d9534f; }
+
+/* --- AGENDA --- */
+.agenda-section {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 2px dashed #eee;
+    transition: opacity 0.5s ease;
+}
+
+
+.agenda-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 1.875rem;
+}
+
+.day-btn {
+    width: 2.5rem; /* 40px */
+    height: 2.5rem; /* 40px */
+    border-radius: 0.5rem; /* 8px */
+    border: none;
+    background-color: #7DA4CA;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.day-btn.active {
+    background-color: #3E76AC; 
+    transform: scale(1.1);
+}
+
+/* Horarios */
+.hours-inputs { display: flex; gap: 0.625rem; width: 100%; }
+.hours-inputs select { flex: 1; } 
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .top-section-grid { grid-template-columns: 1fr; }
+    .agenda-grid { grid-template-columns: 1fr; }
+    .profile-photo-col { order: -1; }
+}
