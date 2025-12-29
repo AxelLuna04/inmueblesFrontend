@@ -125,6 +125,21 @@
     font-size: 1.5rem;
 }
 
+.card-rounded {
+    border-radius: 10px;
+}
+
+.card-photo-big {
+    display: flex;
+    justify-content: center;
+}
+
+.card-photos-samll {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
 .flex-row {
     display: flex;
     flex-direction: row;
@@ -190,11 +205,39 @@
     font-size: 1.2rem;
 }
 
+.text-title-section {
+    color: var(--color-primary-dark);
+    font-size: 1.3rem;
+}
+
 /*PHOTOS*/
 .photo-thumb img{
     width: 100%;
     height: 150px;
     object-fit: cover;
+}
+
+.photo-big {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+}
+
+.photo-small {
+    height: 10%;
+    width: 5%;
+    opacity: 0.5;
+    transition: 0.3s;
+}
+
+.photo-small:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.photo-small-selected {
+    opacity: 1;
+    transform: translateY(-2px);
 }
 
 /*MAP*/

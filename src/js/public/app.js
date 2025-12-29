@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <img src="${p.imagen || ""}"
                  alt="${p.titulo || "Inmueble"}"
                  class="property-image"
-                 onerror="this.src='https://via.placeholder.com/400x300?text=Sin+Imagen'"/>
+                 onerror="this.src='/src/assets/images/placeholder.jpg'"/>
           </div>
           <div class="property-info">
             <h2 class="property-price">MXN ${p.precio.toLocaleString("es-MX")}</h2>

@@ -9,12 +9,15 @@ import {
     NOTIF_RED
  } from '../../utils/notifications.js';
 
+ import placeholderImg from '/src/assets/images/placeholder.jpg';
+
 //HELPERS
 const $ = (id) => document.getElementById(id);
 
 //STATE
 const state = {
     rol: localStorage.getItem("rol"),
+
     id: 0,
     title: "",
     description: "",
@@ -27,6 +30,8 @@ const state = {
     address: null,
     photos: [],
     characteristics: [],
+
+    photosSmall: []
 }
 
 //ELEMENTS
@@ -35,6 +40,10 @@ const dataVarDiv = $('dataVarDiv');
 
 const pageTitle = $('pageTitle');
 const price = $('price');
+const photoBigDiv = $('photoBigDiv');
+const photosSmallDiv = $('photosSmallDiv');
+const addressLabel = $('addressLabel');
+const descriptionLabel = $('descriptionLabel');
 
 const notification = $('notification');
 
@@ -167,6 +176,47 @@ function displayListingData() {
 
     pageTitle.innerHTML = stringOrNull(state.title);
     price.innerHTML = "$" + stringOrNull(state.price) + " MXN";
+    displayPhotos();
+    addressLabel.innerHTML = stringOrNull(state.address.formattedAddress);
+    descriptionLabel.innerHTML = state.description;
 
     console.log("Datos del inmueble desplegados");
+}
+
+function displayPhotos() {
+    console.log("Desplegando fotografías");
+
+    photoBigDiv.innerHTML = `
+        <img src="${state.photos[0] || ""}"
+             alt="Fotografía del inmueble"
+             class="photo-big"
+             onerror="this.src='/src/assets/images/placeholder.jpg'"/>
+    `;
+
+    state.photos.forEach(p => {
+        const photoSmall = document.createElement("img");
+        photoSmall.src = p;
+        photoSmall.alt = "Foto pequeña del inmueble";
+        photoSmall.onerror = function() {
+            this.onerror = null;
+            this.src = placeholderImg;
+        }
+        photoSmall.classList.add("photo-small");
+        photoSmall.addEventListener("click", (e) => {
+            state.photosSmall.forEach(p => {
+                p.classList.remove("photo-small-selected");
+            })
+            photoSmall.classList.add("photo-small-selected");
+
+            photoBigDiv.innerHTML = `
+                <img src="${p || ""}"
+                    alt="Fotografía del inmueble"
+                    class="photo-big"
+                    onerror="this.src='/src/assets/images/placeholder.jpg'"/>
+            `;
+        })
+        photosSmallDiv.appendChild(photoSmall);
+        state.photosSmall.push(photoSmall);
+    });
+    console.log("Fotografías desplegadas");
 }
