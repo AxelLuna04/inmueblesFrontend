@@ -1,4 +1,7 @@
 // src/api/listingsService.js
+import { ErrorApi } from '../errors/errorApi.js';
+import { stringOrNull } from '../utils/helpers.js';
+
 const API_BASE = import.meta.env.VITE_API_BASE || "/api";
 
 const LISTINGS_URL = `${API_BASE}/v1/publicaciones`;
@@ -104,12 +107,29 @@ export function mapPublicCardToFront(card) {
     excusados: card.excusados,
     imagen: card.portada,
     tipoInmueble: card.tipoInmueble,
-    tipoOperacion: card.tipoOperacion
+    tipoOperacion: card.tipoOperacion,
+    estado: card.estado
   };
 }
 
-// Dejo stubs para luego:
-// export async function fetchMyListings(...) { ... }
+export async function fetchMyListings({ page = 0, size = 12, q = "" } = {}) {
+  const params = new URLSearchParams({ page, size });
+  if (q) params.append("q", q);
+
+  try {
+    const res = await fetch(`${MY_LISTINGS_URL}?${params.toString()}`,{
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("accessToken"),
+      },
+    });
+    if (!res.ok) throw new Error("HTTP error");
+    return await res.json();
+  } catch (err) {
+    console.warn("Fallo la API, usando datos de prueba locales...", err);
+    // En una app real podrías condicionar esto por entorno
+    return buildSamplePage();
+  }
+}
 // export async function fetchAdminListings(...) { ... }
 
 
@@ -118,4 +138,25 @@ export async function fetchParaTi({ page = 0, size = 12 } = {}) {
   const res = await fetch(`${PUBLICACIONES_BASE}/para-ti?${params.toString()}`);
   if (!res.ok) throw new Error("Error al obtener recomendaciones");
   return res.json();
+}
+
+export async function postListingApi(data) {
+  const res = await fetch(API_BASE, {
+      method: "POST",
+      headers: {
+          Authorization: "Bearer " + localStorage.getItem("accessToken"),
+      },
+      body: data,
+  });
+
+  if (!res.ok){
+      const resJson = await res.json();
+      const message = stringOrNull(resJson.error);
+      if (res.status === 500) {
+          console.error(`Error del servidor - (${res.status}): ${message}`)
+          throw new ErrorApi("Error interno del servidor. Inténtelo de nuevo más tarde.")
+      } else {
+          throw new ErrorApi(message);
+      }
+  }
 }

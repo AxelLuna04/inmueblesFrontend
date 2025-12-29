@@ -1,3 +1,4 @@
+
 import { defineConfig } from 'vite'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -19,6 +20,8 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         login: resolve(__dirname, 'pages/auth/login.html'),
         signup: resolve(__dirname, 'pages/auth/signup.html'),
+        
+        postPublication: resolve(__dirname, 'pages/seller/postPublication.html'),
 
         // Ajusta/añade según tus HTML reales:
         
@@ -26,7 +29,7 @@ export default defineConfig({
         // listerDashboard: resolve(__dirname, 'pages/lister/dashboard.html'),
         profile: resolve(__dirname, 'pages/shared/profile.html'),
         // listingDetails: resolve(__dirname, 'pages/public/listing-details.html'),
-      },
-    },
+      }
+    }
   }
 });

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="/src/css/styles.css">
+    <link rel="stylesheet" href="/src/css/notification.css">
     <script type="module" src="/src/js/lister/dashboard.js"></script>
 </head>
 
@@ -24,40 +25,15 @@
                 <i class="fa-solid fa-building"></i> Inmuebles
             </div>
             
-            <h1 class="site-title">Bienvenid@ a Inmuebles a tu Alcance</h1>
+            <h1 class="site-title">Tus publicaciones</h1>
         </div>
         
         <div class="header-actions">
-            <a href="pages/auth/signup.html" class="btn btn-register"><strong>Regístrate</strong></a>
-            <a href="pages/auth/login.html" class="btn btn-login"><strong>Iniciar Sesión</strong></a>
+            <a href="../lister/postListing.html" class="btn btn-register"><strong>Crear publicación</strong></a>
         </div>
     </header>
 
-    <nav class="search-bar-container">
-        <div class="search-input-wrapper">
-            <input type="text" id="searchInput" class="search-input" placeholder="Buscar Inmueble...">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        </div>
-
-        <div class="filters-container">
-            <div class="filter-box">
-                <span>Tipo Inmueble</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
-            <div class="filter-box">
-                <span>Tipo de Operación</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
-            <div class="filter-box">
-                <span>Rango de Precio</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
-            <div class="filter-box">
-                <span>Características</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
-        </div>
-    </nav>
+    <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <!-- Contenido Principal -->
     <main class="main-content">

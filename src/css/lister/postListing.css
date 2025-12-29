@@ -1,0 +1,207 @@
+:root {
+    --color-bg-gray: #DFDFDF;
+    --font-card: 'Jaldi', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Background de la vista */
+.post-publication-main {
+    background-color: var(--color-bg-gray);
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.form {
+    margin-left: 5rem;
+    margin-right: 5rem;
+}
+
+/*Botones*/
+.btn-upload-photos {
+    background-color: var(--color-primary-dark);
+    color: var(--color-white);
+    width: 25%;
+    padding: 7px;
+    align-self: center;
+}
+
+.btn-upload-photos:hover {
+    opacity: 0.9;
+    transform: translateY(0);
+}
+
+.btn-search-address {
+    background-color: var(--color-primary-dark);
+    color: var(--color-white);
+    width: 15%;
+    font-size: 0.9rem;
+    padding: 7px;
+    margin-left: 1rem;
+}
+
+.btn-remove-photos {
+    background-color: red;
+    color: var(--color-white);
+    padding: 2%;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.btn-remove-photos:hover {
+    opacity: 0.9;
+    transform: translateY(0);
+}
+
+.btn-publish {
+    background-color: #118BFF;
+    color: white;
+}
+
+/*Raddio buttons*/
+.radio-button {
+    position: absolute;
+    left: 0.35rem;
+    bottom: .35rem;
+    background: rgba(0,0,0,.55);
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+/* CARTAS */
+/* Grid */
+.section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.875rem; /* ~30px */
+    /*margin-bottom: 1.875rem;*/
+    align-items: start;
+}
+
+.photos-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: .75rem;
+  }
+
+.section-photo {
+    order: 1;
+}
+
+.card{
+    padding: 0.5rem 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    background-color: var(--color-white);
+    font-family: var(--font-card);
+    font-size: 1.3rem;
+}
+
+.card-publish{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.card-title {
+    font-size: 1.5rem;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+}
+
+/* Inputs */
+.input{
+    padding: 0.1rem;
+    font-size: 1rem;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid black;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.input-row {
+    margin-left: 1rem;
+}
+
+.input-title {
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+.input-direction {
+    margin-left: 1rem;
+    flex: 1;
+}
+
+.textarea{
+    height: auto;
+    resize: vertical;
+    font: var(--font-card);
+    font-size: 1.2rem;
+    color: #3a3a3a;
+}
+
+.checkbox {
+    padding-top: 0.75rem;
+    padding-bottom: 0.5rem;
+
+    font-size: 1rem;
+
+    background: transparent; 
+    border: none;
+    border-bottom: 2px solid black;  
+    outline: none;
+}
+
+/*TEXTS*/
+.text-charac-error {
+    margin-top: 10px;
+    color: brown;
+}
+
+.text-portrait {
+    font-size: 1rem;
+}
+
+.text-lenght {
+    color:gray;
+    font-size: 1.2rem;
+}
+
+/*PHOTOS*/
+.photo-thumb img{
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+/*MAP*/
+#map{
+    height: 320px;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.invalid {
+    color: var(--color-red);
+    border-color: var(--color-red);
+}

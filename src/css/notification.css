@@ -1,0 +1,44 @@
+:root {
+    --color-red: #DD0E0E;
+    --color-green: #1CB01C;
+    --color-orange: #da7100;
+}
+
+/*NOTIFICATION*/
+.notif {
+    transform: translateX(120%);
+    position: fixed;
+    top: 70px;
+    right: -10px;
+    min-width: 280;
+    max-width: 420px;
+    padding: 22px 26px;
+    border-radius: 14px;
+    background: #DD0E0E;
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 14px 30px rgba(0,0,0,.25);
+    z-index: 9999;
+    transition: transform .35s ease;
+    pointer-events: none;
+}
+
+.notif-shows {
+    transform: translateX(0);
+}
+
+.notif-hides {
+    transform: translateX(120%);
+}
+
+.notif-good {
+    background: var(--color-green);
+}
+
+.notif-bad {
+    background: var(--color-red);
+}
+
+.notif-orange {
+    background-color: var(--color-orange);
+}

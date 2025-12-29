@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publica tu inmueble</title>
+
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jaldi">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <!-- ICONOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="/src/css/styles.css">
+    <link rel="stylesheet" href="/src/css/lister/postListing.css">
+    <link rel="stylesheet" href="/src/css/notification.css">
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" ></script>
+    <script type="module" src="/src/js/lister/postListing.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-left">
+            <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
+            <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
+                <i class="fa-solid fa-building"></i> Inmuebles
+            </div>
+            
+            <h1 class="site-title">Publica tu inmueble</h1>
+        </div>
+    </header>
+
+    <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <main class="post-publication-main">
+        <form class="form" id="postPubliForm">
+            <div class="card card-title"> <!-- Title-->
+                <label for="title" id="titleLabel">Titulo de la publicación</label>
+                <input class="input input-title" type="text" id="titleInput" maxlength="50">
+                <span class="text-lenght" id="counterTitleSpan">0/50</span>
+            </div>
+
+            <div class="section-grid"> <!--Split-->
+                <div> <!--Left column-->
+                    <div class="card"> <!--Operation type-->
+                        <select class="checkbox" id="operationTypeSelect" required>
+                            <option value="NONE">Tipo de Operación</option>
+                            <option value="VENTA">Venta</option>
+                            <option value="RENTA">Renta</option>
+                        </select>
+                    </div>
+                    <div class="card"> <!--Price-->
+                        <label for="price" id="priceLabel">Precio</label>
+                        <input class="input" type="number" id="priceInput">
+                    </div>
+                    <div class="card"> <!--Property type-->
+                        <label>Tipo de Inmueble:</label>
+                        <select class="checkbox" id="propertyTypeSelect" required>
+                            <option value="NONE">Tipo de Inmueble</option>
+                        </select>
+                        <div id="characteristicsContainer"> <!--Characteristics-->
+
+                        </div>
+                    </div>
+                    <div class="card"> <!--Common characteristics-->
+                        <div class="flex-row" id="bedroomsNumberDiv"> <!--Bedrooms number-->
+                            
+                        </div>
+                        <div class="flex-row" id="bathroomsNumberDiv"> <!--Bathrooms number-->
+                            
+                        </div>
+                        <div class="flex-row" id="toiletsNumberDiv"> <!--Toilets number-->
+                            
+                        </div>
+                    </div>
+                    <div class="card"> <!--Description-->
+                        <label for="descriptionTextArea" id="descriptionLabel">Describe tu inmueble:</label>
+                        <textarea class="input textarea" type="text" id="descriptionTextArea" maxlength="200"></textarea>
+                        <span class="text-lenght" id="counterDescriptionSpan">0/200</span>
+                    </div>
+                </div>
+                <div> <!--Right column-->
+                    <div class="card"><!--Photos-->
+                        <label>Fotos</label>
+                        <input type="file" id="photosInput" multiple hidden>
+                        <p id="photosMeta">Ninguna foto seleccionada</p>
+                        <div class="photos-grid" id="photosGrid">
+                            <!--Photos tumbails added dynamically-->
+                        </div>
+                        <button class="btn btn-upload-photos" type="button" id="uploadPhotosBtn">Cargar fotos</button>
+                    </div>
+                    <div class="card"><!--Map-->
+                        <div class="flex-row">
+                            <label for="addressInput">Dirección:</label>
+                            <input class="input input-direction" type="text" id="addressInput">
+                            <button class="btn btn-search-address" type="button" id="searchBtn">Buscar</button>
+                        </div>
+                        <div id="map">
+                        </div>
+                    </div>
+                    <div class="card-publish">
+                        <button class="btn btn-publish">Publicar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+</body>
+</html>
