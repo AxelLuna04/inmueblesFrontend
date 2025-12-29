@@ -218,5 +218,40 @@ function displayPhotos() {
         photosSmallDiv.appendChild(photoSmall);
         state.photosSmall.push(photoSmall);
     });
+
     console.log("Fotografías desplegadas");
+}
+
+function innitMap() {
+    map = L.map('map', { zoomControl: true }).setView([19.541796353862402, -96.92721517586615], 12); // La Facu, claro que sí
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    
+    setTimeout(() => map.invalidateSize(), 0);
+
+    map.on("click", async (ev) => {
+        try {
+          const { lat, lng } = ev.latlng;
+          setMarker(lat, lng, "Buscando dirección...");
+    
+          const result = await reverseGeocode(lat, lng);
+          if (!result) return;
+    
+          address.value = result.display_name || address.value;
+          setMarker(lat, lng, result.display_name || null);
+    
+          const dto = mapAddress({
+            ...result,
+            lat: String(lat),
+            lon: String(lng)
+          });
+    
+          state.address = dto;
+        } catch (e) {
+            console.error(`Error del front: ${err}`);
+            showNotif(notification, "No se pudo obtener la dirección en el puntero.", NOTIF_RED, 5000);
+        }
+    });
 }
