@@ -26,6 +26,14 @@
     z-index: -1;
 }
 
+.login-card {
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    margin: 20px;
+}
+
 .login-title {
     font-family: var(--font-title);
     color: var(--color-primary-dark);

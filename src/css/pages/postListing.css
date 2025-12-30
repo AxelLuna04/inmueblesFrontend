@@ -1,0 +1,191 @@
+/* Background de la vista */
+.post-publication-main {
+    background-color: var(--color-bg-gray);
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.post-publication-main .form {
+    margin-left: 5rem;
+    margin-right: 5rem;
+}
+
+/* CARTAS */
+/* Grid */
+.post-publication-main .section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.875rem; /* ~30px */
+    /*margin-bottom: 1.875rem;*/
+    align-items: start;
+}
+
+.post-publication-main .photos-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: .75rem;
+  }
+
+.post-publication-main .section-photo {
+    order: 1;
+}
+
+.post-publication-main .card{
+    padding: 0.5rem 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    background-color: var(--color-white);
+    font-family: var(--font-alt);
+    font-size: 1.3rem;
+}
+
+.post-publication-main .card-publish{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.post-publication-main .card-title {
+    font-size: 1.5rem;
+}
+
+/* Inputs */
+.post-publication-main .input{
+    padding: 0.1rem;
+    font-size: 1rem;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid black;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.post-publication-main .input-row {
+    margin-left: 1rem;
+}
+
+.post-publication-main .input-title {
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+.post-publication-main .input-direction {
+    margin-left: 1rem;
+    flex: 1;
+}
+
+.post-publication-main .textarea{
+    height: auto;
+    resize: vertical;
+    font: var(--font-alt);
+    font-size: 1.2rem;
+    color: #3a3a3a;
+}
+
+.post-publication-main .checkbox {
+    padding-top: 0.75rem;
+    padding-bottom: 0.5rem;
+
+    font-size: 1rem;
+
+    background: transparent; 
+    border: none;
+    border-bottom: 2px solid black;  
+    outline: none;
+}
+
+/*TEXTS*/
+.post-publication-main .text-charac-error {
+    margin-top: 10px;
+    color: brown;
+}
+
+.post-publication-main .text-portrait {
+    font-size: 1rem;
+}
+
+.post-publication-main .text-lenght {
+    color:gray;
+    font-size: 1.2rem;
+}
+
+/*PHOTOS*/
+.post-publication-main .photo-thumb img{
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+/*MAP*/
+.post-publication-main #map{
+    height: 320px;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+/*Botones*/
+.post-publication-main .btn-upload-photos {
+    background-color: var(--color-primary-dark);
+    color: var(--color-white);
+    width: 25%;
+    padding: 7px;
+    align-self: center;
+}
+
+.post-publication-main .btn-upload-photos:hover {
+    opacity: 0.9;
+    transform: translateY(0);
+}
+
+.post-publication-main .btn-search-address {
+    background-color: var(--color-primary-dark);
+    color: var(--color-white);
+    width: 15%;
+    font-size: 0.9rem;
+    padding: 7px;
+    margin-left: 1rem;
+}
+
+.post-publication-main .btn-remove-photos {
+    background-color: red;
+    color: var(--color-white);
+    padding: 2%;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.post-publication-main .btn-remove-photos:hover {
+    opacity: 0.9;
+    transform: translateY(0);
+}
+
+.post-publication-main .btn-publish {
+    background-color: #118BFF;
+    color: white;
+}
+
+/*Raddio buttons*/
+.post-publication-main .radio-button {
+    position: absolute;
+    left: 0.35rem;
+    bottom: .35rem;
+    background: rgba(0,0,0,.55);
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.post-publication-main .invalid {
+    color: var(--color-red);
+    border-color: var(--color-red);
+}

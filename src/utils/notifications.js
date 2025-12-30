@@ -2,8 +2,9 @@ export const NOTIF_GREEN = "green";
 export const NOTIF_RED = "red";
 export const NOTIF_ORANGE = "orange";
 
+let notifTime;
+
 export function showNotif(notification, message, color, duration = 3000) {
-    const notifTime = null;
     
     if (!notification) return;
 

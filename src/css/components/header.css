@@ -7,6 +7,8 @@
     justify-content: space-between;
     padding: 10px 20px;
     flex-wrap: wrap;
+
+    position: relative;
 }
 
 .header-left {
@@ -54,6 +56,25 @@
     display: flex;
     gap: 15px;
 }
+/*
+.header-actions-guest,
+.header-actions-user{
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}*/
+
+
+.user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+}
 
 .avatar-circle {
   width: 32px;
@@ -68,21 +89,10 @@
   text-transform: uppercase;
 }
 
-.user-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid #ddd;
-  background: #fff;
-  cursor: pointer;
-}
-
 .user-menu {
   position: absolute;
   right: 1rem;
-  top: 60px;
+  top: calc(100% + 8px);
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 14px rgba(0,0,0,0.08);
@@ -112,4 +122,21 @@
 
 .user-menu-logout {
   color: #d9534f;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .main-header {
+        justify-content: center;
+        text-align: center;
+    }
+    .header-left {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .header-actions {
+        width: 100%;
+        justify-content: center;
+        margin-top: 15px;
+    }
 }

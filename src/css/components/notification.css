@@ -1,16 +1,10 @@
-:root {
-    --color-red: #DD0E0E;
-    --color-green: #1CB01C;
-    --color-orange: #da7100;
-}
-
 /*NOTIFICATION*/
 .notif {
     transform: translateX(120%);
     position: fixed;
     top: 70px;
     right: -10px;
-    min-width: 280;
+    min-width: 280px;
     max-width: 420px;
     padding: 22px 26px;
     border-radius: 14px;

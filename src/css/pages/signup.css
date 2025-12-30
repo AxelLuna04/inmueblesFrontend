@@ -31,15 +31,14 @@
     align-items: flex-start;
 }
 
-.section-subtitle {
-    font-family: var(--font-title);
-    font-size: 1.4rem;
-    color: #333; 
-    margin-bottom: 1.25rem;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 0.31rem;
+.white-main-card {
+    padding: 1.875rem; /* ~30px */
+    width: 100%;
+    max-width: 900px; 
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
 }
-.section-subtitle.title-blue { color: var(--color-primary-dark); }
 
 /* --- GRID PRINCIPAL --- */
 .top-section-grid {
@@ -50,25 +49,15 @@
     align-items: start; 
 }
 
-.form-group.blue-box, 
-.photo-uploader-box {
-    background-color: #D3F5FF;
-    padding: 0.93rem; /* ~15px */
-    border-radius: 0.75rem; /* ~12px */
+.section-subtitle {
+    font-family: var(--font-title);
+    font-size: 1.4rem;
+    color: #333; 
     margin-bottom: 1.25rem;
-    /* La sombra solicitada */
-    box-shadow: 0 0.25rem 0.625rem rgba(0,0,0,0.05); 
-    border: 1px solid rgba(0,0,0,0.02); /* Borde sutil opcional para definición */
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.31rem;
 }
-
-/* Sobrescribimos propiedades específicas de la caja de foto para alinear con blue-box */
-.photo-uploader-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.93rem;
-    height: auto; /* Dejamos que crezca según contenido */
-}
+.section-subtitle.title-blue { color: var(--color-primary-dark); }
 
 .form-group.blue-box label {
     margin-bottom: 0.5rem;
@@ -94,6 +83,27 @@
     background-size: 0.625rem auto;
     padding-right: 1.875rem;
     cursor: pointer;
+}
+
+.form-group.blue-box, 
+.photo-uploader-box {
+    background-color: #D3F5FF;
+    padding: 0.93rem; /* ~15px */
+    border-radius: 0.75rem; /* ~12px */
+    margin-bottom: 1.25rem;
+    /* La sombra solicitada */
+    box-shadow: 0 0.25rem 0.625rem rgba(0,0,0,0.05); 
+    border: 1px solid rgba(0,0,0,0.02); /* Borde sutil opcional para definición */
+}
+
+
+/* Sobrescribimos propiedades específicas de la caja de foto para alinear con blue-box */
+.photo-uploader-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.93rem;
+    height: auto; /* Dejamos que crezca según contenido */
 }
 
 /* --- FOTO DE PERFIL --- */
@@ -142,6 +152,9 @@
     gap: 0.5rem 1.875rem;
 }
 
+/* Botones Días */
+.days-container { display: flex; gap: 1rem; }
+
 .day-btn {
     width: 2.5rem; /* 40px */
     height: 2.5rem; /* 40px */
@@ -162,6 +175,13 @@
 /* Horarios */
 .hours-inputs { display: flex; gap: 0.625rem; width: 100%; }
 .hours-inputs select { flex: 1; } 
+
+/* Botón Crear Cuenta */
+.form-actions-register {
+    margin-top: 1.875rem;
+    display: flex;
+    justify-content: center;
+}
 
 /* RESPONSIVE */
 @media (max-width: 768px) {

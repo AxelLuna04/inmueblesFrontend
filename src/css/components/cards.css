@@ -1,25 +1,14 @@
-/* Tarjeta de Login */
-.login-card {
-    background-color: rgba(255, 255, 255, 0.95); /* Blanco semi-transparente */
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 450px;
-    text-align: center;
-    margin: 20px;
+/* Card genérica (formularios, secciones, etc) */
+.card{
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.08);
 }
 
-.white-main-card {
+.login-card, .white-main-card {
     background-color: rgba(255, 255, 255, 0.95);
-    padding: 1.875rem; /* ~30px */
     border-radius: 1.25rem; /* ~20px */
     box-shadow: 0 0.625rem 1.56rem rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 900px; 
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
 }
 
 /* Tarjeta */
