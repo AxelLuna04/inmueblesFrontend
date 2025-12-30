@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!card) return;
     const id = card.dataset.id;
     if (!id) return;
-    window.location.href = `/pages/public/listing-details.html?id=${id}`;
+    window.location.href = `/pages/public/listing-detail.html?id=${id}`;
   });
 
   loadPage();

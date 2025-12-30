@@ -67,6 +67,7 @@ async function innit() {
     console.log("===PÁGINA INICIALIZADA EXITOSAMENTE===");
 }
 
+//LOAD DATA
 async function loadListingData() {
     console.log("Cargando datos del inmueble");
 
@@ -92,6 +93,7 @@ async function loadListingData() {
 function insertListingData(data) {
     console.log("Asignando los datos del inmueble en el estado");
 
+    state.id = intOrNull(data.id) || 0;
     state.title = stringOrNull(data.titulo) || "Publicación";
     state.description = stringOrNull(data.descripcion) || "Descrición del inmueble";
     state.price = floatOrNull(data.precio).toLocaleString("es-MX") || 0;
@@ -142,6 +144,7 @@ function loadHeaderDetails(){
     console.log("Detalles del header cargados");
 }
 
+//DISPLAY INFORMATION
 function displayUserOptions() {
     console.log("Desplegando opciones por usuario");
 
@@ -149,7 +152,7 @@ function displayUserOptions() {
         case "VENDEDOR":
             const editListingBtn = document.createElement("a");
             editListingBtn.classList.add("btn", "btn-login");
-            editListingBtn.href = `pages/lister/editListing?id=${state.id}`;
+            editListingBtn.href = `/pages/lister/editListing?id=${state.id}`;
             editListingBtn.innerHTML = `
                 <Strong>Editar Publicación</Strong>       
             `;

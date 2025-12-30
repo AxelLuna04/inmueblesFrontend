@@ -19,7 +19,8 @@ export default defineConfig({
         login: resolve(__dirname, 'pages/auth/login.html'),
         signup: resolve(__dirname, 'pages/auth/signup.html'),
         
-        postListing: resolve(__dirname, 'pages/lister/postLiting.html'),
+        postListing: resolve(__dirname, 'pages/lister/postListing.html'),
+        editListing: resolve(__dirname, 'pages/lister/editListing.html'),
 
         // Ajusta/añade según tus HTML reales:
         
