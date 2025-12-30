@@ -27,9 +27,11 @@ export default defineConfig({
         // Ajusta/añade según tus HTML reales:
         
         // adminDashboard: resolve(__dirname, 'pages/admin/dashboard.html'),
-        // listerDashboard: resolve(__dirname, 'pages/lister/dashboard.html'),
+        listerDashboard: resolve(__dirname, 'pages/lister/dashboard.html'),
         profile: resolve(__dirname, 'pages/shared/profile.html'),
-        // listingDetails: resolve(__dirname, 'pages/public/listing-details.html'),
+        listingDetails: resolve(__dirname, 'pages/shared/listingDetail.html'),
+
+        historial: resolve(__dirname, 'pages/admin/historial.html')
       }
     }
   }
