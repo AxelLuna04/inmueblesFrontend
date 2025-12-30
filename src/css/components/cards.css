@@ -32,6 +32,7 @@
 .movement-card-grid {
     display: grid;
     grid-template-columns: 80% 1fr;
+    margin-bottom: 1rem;
 }
 
 .movement-card{

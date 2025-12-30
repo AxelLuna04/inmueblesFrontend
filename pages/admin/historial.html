@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="/src/css/styles.css">
     <link rel="stylesheet" href="/src/css/notification.css">
     <link rel="stylesheet" href="/src/css/pages/historial.css">
+
+    <!--Scripts-->
+    <script type="module" src="/src/js/admin/historial.js"></script>
 </head>
 <body>
     <header class="main-header">
@@ -32,20 +35,14 @@
         </div>
     </header>
 
+    <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
+
     <main class="main-historia">
         <div class="historial-container">
             <label id="listingTitleLabel" class="text-title-big">Título de la publicación</label>
 
             <div id="movementsContainerDiv"> <!--Movements-->
-                <div class="movement-card movement-card-grid">
-                    <div id="movementTextDiv" class="movement-text"> <!--Text-->
-                        <label class="movement-title"><strong>Tipo de movimiento</strong></label>
-                        <label class="">01/01/2026</label>
-                    </div>
-                    <div id="movementTypeDiv" class="movement-sold movement-type"> <!--Color-->
-                        <br>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </main>
