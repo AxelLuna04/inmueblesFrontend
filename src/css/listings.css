@@ -209,10 +209,7 @@
     font-size: 1.2rem;
 }
 
-.text-title-section {
-    color: var(--color-primary-dark);
-    font-size: 1.3rem;
-}
+
 
 .text-charac-general {
     color: var(--color-white);

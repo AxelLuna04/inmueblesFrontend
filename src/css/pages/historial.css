@@ -1,0 +1,42 @@
+.main-historia {
+    background-color: var(--color-bg-gray);
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.historial-container {
+    font: --font-alt;
+    margin-left: 7rem;
+    margin-right: 7rem;
+}
+
+.movement-text {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 0.5rem;
+}
+
+.movement-type {
+    box-shadow: inset 10px 0px 10px rgba(0, 0, 0, 0.323);
+}
+
+.movement-creation {
+    background-color: #1CB01C;
+}
+
+.movement-aprobation {
+    background-color: #406A94;
+}
+
+.movement-edition {
+    background-color: #A13CDC;
+}
+
+.movement-rent {
+    background-color: #DCB73C;
+}
+
+.movement-sold {
+    background-color: #b01c21;
+}

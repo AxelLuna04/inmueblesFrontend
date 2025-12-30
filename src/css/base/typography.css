@@ -1,0 +1,14 @@
+.text-title-section {
+    color: var(--color-primary-dark);
+    font-size: 1.3rem;
+}
+
+.text-title-big {
+    color: black;
+    font-size: 2rem;
+}
+
+.movement-title {
+    color: black;
+    font-size: 1.5rem;
+}

@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/src/css/styles.css">
     <link rel="stylesheet" href="/src/css/notification.css">
-    <link rel="stylesheet" href="/src/css/listings.css">
+    <link rel="stylesheet" href="/src/css/pages/historial.css">
 </head>
 <body>
     <header class="main-header">
@@ -28,8 +28,26 @@
             <h1 class="site-title">Historial de inmueble</h1>
         </div>
         <div class="header-actions">
-            
+
         </div>
     </header>
+
+    <main class="main-historia">
+        <div class="historial-container">
+            <label id="listingTitleLabel" class="text-title-big">Título de la publicación</label>
+
+            <div id="movementsContainerDiv"> <!--Movements-->
+                <div class="movement-card movement-card-grid">
+                    <div id="movementTextDiv" class="movement-text"> <!--Text-->
+                        <label class="movement-title"><strong>Tipo de movimiento</strong></label>
+                        <label class="">01/01/2026</label>
+                    </div>
+                    <div id="movementTypeDiv" class="movement-sold movement-type"> <!--Color-->
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
