@@ -22,7 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="property-image-wrapper">
             <img src="${p.imagen || ""}"
                  alt="${p.titulo || "Inmueble"}"
-                 class="property-image"/>
+                 class="property-image"
+                 onerror="this.src='/src/assets/images/placeholder.jpg'"/>
           </div>
           <div class="property-info">
             <h2 class="property-price">MXN ${p.precio.toLocaleString("es-MX")}</h2>
