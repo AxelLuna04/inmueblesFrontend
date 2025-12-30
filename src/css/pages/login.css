@@ -1,0 +1,65 @@
+/* Contenedor Principal del Login */
+.login-main {
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    padding-top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Fondo con Blur (Pseudo-elemento para no afectar al formulario) */
+.login-main::before {
+    content: "";
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    width: 100vw;
+    height: 100vh;
+    /* Asegúrate de que la ruta sea correcta desde el CSS */
+    background-image: url('/src/assets/images/background-houses-collage.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(8px); /* El efecto borroso */
+    transform: scale(1.1); /* Escala un poco para evitar bordes blancos por el blur */
+    z-index: -1;
+}
+
+.login-card {
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    margin: 20px;
+}
+
+.login-title {
+    font-family: var(--font-title);
+    color: var(--color-primary-dark);
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+
+.login-subtitle {
+    font-family: var(--font-card);
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Footer del Login */
+.login-footer {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    font-family: var(--font-btn);
+}
+
+.login-footer a {
+    color: var(--color-primary-dark);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inmuebles a tu Alcance</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- ICONOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="/src/css/styles.css">
+    <link rel="stylesheet" href="/src/css/pages/profile.css">
+    <script type="module" src="/src/js/shared/profile.js"></script>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="/" class="brand-link" title="Volver al inicio">
+                <!-- TO DO -->
+                <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
+                <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
+                    <i class="fa-solid fa-building"></i> Inmuebles
+                </div>
+            </a>
+            <h1 class="site-title">Mi Perfil</h1>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="profile-main">
+        <div class="white-main-card">
+            
+            <form id="registerForm" class="register-form">
+                
+                <!-- SECCIÓN SUPERIOR: 2 COLUMNAS -->
+                <div class="top-section-grid">
+                    
+                    <!-- COLUMNA IZQUIERDA: DATOS PERSONALES -->
+                    <div class="personal-data-col">
+                        <h2 class="section-subtitle title-blue">Datos Personales</h2>
+                        
+                        <!-- Tipo de Usuario -->
+                        <div class="form-group blue-box">
+                            <label for="tipoUsuario">Tipo de Usuario</label>
+                            <span for="tipoUsuario" class="label-info">Cliente</span>
+                        </div>
+
+                        <!-- Nombre -->
+                        <div class="form-group blue-box">
+                            <label for="nombre">Nombre Completo</label>
+                            <span for="nombre" class="label-info">Mike Hernandez Rivera</span>
+                        </div>
+
+                        <!-- Fecha de Nacimiento -->
+                        <div class="form-group blue-box">
+                            <label for="fechaNacimiento">Fecha de Nacimiento</label>
+                            <input type="date" id="fechaNacimiento" class="form-input" required min="1900-01-01" max="2007-01-01">
+                        </div>
+
+                        <!-- Contraseña -->
+                        <div class="form-group blue-box">
+                            <label for="contrasenia">Contraseña</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="contrasenia" class="form-input" required>
+                                <i class="fa-solid fa-eye input-icon toggle-password"  id="togglePassword"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="password-guide">
+                            <p>Tu contraseña deberá incluir:</p>
+                            <ul>
+                                <li id="rule-length"><i class="fa-solid fa-circle"></i> Mínimo 8 caracteres</li>
+                                <li id="rule-upper"><i class="fa-solid fa-circle"></i> Una mayúscula (A-Z)</li>
+                                <li id="rule-lower"><i class="fa-solid fa-circle"></i> Una minúscula (a-z)</li>
+                                <li id="rule-number"><i class="fa-solid fa-circle"></i> Un número (0-9)</li>
+                            </ul>
+                        </div>
+
+                        <!-- Confirmar Contraseña -->
+                        <div class="form-group blue-box">
+                            <label for="confirmarContrasenia">Confirmar Contraseña</label>
+                            <div class="input-wrapper">
+                                <input type="password" id="confirmarContrasenia" class="form-input" required>
+                                <i id="matchIcon" class="input-icon fa-solid" style="right: 15px; display: none;"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COLUMNA DERECHA: FOTO DE PERFIL -->
+                    <div class="profile-photo-col">
+
+                        <h2 class="section-subtitle title-blue">Foto de Perfil</h2>
+                        <div class="photo-uploader-box">
+                            <div class="photo-preview" id="photoPreview">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <!-- Input file oculto -->
+                        <input type="file" id="fotoPerfil" accept=".jpg, .jpeg, .png, .webp" hidden>
+                            
+                            <!-- Botón actualizado según tu solicitud -->
+                <!-- TO DO -->
+                            <button type="button" class="btn btn-register" onclick="document.getElementById('fotoPerfil').click()">
+                                Editar Foto
+                            </button>
+                            
+                            <small class="upload-hint">Formato JPG/JPEG, Máx 1MB</small>
+                            <p id="fileError" class="error-text"></p>
+                        </div>
+                        
+                        <h2 class="section-subtitle title-blue">Datos de Contacto</h2>
+                        <!-- Teléfono -->
+                        <div class="form-group blue-box">
+                            <label for="telefono">Número de Teléfono</label>
+                            <input type="number" id="telefono" class="form-input" required min="0">
+                        </div><!-- NO NEGATIVOS, FORMATO TELÉFONO? -->
+
+                        <!-- Correo -->
+                        <div class="form-group blue-box">
+                            <label for="correo">Correo Electrónico</label>
+                            <input type="email" id="correo" class="form-input" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN INFERIOR: CONFIGURAR AGENDA -->
+                <div id="agendaSection" class="agenda-section hidden">
+                    <h2 class="section-subtitle title-blue">Configurar Agenda</h2>
+                    
+                    <div class="agenda-grid">
+                        
+                        <!-- 1. Disponibilidad -->
+                        <!-- Agregada clase blue-box -->
+                        <div class="agenda-item item-days form-group blue-box">
+                            <label>Disponibilidad <span class="info-text">(Seleccione días disponibles)</span></label>
+                            <div class="days-container">
+                                <button type="button" class="day-btn" data-day="L">L</button>
+                                <button type="button" class="day-btn" data-day="M">M</button>
+                                <button type="button" class="day-btn" data-day="X">M</button>
+                                <button type="button" class="day-btn" data-day="J">J</button>
+                                <button type="button" class="day-btn" data-day="V">V</button>
+                                <button type="button" class="day-btn" data-day="S">S</button>
+                                <button type="button" class="day-btn" data-day="D">D</button>
+                            </div>
+                            <input type="hidden" id="diasSeleccionados" name="diasSeleccionados">
+                        </div>
+
+                        <!-- 2. Horario de Atención -->
+                        <div class="agenda-item item-hours form-group blue-box">
+                            <label>Horario de Atención</label>
+                            <div class="hours-inputs">
+                                <select id="horaInicio" class="form-input">
+                                    <option value="" disabled selected>Hora Inicio</option>
+                                    <!-- JS llena esto -->
+                                </select>
+                                <select id="horaFin" class="form-input">
+                                    <option value="" disabled selected>Hora Máxima</option>
+                                    <!-- JS llena esto -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- 3. Duración Visitas -->
+                        <div class="agenda-item item-duration form-group blue-box">
+                            <label>Duración Visitas</label>
+                            <select id="duracionVisita" class="form-input">
+                                <option value="30">30 minutos</option>
+                                <option value="60">60 minutos (1 hr)</option>
+                                <option value="90">90 minutos (1.5 hrs)</option>
+                                <option value="120">120 minutos (2 hrs)</option>
+                            </select>
+                        </div>
+
+                        <!-- 4. Espacio Vacío -->
+                        <div class="agenda-item item-empty"></div>
+                    </div>
+                </div>
+
+                <!-- Botón de Envío -->
+                <div class="form-actions-register">
+                    <button type="submit" class="btn btn-primary-rect">Crear Cuenta</button>
+                </div>
+                
+                <p id="mainError" class="error-message" hidden></p>
+            </form>
+        </div>
+        <div class="white-main-card">
+            <h2 class="section-subtitle title-blue">Cambiar Dirección de Correo Electrónico</h2>
+            
+        </div>
+    </main>
+</body>
+</html>

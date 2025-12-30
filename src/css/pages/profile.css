@@ -1,0 +1,21 @@
+.background-main{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.white-main-card{
+  width: 100%;
+  max-width: 900px;
+}
+
+.profile-main{
+  min-height: calc(100vh - var(--header-h));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 40px 20px;
+  background: #dfdfdf;
+}

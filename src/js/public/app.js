@@ -1,5 +1,6 @@
 // src/js/app.js
 import { fetchPublicListings, mapPublicCardToFront } from "../../api/listingsService.js";
+import { initHeader } from "../shared/header.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("propertiesContainer");
@@ -10,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentPage = 0;
   let lastPage = false;
   let properties = [];
+
+  initHeader();
 
   function renderProperties(list) {
     if (!list.length) {
