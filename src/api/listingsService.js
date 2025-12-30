@@ -182,3 +182,26 @@ export async function getListingData(id) {
 
   return await res.json();
 }
+
+export async function patchListingApi(id, data) {
+  const res = await fetch(`${LISTINGS_URL}/${id}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
+    },
+    body: data
+  });
+
+  if (!res.ok) {
+    const resJson = await res.json();
+    const message = stringOrNull(resJson.error);
+    if (res.status === 500) {
+      console.error(`Error del servidor - (${res.status}): ${message}`)
+      throw new ErrorApi("Error interno del servidor. Inténtelo de nuevo más tarde.")
+    } else {
+        throw new ErrorApi(message);
+    }
+  }
+
+  return await res.json();
+}
