@@ -162,8 +162,15 @@ function displayUserOptions() {
             removeListingBtn.innerHTML = `
                 <Strong>Eliminar Publicación</Strong>          
             `;
+            const sellListingBtn = document.createElement("a");
+            sellListingBtn.classList.add("btn", "btn-register");
+            sellListingBtn.href = `/pages/lister/sellListing.html?id=${state.id}`;
+            sellListingBtn.innerHTML = `
+                <Strong>Vender inmueble</Strong>          
+            `;
             dataVarDiv.appendChild(editListingBtn);
             dataVarDiv.appendChild(removeListingBtn);
+            dataVarDiv.appendChild(sellListingBtn);
             displayRefusedMotive();
             break;
         case "ADMIN":
