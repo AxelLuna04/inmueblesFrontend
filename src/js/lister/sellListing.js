@@ -23,8 +23,8 @@ const state = {
     address: "",
     price: "",
     parties: [],
-    documents: [],
-    documentUrls: [],
+    files: [],
+    filesUrls: [],
     idClient: 0,
     date: "",
 }
@@ -36,6 +36,8 @@ const priceLabel = $('priceLabel');
 const addressLabel = $('addressLabel');
 const interestedContainer = $('interestedContainer');
 const uploadFilesBtn = $('uploadFilesBtn');
+const fileInput = $('fileInput');
+const metaFilesLabel = $('metaFilesLabel');
 const filesContainer = $('filesContainer');
 const soldDateInput = $('soldDateInput');
 const soldListingBtn = $('soldListingBtn');
@@ -118,7 +120,7 @@ async function displayListingData() {
 
     listingThumbnailImg.src = state.thumbnail;
     titleLabel.innerHTML = `<strong>${state.title}</strong>`;
-    priceLabel.innerHTML = `<strong>${state.price}</strong>`;
+    priceLabel.innerHTML = `<strong>MXN ${state.price}</strong>`;
     addressLabel.innerHTML = state.address;
 
     console.log("Información del inmueble desplegada");
@@ -149,8 +151,23 @@ async function displayPartiesData() {
 function loadEvents() {
     console.log("Cargando eventos");
 
+    fileInput.addEventListener("change", (e) => {
+        const allowedTypes = [
+            "application/pdf",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        ];
+        const newFiles = Array.from(e.target.files || []).filter(f => allowedTypes.includes(f.type));
+
+        const MAX_FILES = 10;
+        state.files = state.files.concat(newFiles).slice(0, MAX_FILES);
+
+        renderFiles();
+        fileInput.value = "";
+    })
+
     uploadFilesBtn.addEventListener("click", (e) => {
-        //TO DO
+        fileInput.click();
     })
 
     soldDateInput.addEventListener("change", (e) => {
@@ -164,3 +181,26 @@ function loadEvents() {
     console.log("Eventos cargados con éxito");
 }
 
+function renderFiles() {
+    filesContainer.innerHTML = "";
+    state.files.length == 0 ? metaFilesLabel.innerHTML = "Ningún archivo cargado." :
+    state.files.length > 1 ? metaFilesLabel.innerHTML = `${state.files.length} archivos cargados.` :
+    metaFilesLabel.innerHTML = `1 archivo cargado.`;
+
+    state.files.forEach((f, idx) => {
+        const file = document.createElement("div");
+        file.className = "sell-file-row";
+        file.innerHTML = `
+            <label class="sell-file-text"><strong>${f.name}</strong></label>
+        `;
+        const removeBtn = document.createElement("button");
+        removeBtn.className = "btn sell-btn-remove-file";
+        removeBtn.innerHTML = "<strong>X</strong>";
+        removeBtn.addEventListener("click", (e) => {
+            state.files.splice(idx, 1);
+            renderFiles();
+        })
+        file.appendChild(removeBtn);
+        filesContainer.appendChild(file);
+    })
+}
