@@ -24,6 +24,9 @@ const state = {
 const payMethodLabel = $('payMethodLabel');
 const payMethodSelect = $('payMethodSelect');
 const elementsDiv = $('elementsDiv');
+const payForm = $('payForm');
+
+const notification = $('notification');
 
 /* Credit Card */
 const cardNumberLabel = document.createElement("label");
@@ -106,6 +109,8 @@ function loadEvents() {
         }
     })
 
+    payForm.addEventListener("submit", postPay);
+
     console.log("Eventos cargados");
 }
 
@@ -120,24 +125,26 @@ function innitCardMethod() {
     expirationDateLabel.classList.add("pay-input-label");
     expirationDateLabel.innerHTML = "Fecha de caducidad:";
     expirationMonthSelect.classList.add("checkbox");
-    const expirationMonthOption = document.createElement("option");
-    expirationMonthOption.value = "NONE"
-    expirationMonthOption.innerHTML = "--";
-    expirationMonthSelect.appendChild(expirationMonthOption);
+    const expirationMonthOption1 = document.createElement("option");
+    expirationMonthOption1.value = "0"
+    expirationMonthOption1.innerHTML = "--";
+    expirationMonthSelect.appendChild(expirationMonthOption1);
     for (var i = 1; i <= 12; i++) {
-        expirationMonthOption.value = i;
-        expirationMonthOption.innerHTML = i;
-        expirationMonthSelect.appendChild(expirationMonthOption);
+        const expirationMonthOption2 = document.createElement("option");
+        expirationMonthOption2.value = i;
+        expirationMonthOption2.innerHTML = i;
+        expirationMonthSelect.appendChild(expirationMonthOption2);
     }
     expirationYearSelect.classList.add("checkbox");
-    const expirationYearOption = document.createElement("option");
-    expirationYearOption.value = "NONE"
-    expirationYearOption.innerHTML = "---";
-    expirationMonthSelect.appendChild(expirationYearOption);
+    const expirationYearOption1 = document.createElement("option");
+    expirationYearOption1.value = "0"
+    expirationYearOption1.innerHTML = "---";
+    expirationYearSelect.appendChild(expirationYearOption1);
     for (var i = 2026; i <= 2040; i++) {
-        expirationYearOption.value = i;
-        expirationYearOption.innerHTML = i;
-        expirationMonthSelect.appendChild(expirationYearOption);
+        const expirationYearOption2 = document.createElement("option");
+        expirationYearOption2.value = i;
+        expirationYearOption2.innerHTML = i;
+        expirationYearSelect.appendChild(expirationYearOption2);
     }
     securityCodeLabel.classList.add("pay-input-label");
     securityCodeLabel.innerHTML = "Código de seguridad:";
@@ -159,7 +166,7 @@ function innitCardMethod() {
     addressInput1.classList.add("pay-input");
     addressInput1.type = "text";
     addressLabel2.classList.add("pay-input-label");
-    addressLabel2.innerHTML = "Dirección de facturación (Línea 1):";
+    addressLabel2.innerHTML = "Dirección de facturación (Línea 2):";
     addressInput2.classList.add("pay-input");
     addressInput2.type = "text";
 
@@ -167,7 +174,7 @@ function innitCardMethod() {
     countryLabel.innerHTML = "País:";
     countrySelect.classList.add("checkbox");
     countrySelect.innerHTML = `
-        <option value="NONE">Selecciona un país</option>
+        <option value="0">Selecciona un país</option>
         <option value="Mexico">México</option>
     `;
     localityLabel.classList.add("pay-input-label");
@@ -266,4 +273,114 @@ function displayCardMethod() {
 
     elementsDiv.appendChild(facturationDataDiv);
     
+}
+
+function postPay(e) {
+    e.preventDefault();
+
+    if (validateData()) {
+        
+    } else {
+        showNotif(notification, "¡Llena todos los campos!", NOTIF_RED, 5000);
+    }
+}
+
+function validateData() {
+    var pass = true;
+
+    payMethodSelect.classList.remove("pay-invalid");
+    payMethodLabel.classList.remove("pay-invalid");
+
+    cardNumberInput.classList.remove("pay-invalid");
+    cardNumberLabel.classList.remove("pay-invalid");
+    expirationMonthSelect.classList.remove("pay-invalid");
+    expirationYearSelect.classList.remove("pay-invalid");
+    expirationDateLabel.classList.remove("pay-invalid");
+    securityCodeInput.classList.remove("pay-invalid");
+    securityCodeLabel.classList.remove("pay-invalid");
+    nameInput.classList.remove("pay-invalid");
+    nameLabel.classList.remove("pay-invalid");
+    lastnameInput.classList.remove("pay-invalid");
+    lastnameLabel.classList.remove("pay-invalid");
+    addressInput1.classList.remove("pay-invalid");
+    addressLabel1.classList.remove("pay-invalid");
+    addressInput2.classList.remove("pay-invalid");
+    addressLabel2.classList.remove("pay-invalid");
+    countrySelect.classList.remove("pay-invalid");
+    countryLabel.classList.remove("pay-invalid");
+    localityInput.classList.remove("pay-invalid");
+    localityLabel.classList.remove("pay-invalid");
+    zipcodeInput.classList.remove("pay-invalid");
+    zipcodeLabel.classList.remove("pay-invalid");
+
+    
+    if(!intOrNull(payMethodSelect.value)) {
+        pass = false;
+        payMethodSelect.classList.add("pay-invalid");
+        payMethodLabel.classList.add("pay-invalid");
+
+        return pass;
+    }
+
+    switch(intOrNull(payMethodSelect.value)) {
+        case 1:
+            if(!intOrNull(cardNumberInput.value)) {
+                pass = false;
+                cardNumberInput.classList.add("pay-invalid");
+                cardNumberLabel.classList.add("pay-invalid");
+            }
+            if(!intOrNull(expirationMonthSelect.value)) {
+                pass = false;
+                expirationMonthSelect.classList.add("pay-invalid");
+                expirationDateLabel.classList.add("pay-invalid");
+            }
+            if(!intOrNull(expirationYearSelect.value)) {
+                pass = false;
+                expirationYearSelect.classList.add("pay-invalid");
+                expirationDateLabel.classList.add("pay-invalid");
+            }
+            if(!intOrNull(securityCodeInput.value)) {
+                pass = false;
+                securityCodeInput.classList.add("pay-invalid");
+                securityCodeLabel.classList.add("pay-invalid");
+            }
+            if(!stringOrNull(nameInput.value)) {
+                pass = false;
+                nameInput.classList.add("pay-invalid");
+                nameLabel.classList.add("pay-invalid");
+            }
+            if(!stringOrNull(lastnameInput.value)) {
+                pass = false;
+                lastnameInput.classList.add("pay-invalid");
+                lastnameLabel.classList.add("pay-invalid");
+            }
+            if(!stringOrNull(addressInput1.value)) {
+                pass = false;
+                addressInput1.classList.add("pay-invalid");
+                addressLabel1.classList.add("pay-invalid");
+            }
+            if(!stringOrNull(addressInput2.value)) {
+                pass = false;
+                addressInput2.classList.add("pay-invalid");
+                addressLabel2.classList.add("pay-invalid");
+            }
+            if(intOrNull(countrySelect.value) == 0) {
+                pass = false;
+                countrySelect.classList.add("pay-invalid");
+                countryLabel.classList.add("pay-invalid");
+            }
+            if(!stringOrNull(localityInput.value)) {
+                pass = false;
+                localityInput.classList.add("pay-invalid");
+                localityLabel.classList.add("pay-invalid");
+            }
+            if(!intOrNull(zipcodeInput.value)) {
+                pass = false;
+                zipcodeInput.classList.add("pay-invalid");
+                zipcodeLabel.classList.add("pay-invalid");
+            }
+            break;
+    }
+
+    return pass;
 }

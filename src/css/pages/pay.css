@@ -71,3 +71,8 @@
     font-size: 1.2rem;
     margin-bottom: 1rem;
 }
+
+.pay-invalid {
+    color: var(--color-red);
+    border-color: var(--color-red);
+}
