@@ -297,7 +297,7 @@ async function postPay(e) {
                 showNotif(notification, res.mensaje, NOTIF_GREEN, 5000);
             }
             setTimeout(() => {
-                window.location.href = `/pages/client/dataLister.html?id=${state.id}`;
+                window.location.href = `/pages/shared/profile.html`;
             }, 5500);
         } catch(err) {
             if (err.name === "ErrorApi") return showNotif(err.message, NOTIF_RED, 5000);
