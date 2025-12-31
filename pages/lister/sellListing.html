@@ -20,7 +20,81 @@
     <!--Scripts-->
     <script type="module" src="../../src/js/lister/sellListing.js"></script>
 </head>
+
+<div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
+
 <body>
-    
+    <header class="main-header">
+        <div class="header-left">
+            <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
+            <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
+                <i class="fa-solid fa-building"></i> Inmuebles
+            </div>
+            
+            <h1 class="site-title">Vender inmueble</h1>
+        </div>
+    </header>
+
+    <main class="main-sell">
+        <div class="sell-container">
+            <div class="card sell-card"> <!--Listing details-->
+                <div class="listing-details-grid">
+                    <img id="listingTumbailImg" class="listing-thumbail" src="/src/assets/images/placeholder.jpg"> <!--Photo-->
+                    <div>
+                        <label id="titleLabel" class="sell-section-title"><strong>Título del inmueble</strong></label>
+                        <div class="sell-listing-details-container sell-section-flex">
+                            <label id="priceLabel" class="sell-price-text"><strong>MXN 10,000,000</strong></label>
+                            <label id="addressLabel" class="sell-address-text">Avenida Obrero Campesina, Colonia Matamoros, Número 33, Xalapa, Veracruz, México</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card sell-card"> <!--Interested parties-->
+                <label class="sell-section-title"><strong>Interesados</strong></label>
+                <div class="sell-interested-first-row"> <!--First row-->
+                    <br>
+                    <label class="sell-interested-main-text">Nombre completo</label>
+                    <label class="sell-interested-main-text">Correo electrónico</label>
+                    <label class="sell-interested-main-text">Teléfono</label>
+                </div>
+                <div id="interestedContainer"> <!--Rows-->
+                    <div class="sell-interested-row">
+                        <input type="radio" name="parties">
+                        <label class="sell-interested-text">Axel de Jesús Luna Hernández</label>
+                        <label class="sell-interested-text">axel.lu04@gmail.com</label>
+                        <label class="sell-interested-text">2283575859</label>
+                    </div>
+                    <div class="sell-interested-row">
+                        <input type="radio" name="parties">
+                        <label class="sell-interested-text">Saúl Barragán Torres</label>
+                        <label class="sell-interested-text">barragansaul26n@gmail.com</label>
+                        <label class="sell-interested-text">2283575425</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card sell-card"> <!--Files-->
+                <div class="sell-files-card">
+                    <label class="sell-section-title"><strong>Archivos</strong></label>
+                    <button id="uploadFilesBtn" class="btn btn-login">Subir Archivos</button>
+                </div>
+                <div id="filesContainer"> <!--Files container-->
+                    <div class="sell-file-row">
+                        <label class="sell-file-text"><strong>Comprobante de pago.pdf</strong></label>
+                        <button class="btn sell-btn-remove-file"><strong>X</strong></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="sell-footer">
+        <div>
+            <label>Selecciona una fecha de venta:</label>
+            <input class="sell-date-input" type="date" id="soldDateInput" >
+        </div>
+        <button id="soldListingBtn" class="btn btn-login">Vender inmueble</button>
+    </footer>
 </body>
 </html>

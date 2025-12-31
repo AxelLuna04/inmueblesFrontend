@@ -1,0 +1,139 @@
+.main-sell {
+    background-color: var(--color-bg-gray);
+    min-height: 100vh;
+    padding: 1rem;
+    font: var(--font-alt);
+}
+
+.sell-container {
+    font: --font-alt;
+    margin-left: 7rem;
+    margin-right: 7rem;
+}
+
+.sell-card {
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.sell-files-card {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sell-listing-details-container {
+    background-color: var(--color-third-bg);
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: wrap;
+    overflow: hidden;
+}
+
+.sell-interested-first-row {
+    background-color: var(--color-primary-dark);
+    display: grid;
+    grid-template-columns: 10% 30% 30% 30%;
+    align-items: center;
+    padding: 0.5rem;
+    justify-content: space-between;
+    border-color: black;
+    border-style: groove;
+}
+
+.sell-interested-row {
+    display: grid;
+    grid-template-columns: 10% 30% 30% 30%;
+    align-items: center;
+    padding: 0.5rem;
+    justify-content: space-between;
+    border-color: black;
+    border-style: groove;
+}
+
+.sell-file-row {
+    background-color: var(--color-third-bg);
+    grid-template-columns: 10% 30% 30% 30%;
+    align-items: center;
+    padding: 0.8rem;
+    justify-content: space-between;
+    display: flex;
+    margin-top: 1rem;
+    border-radius: 10px;
+}
+
+.sell-footer {
+    background-color: var(--color-secondary-bg);
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+}
+
+.sell-card-container {
+    overflow: hidden;
+}
+
+.listing-details-grid {
+    display: grid;
+    grid-template-columns: 30% 70%;
+}
+
+.sell-section-flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.listing-thumbail {
+    max-width: 100%;
+    max-height: fit-content;
+    min-width: 100%;
+    min-height: fit-content;
+    object-fit: cover;
+    padding-right: 1rem;
+}
+
+.sell-section-title {
+    color: var(--color-primary-dark);
+    font-size: 1.7rem;
+}
+
+.sell-price-text {
+    font-size: 2rem;
+}
+
+.sell-address-text {
+    font-size: 1.3rem;
+}
+
+.sell-interested-main-text {
+    color: white;
+    margin-left: 5rem;
+    margin-right: 5rem;
+}
+
+.sell-interested-text {
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+.sell-file-text {
+    color: var(--color-primary-dark);
+    font-size: 1rem;
+}
+
+.sell-btn-remove-file {
+    background-color: red;
+    color: var(--color-white);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.sell-date-input {
+    border-radius: 10px;
+    height: 2.8rem;
+    padding: 0 0.625rem;
+}
