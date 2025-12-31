@@ -1,4 +1,5 @@
 import { getPayMethods } from '../../api/catalogueService.js';
+import { postPayApi } from '../../api/payService.js';
 import {
     stringOrNull,
     floatOrNull,
@@ -275,10 +276,34 @@ function displayCardMethod() {
     
 }
 
-function postPay(e) {
+async function postPay(e) {
     e.preventDefault();
 
     if (validateData()) {
+        try {
+            const simulatedData = "VISA: " + intOrNull(cardNumberInput.value) + ", vencimiento: " + intOrNull(expirationMonthSelect.value) + "/" + intOrNull(expirationYearSelect.value);
+
+            const data = {
+                idTipoPago: intOrNull(payMethodSelect.value) || 0,
+                monto: 30.00 || 0.00,
+                datosSimulados: stringOrNull(simulatedData) || ""
+            }
+
+            const res = await postPayApi(state.id, data);
+
+            if (res.yaTeniaAcceso) {
+                showNotif(notification, res.mensaje, NOTIF_ORANGE, 5000);
+            } else {
+                showNotif(notification, res.mensaje, NOTIF_GREEN, 5000);
+            }
+            setTimeout(() => {
+                window.location.href = `/pages/client/dataLister.html?id=${state.id}`;
+            }, 5500);
+        } catch(err) {
+            if (err.name === "ErrorApi") return showNotif(err.message, NOTIF_RED, 5000);
+            console.error(`Error del front: ${err}`);
+            showNotif(notification, "No se pudo realizar el pago, inténtelo de nuevo más tarde.", NOTIF_RED, 5000);
+        }
         
     } else {
         showNotif(notification, "¡Llena todos los campos!", NOTIF_RED, 5000);
