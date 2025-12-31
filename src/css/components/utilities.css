@@ -17,4 +17,14 @@
     flex-direction: row;
 }
 
+.checkbox {
+  padding-top: 0.75rem;
+  padding-bottom: 0.5rem;
 
+  font-size: 1rem;
+
+  background: transparent; 
+  border: none;
+  border-bottom: 2px solid black;  
+  outline: none;
+}

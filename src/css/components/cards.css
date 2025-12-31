@@ -23,6 +23,14 @@
     cursor: pointer; /* Cambia a manita */
 }
 
+.section-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.875rem; /* ~30px */
+    /*margin-bottom: 1.875rem;*/
+    align-items: start;
+}
+
 /* Hover: Levantar tarjeta */
 .property-card:hover {
     transform: translateY(-5px);

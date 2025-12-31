@@ -1,0 +1,73 @@
+.main-pay {
+    background-color: var(--color-bg-gray);
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.pay-container {
+    font: --font-alt;
+    margin-left: 7rem;
+    margin-right: 7rem;
+}
+
+.pay-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.875rem;
+}
+
+.pay-section-margin {
+    margin-top: 1rem;
+}
+
+.pay-split-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.875rem;
+    margin-top: 1rem;
+}
+
+.pay-section-flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.pay-card {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.pay-card-half {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.pay-input{
+    padding: 0.1rem;
+    font-size: 1rem;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid black;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.pay-input-label {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pay-label {
+    color: var(--color-primary-dark);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
