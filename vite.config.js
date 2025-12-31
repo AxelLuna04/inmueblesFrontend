@@ -30,6 +30,7 @@ export default defineConfig({
         listerDashboard: resolve(__dirname, 'pages/lister/dashboard.html'),
         profile: resolve(__dirname, 'pages/shared/profile.html'),
         listingDetails: resolve(__dirname, 'pages/shared/listingDetail.html'),
+        pay: resolve(__dirname, 'pages/client/pay.html'),
 
         historial: resolve(__dirname, 'pages/admin/historial.html')
       }

@@ -176,7 +176,7 @@ function displayUserOptions() {
         default:
             const dataListerBtn = document.createElement("a");
             dataListerBtn.classList.add("btn", "btn-register");
-            dataListerBtn.href = "pages/client/pay.html";
+            dataListerBtn.href = "/pages/client/pay.html";
             dataListerBtn.innerHTML = `
                 <Strong>Obtener Datos de Contacto</Strong>            
             `;
