@@ -25,3 +25,26 @@ export async function getParties(id) {
 
     return await res.json()
 }
+
+export async function sellListingApi(id, body) {
+    const res = await fetch(`${URL_SELL(id)}/vender`, {
+        method: "PATCH",
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("accessToken"),
+        },
+        body: body
+    });
+
+    if (!res.ok){
+        const resJson = await res.json();
+        const message = stringOrNull(resJson.error);
+        if (res.status === 500) {
+            console.error(`Error del servidor - (${res.status}): ${message}`)
+            throw new ErrorApi("Error interno del servidor. Inténtelo de nuevo más tarde.")
+        } else {
+            throw new ErrorApi(message);
+        }
+    }
+
+    return await res.json()
+}

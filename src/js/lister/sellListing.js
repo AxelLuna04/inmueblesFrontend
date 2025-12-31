@@ -6,11 +6,12 @@ import {
 import { getListingData } from '../../api/listingsService.js';
 import {
     showNotif,
-    NOTIF_RED
+    NOTIF_RED,
+    NOTIF_GREEN
 } from '../../utils/notifications.js';
 
 import placeholderImg from '/src/assets/images/placeholder.jpg';
-import { getParties } from '../../api/sellListingService.js';
+import { getParties, sellListingApi } from '../../api/sellListingService.js';
 
 //HELPERS
 const $ = (id) => document.getElementById(id);
@@ -63,11 +64,11 @@ async function loadListingData() {
     console.log("Cargando datos del inmueble");
 
     const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
+    state.id = params.get("id");
 
-    if (id) {
+    if (state.id) {
         try {
-            const data = await getListingData(id);
+            const data = await getListingData(state.id);
             insertListingData(data);
         } catch(err) {
             if (err.name === "ErrorApi") return showNotif(err.message, NOTIF_RED, 5000);
@@ -95,13 +96,10 @@ function insertListingData(data) {
 
 async function loadPartiesData() {
     console.log("Cargando datos de los interesados");
-    
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
 
-    if (id) {
+    if (state.id) {
         try {
-            const data = await getParties(id);
+            const data = await getParties(state.id);
             state.parties = data;
         } catch(err) {
             if (err.name === "ErrorApi") return showNotif(err.message, NOTIF_RED, 5000);
@@ -175,7 +173,7 @@ function loadEvents() {
     })
 
     soldListingBtn.addEventListener("click", (e) => {
-        //TO DO
+        if (validateInputs()) sellListing();
     })
 
     console.log("Eventos cargados con éxito");
@@ -203,4 +201,47 @@ function renderFiles() {
         file.appendChild(removeBtn);
         filesContainer.appendChild(file);
     })
+}
+
+async function sellListing() {
+    const data = {
+        idClienteComprador: intOrNull(state.idClient),
+        fechaVenta: intOrNull(state.date)
+    }
+
+    const body = new FormData();
+    body.append("datosVenta", new Blob([JSON.stringify(data)], { type: "application/json" }));
+    state.files.forEach(f => body.append("documentosVenta", f));
+
+    try {
+        const res = await sellListingApi(state.id, body);
+        showNotif(notification, res.mensaje, NOTIF_GREEN, 5000);
+        setTimeout(() => {
+            window.location.href = "/pages/lister/dashboard.html";
+        }, 5500);
+    } catch(err) {
+        if (err.name === "ErrorApi") return showNotif(err.message, NOTIF_RED, 5000);
+        console.error(`Error del front: ${err}`);
+        showNotif(notification, "No se pudo concretar la venta, inténtelo de nuevo más tarde.", NOTIF_RED, 5000);
+    }
+}
+
+function validateInputs() {
+
+    if (!state.idClient) {
+        showNotif(notification, "¡No has seleccionado a ningún cliente!", NOTIF_RED);
+        return false;
+    }
+
+    if (!stringOrNull(state.date)) {
+        showNotif(notification, "¡No has indicado ninguna fecha de venta!", NOTIF_RED);
+        return false;
+    }
+
+    if (!state.files.length) {
+        showNotif(notification, "¡No has subido ningún archivo!", NOTIF_RED);
+        return false;
+    }
+
+    return true;
 }
