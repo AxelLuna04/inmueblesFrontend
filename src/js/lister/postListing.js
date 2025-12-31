@@ -133,15 +133,15 @@ function loadEvents(){
                 state.toilets = 0;
                 break;
         }
+    });
 
-        searchBtn.addEventListener('click', doSearch);
+    searchBtn.addEventListener('click', doSearch);
 
-        address.addEventListener('keydown', (ev) => {
-            if (ev.key === "Enter") {
-                ev.preventDefault();
-                doSearch();
-            }
-        });
+    address.addEventListener('keydown', (ev) => {
+        if (ev.key === "Enter") {
+            ev.preventDefault();
+            doSearch();
+        }
     });
   
     photosInput.addEventListener("change", (e) => {

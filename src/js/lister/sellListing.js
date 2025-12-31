@@ -163,3 +163,4 @@ function loadEvents() {
 
     console.log("Eventos cargados con éxito");
 }
+
