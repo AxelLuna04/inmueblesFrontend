@@ -26,7 +26,7 @@ const payMethodSelect = $('payMethodSelect');
 const elementsDiv = $('elementsDiv');
 
 /* Credit Card */
-const cardNumberLabel = $('carNumberLabel');
+const cardNumberLabel = document.createElement("label");
 const cardNumberInput = document.createElement("input");
 const expirationDateLabel = document.createElement("label");
 const expirationMonthSelect = document.createElement("select");
@@ -96,9 +96,12 @@ function loadEvents() {
     console.log("Cargando eventos");
 
     payMethodSelect.addEventListener("change", (e) => {
-        switch((intOrNullpayMethodSelect.value)) {
+        switch(intOrNull(payMethodSelect.value)) {
             case 1:
                 displayCardMethod();
+                break;
+            default:
+                elementsDiv.innerHTML = "";
                 break;
         }
     })
@@ -148,8 +151,8 @@ function innitCardMethod() {
     nameInput.type = "text";
     lastnameLabel.classList.add("pay-input-label");
     lastnameLabel.innerHTML = "Apellidos:";
-    nameInput.classList.add("pay-input");
-    nameInput.type = "text";
+    lastnameInput.classList.add("pay-input");
+    lastnameInput.type = "text";
 
     addressLabel1.classList.add("pay-input-label");
     addressLabel1.innerHTML = "Dirección de facturación (Línea 1):";
@@ -180,5 +183,87 @@ function innitCardMethod() {
 }
 
 function displayCardMethod() {
+    elementsDiv.innerHTML = "";
 
+    const numberExpirationCodeDiv = document.createElement("div");
+    numberExpirationCodeDiv.className = "section-grid";
+
+    const div1 = document.createElement("div");
+    const cardNumberDiv = document.createElement("div");
+    cardNumberDiv.className = "pay-card";
+    cardNumberDiv.appendChild(cardNumberLabel);
+    cardNumberDiv.appendChild(cardNumberInput);
+    div1.appendChild(cardNumberDiv);
+    numberExpirationCodeDiv.appendChild(div1);
+
+    const expirationCodeDiv = document.createElement("div");
+    expirationCodeDiv.className = "pay-card";
+    const div2 = document.createElement("div");
+    div2.className = "pay-split";
+    const div3 = document.createElement("div");
+    const expirationMonthYearDiv = document.createElement("div");
+    expirationMonthYearDiv.className = "pay-split";
+    expirationMonthYearDiv.appendChild(expirationMonthSelect);
+    expirationMonthYearDiv.appendChild(expirationYearSelect);
+    div3.appendChild(expirationDateLabel);
+    div3.appendChild(expirationMonthYearDiv);
+    div2.appendChild(div3);
+    const securityCodeDiv = document.createElement("div");
+    securityCodeDiv.appendChild(securityCodeLabel);
+    securityCodeDiv.appendChild(securityCodeInput);
+    div2.appendChild(securityCodeDiv);
+    expirationCodeDiv.appendChild(div2);
+    numberExpirationCodeDiv.append(expirationCodeDiv);
+    elementsDiv.appendChild(numberExpirationCodeDiv);
+
+    const facturationDataDiv = document.createElement("div");
+    facturationDataDiv.className = "pay-card";
+    facturationDataDiv.innerHTML = `
+        <label class="pay-label"><strong>Información de facturación</strong></label>
+    `;
+
+    const nameLastnameDiv = document.createElement("div");
+    nameLastnameDiv.className = "pay-split";
+    const nameDiv = document.createElement("div");
+    nameDiv.className = "pay-section-flex";
+    nameDiv.appendChild(nameLabel);
+    nameDiv.appendChild(nameInput);
+    nameLastnameDiv.appendChild(nameDiv);
+    const lastnameDiv = document.createElement("div");
+    lastnameDiv.className = "pay-section-flex";
+    lastnameDiv.appendChild(lastnameLabel);
+    lastnameDiv.appendChild(lastnameInput);
+    nameLastnameDiv.appendChild(lastnameDiv);
+    facturationDataDiv.appendChild(nameLastnameDiv);
+
+    const addressesDiv = document.createElement("div");
+    addressesDiv.classList.add("pay-split", "pay-section-margin");
+    const address1Div =  document.createElement("div");
+    address1Div.appendChild(addressLabel1);
+    address1Div.appendChild(addressInput1);
+    addressesDiv.appendChild(address1Div);
+    const address2Div =  document.createElement("div");
+    address2Div.appendChild(addressLabel2);
+    address2Div.appendChild(addressInput2);
+    addressesDiv.appendChild(address2Div);
+    facturationDataDiv.appendChild(addressesDiv);
+
+    const countryLocalityZipcodeDiv = document.createElement("div");
+    countryLocalityZipcodeDiv.className = "pay-split-3";
+    const countryDiv = document.createElement("div");
+    countryDiv.appendChild(countryLabel);
+    countryDiv.appendChild(countrySelect);
+    countryLocalityZipcodeDiv.appendChild(countryDiv);
+    const localityDiv = document.createElement("div");
+    localityDiv.appendChild(localityLabel);
+    localityDiv.appendChild(localityInput);
+    countryLocalityZipcodeDiv.appendChild(localityDiv);
+    const zipcodeDiv = document.createElement("div");
+    zipcodeDiv.appendChild(zipcodeLabel);
+    zipcodeDiv.appendChild(zipcodeInput);
+    countryLocalityZipcodeDiv.appendChild(zipcodeDiv);
+    facturationDataDiv.appendChild(countryLocalityZipcodeDiv);
+
+    elementsDiv.appendChild(facturationDataDiv);
+    
 }

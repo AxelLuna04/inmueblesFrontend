@@ -46,76 +46,8 @@
                     </select>
                 </div>
     
-                <div class="section-grid" id="elementsDiv">
-                    <div>
-                        <div class="pay-card"> <!--Número de tarjeta-->
-                            <label for="cardNumberInput" class="pay-input-label">Número de tarjeta:</label>
-                            <input id="cardNumberInput" class="pay-input" type="number">
-                        </div>
-                    </div>
-    
-                    <div class="pay-card">
-                        <div class="pay-split">
-                            <div>
-                                <label class="pay-input-label">Fecha de caducidad</label> <!--Fecha de caducidad-->
-                                <div class="pay-split">
-                                    <select class="checkbox">
-                                        <option value="NONE">--</option>
-                                    </select>
-                                    <select class="checkbox">
-                                        <option value="NONE">---</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="pay-input-label" for="securityCodeInput">Código de seguridad</label> <!--Código de seguridad-->
-                                <input class="pay-input" type="number" maxlength="3" id="securityCodeInput">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="pay-card">
-                    <label class="pay-label"><strong>Información de facturación</strong></label>
-                    <div class="pay-split">
-                        <div class="pay-section-flex">
-                            <label for="nameInput" class="pay-input-label">Nombre:</label> <!--Nombre del cliente-->
-                            <input id="nameInput" class="pay-input" type="text">
-                        </div>
-                        <div class="pay-section-flex">
-                            <label for="lastnameInput" class="pay-input-label">Apellidos:</label> <!--Apellido del cliente-->
-                            <input id="lastnameInput" class="pay-input" type="text">
-                        </div>
-                    </div>
-    
-                    <div class="pay-split pay-section-margin">
-                        <div class="pay-section-flex">
-                            <label for="addresInput1" class="pay-input-label">Dirección de facturación 1:</label> <!--Dirección 1-->
-                            <input id="addresInput1" class="pay-input" type="text">
-                        </div>
-                        <div class="pay-section-flex">
-                            <label for="addresInput2" class="pay-input-label">Dirección de facturación 2:</label> <!--Dirección 2-->
-                            <input id="addresInput2" class="pay-input" type="text">
-                        </div>
-                    </div>
-    
-                    <div class="pay-split-3">
-                        <div class="pay-section-flex">
-                            <label for="countryInput" class="pay-input-label">País:</label> <!--País-->
-                            <select id="countryInput" class="checkbox">
-                                <option value="NONE">Selecciona un país</option>
-                                <option value="Mexico">México</option>
-                            </select>
-                        </div>
-                        <div class="pay-section-flex">
-                            <label for="localityInput" class="pay-input-label">Localidad:</label> <!--Localidad-->
-                            <input id="localityInput" class="pay-input" type="text">
-                        </div>
-                        <div class="pay-section-flex">
-                            <label for="zipCodeInput" class="pay-input-label">Código postal:</label> <!--Código postal-->
-                            <input id="zipCodeInput" class="pay-input" type="number" maxlength="5">
-                        </div>
-                    </div>
+                <div id="elementsDiv">
+                    
                 </div>
                 <button class="btn btn-login">Pagar</button>
             </div>
