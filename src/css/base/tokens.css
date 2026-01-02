@@ -19,4 +19,9 @@
 
     --header-h: 70px;
     --bg-auth: url('/src/assets/images/background-houses-collage.jpg');
+
+    --footer-bg: #121a29;
+    --footer-text: #FAFBFC;
+    --footer-text-muted: #FEFEFE;
+    --footer-border: #aabfff; /* línea del ejemplo 03 */
 }

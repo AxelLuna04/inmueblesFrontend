@@ -2,38 +2,77 @@
 import { auth, refreshIfNeeded, getSessionInfoFromToken } from "../../utils/authManager.js";
 import { fetchMyProfile } from "../../api/profileService.js";
 
+// Atajo de desarrollador: mostrar header de usuario aunque no haya token
+// Pon esto en false cuando conectes todo al backend.
+const DEV_FAKE_USER = true;
+
 export async function initHeader() {
   const guest = document.getElementById("guestHeaderActions");
   const user  = document.getElementById("userHeaderActions");
-
   if (!guest || !user) return;
 
   const token = auth.token();
+
+  // ===== MODO DEV: sin token pero queremos ver el header de usuario =====
+  if (!token && DEV_FAKE_USER) {
+    const nameLabel       = document.getElementById("userNameLabel");
+    const avatarEl        = document.getElementById("userAvatarCircle");
+    const logoutBtn       = document.getElementById("logoutBtn");
+    const menuItemHistory = document.getElementById("menuItemHistory");
+
+    const displayName = "Usuario demo";
+
+    if (nameLabel) nameLabel.textContent = displayName;
+
+    if (avatarEl) {
+      const initial = displayName.charAt(0).toUpperCase();
+      avatarEl.textContent = initial;
+      avatarEl.style.backgroundImage = "";
+      avatarEl.style.backgroundSize = "";
+      avatarEl.style.backgroundPosition = "";
+    }
+
+    // En modo dev no mostramos opción de historial admin
+    if (menuItemHistory) {
+      menuItemHistory.style.display = "none";
+    }
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        auth.clear();
+        window.location.href = "/";
+      });
+    }
+
+    guest.classList.add("hidden");
+    user.classList.remove("hidden");
+    wireUserDropdown();
+    return;
+  }
+
+  // ===== SIN TOKEN (flujo real): invitado =====
   if (!token) {
     guest.classList.remove("hidden");
     user.classList.add("hidden");
     return;
   }
 
+  // ===== CON TOKEN (flujo real con backend) =====
   try {
-    // 1) Aseguramos access token vivo
     await refreshIfNeeded();
   } catch {
-    // refreshIfNeeded ya limpia/redirige
     guest.classList.remove("hidden");
     user.classList.add("hidden");
     return;
   }
 
-  // 2) Intentamos traer el perfil completo
   let profile = null;
   try {
-    profile = await fetchMyProfile();
-  } catch (e) {
-    console.warn("No se pudo obtener el perfil, usando fallback de token:", e);
+    profile = await fetchMyProfile(); // PerfilResponse
+  } catch {
+    // si falla, seguimos con la info mínima del token
   }
 
-  // 3) Si no hay perfil, usamos fallback del token (email)
   const sessionBasic = getSessionInfoFromToken();
   if (!sessionBasic) {
     guest.classList.remove("hidden");
@@ -41,33 +80,48 @@ export async function initHeader() {
     return;
   }
 
-  const nameLabel = document.getElementById("userNameLabel");
-  const avatarEl  = document.getElementById("userAvatarCircle");
-  const logoutBtn = document.getElementById("logoutBtn");
-  const menuBtn   = document.getElementById("userMenuButton");
-  const menu      = document.getElementById("userMenu");
+  const nameLabel       = document.getElementById("userNameLabel");
+  const avatarEl        = document.getElementById("userAvatarCircle");
+  const logoutBtn       = document.getElementById("logoutBtn");
+  const menuItemHistory = document.getElementById("menuItemHistory");
 
-  // Valor por defecto: lo que tengamos
-  const displayName = profile?.nombreCompleto || sessionBasic.email || "Mi cuenta";
-  const displayPhoto = profile?.fotoUrl || null;
+  const displayName  = profile?.nombreCompleto || sessionBasic.email || "Mi cuenta";
+  // Ojo: backend manda rutaFoto, no fotoUrl
+  const displayPhoto = profile?.rutaFoto || null;
 
   if (nameLabel) nameLabel.textContent = displayName;
 
   if (avatarEl) {
     if (displayPhoto) {
-      avatarEl.style.backgroundImage = `url(${displayPhoto})`;
-      avatarEl.style.backgroundSize = "cover";
+      avatarEl.style.backgroundImage    = `url(${displayPhoto})`;
+      avatarEl.style.backgroundSize     = "cover";
       avatarEl.style.backgroundPosition = "center";
-      avatarEl.textContent = "";
+      avatarEl.textContent              = "";
     } else {
       const initial = (displayName || "U").charAt(0).toUpperCase();
-      avatarEl.textContent = initial;
+      avatarEl.textContent         = initial;
+      avatarEl.style.backgroundImage = "";
     }
   }
 
-  // Mostrar modo usuario
   guest.classList.add("hidden");
   user.classList.remove("hidden");
+
+  const rol =
+    sessionBasic.rol ||
+    profile?.tipoUsuario ||
+    (typeof auth.role === "function" ? auth.role() : null);
+
+  if (menuItemHistory) {
+    if (rol === "ADMIN") {
+      menuItemHistory.style.display = "flex";
+      menuItemHistory.addEventListener("click", () => {
+        window.location.href = "/pages/admin/history.html";
+      });
+    } else {
+      menuItemHistory.style.display = "none";
+    }
+  }
 
   if (logoutBtn) {
     logoutBtn.addEventListener("click", () => {
@@ -76,18 +130,36 @@ export async function initHeader() {
     });
   }
 
-  if (menuBtn && menu) {
-    menuBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const isHidden = menu.hasAttribute("hidden");
-      if (isHidden) menu.removeAttribute("hidden");
-      else menu.setAttribute("hidden", "true");
-    });
+  wireUserDropdown();
+}
 
-    document.addEventListener("click", (e) => {
-      if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
-        menu.setAttribute("hidden", "true");
-      }
-    });
-  }
+// ----------------------
+// Dropdown del perfil
+// ----------------------
+function wireUserDropdown() {
+  const profileBtn = document.getElementById("userMenuButton");
+  const dropdown   = document.getElementById("userMenu");
+  if (!profileBtn || !dropdown) return;
+
+  const toggleMenu = () => {
+    dropdown.classList.toggle("is-open");
+  };
+
+  const closeMenu = () => {
+    dropdown.classList.remove("is-open");
+  };
+
+  profileBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleMenu();
+  });
+
+  document.addEventListener("click", (event) => {
+    const isClickInsideDropdown = dropdown.contains(event.target);
+    const isProfileClicked      = profileBtn.contains(event.target);
+
+    if (!isClickInsideDropdown && !isProfileClicked) {
+      closeMenu();
+    }
+  });
 }

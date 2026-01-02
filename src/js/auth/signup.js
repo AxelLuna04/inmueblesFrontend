@@ -1,5 +1,19 @@
 import { registerRequest, saveAgendaRequest } from "../../api/authService.js";
 import { enablePasswordToggle } from "../../utils/togglePassword.js";
+// src/js/auth/signup.js (nombre que tengas)
+/*
+import {
+  to24Hour,
+  timeToMinutesFromLabel,
+  initAgendaTimeSelectors,
+  buildAgendaPayloadFromForm,
+} from "../../utils/agendaUtils.js";
+*/
+import {
+  initAgendaTimeSelectors,
+  buildAgendaPayloadFromForm,
+} from "../../utils/agendaUtils.js";
+
 
 const MAX_BYTES = 10 * 1024 * 1024; // 10MB como el backend
 const ALLOWED_MIMES = ["image/jpeg", "image/png", "image/webp"];
@@ -33,24 +47,6 @@ function getFotoFileOrThrow() {
   return file;
 }
 
-// Convierte "7:00 AM" -> "07:00", "1:00 PM" -> "13:00"
-function to24Hour(timeLabel) {
-  if (!timeLabel) return null;
-  const [time, period] = timeLabel.split(" ");
-  let [h, m] = time.split(":").map(Number);
-  if (period === "PM" && h !== 12) h += 12;
-  if (period === "AM" && h === 12) h = 0;
-  const hh = String(h).padStart(2, "0");
-  const mm = String(m).padStart(2, "0");
-  return `${hh}:${mm}`; // "07:00"
-}
-
-function timeToMinutesFromLabel(label) {
-  const hhmm = to24Hour(label); // "07:00"
-  if (!hhmm) return 0;
-  const [h, m] = hhmm.split(":").map(Number);
-  return h * 60 + m;
-}
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -77,75 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 1. GENERAR HORAS (usando utils compartidos)
+    const selInicio   = document.getElementById("horaInicio");
+    const selFin      = document.getElementById("horaFin");
+    const selDuracion = document.getElementById("duracionVisita");
 
-    // 1. GENERAR HORAS
-    // --- LÓGICA DE AGENDA MEJORADA ---
-    // Generar array de horas base
-    const baseHoras = [];
-    for(let i=7; i<=20; i++) { 
-        const suffix = i >= 12 ? 'PM' : 'AM';
-        const val = i > 12 ? i - 12 : i;
-        baseHoras.push(`${val}:00 ${suffix}`); // Formato para mostrar
-    }
+    initAgendaTimeSelectors(selInicio, selFin, selDuracion);
 
-    const selInicio = document.getElementById('horaInicio');
-    const selFin = document.getElementById('horaFin');
-    const selDuracion = document.getElementById('duracionVisita');
-
-    // 1.1. Llenar Hora Inicio
-    baseHoras.forEach(h => {
-        // No permitimos la última hora como inicio (porque no habría hora fin)
-        if(h !== baseHoras[baseHoras.length -1]) {
-            const opt = new Option(h, h);
-            selInicio.add(opt);
-        }
-    });
-
-    // 1.2. Evento: Cuando cambia Hora Inicio
-    selInicio.addEventListener('change', () => {
-        const inicioVal = selInicio.value;
-        const inicioMins = timeToMinutesFromLabel(inicioVal);
-        
-        // Limpiar y repoblar Hora Fin
-        selFin.innerHTML = '<option value="" disabled selected>Hora Máxima</option>';
-        
-        baseHoras.forEach(h => {
-            if (timeToMinutesFromLabel(h) > inicioMins) {
-                selFin.add(new Option(h, h));
-            }
-        });
-        
-        // Resetear duración al cambiar horas
-        checkDuracion();
-    });
-
-    // 1.3. Evento: Cuando cambia Hora Fin
-    selFin.addEventListener('change', checkDuracion);
-
-    // Función para validar duraciones permitidas
-    function checkDuracion() {
-        const inicioLabel = selInicio.value;
-        const finLabel = selFin.value;
-        
-        // Habilitar todas las opciones primero
-        Array.from(selDuracion.options).forEach(opt => opt.disabled = false);
-
-        if (inicioLabel && finLabel) {
-            const diffMins = timeToMinutesFromLabel(finLabel) - timeToMinutesFromLabel(inicioLabel);
-            
-            // Deshabilitar duraciones mayores al rango seleccionado
-            Array.from(selDuracion.options).forEach(opt => {
-                if (parseInt(opt.value) > diffMins) {
-                    opt.disabled = true;
-                }
-            });
-
-            // Si la opción seleccionada actualmente es inválida, resetearla
-            if (parseInt(selDuracion.value) > diffMins) {
-                selDuracion.value = "30"; // Valor seguro por defecto
-            }
-        }
-    }
 
     // 2. TOGGLE TIPO DE USUARIO
     const tipoUsuario = document.getElementById('tipoUsuario');
@@ -372,38 +306,5 @@ function buildRegistroPayload() {
     nombreCompleto,
     fechaNacimiento: fechaNac,
     telefono,
-  };
-}
-
-// Lee la agenda desde el formulario
-function buildAgendaPayloadFromForm() {
-  const horaInicioLabel = document.getElementById("horaInicio").value || null;
-  const horaFinLabel = document.getElementById("horaFin").value || null;
-  const duracion = document.getElementById("duracionVisita").value;
-
-  const horarioAtencionInicio = to24Hour(horaInicioLabel);
-  const horarioAtencionFin = to24Hour(horaFinLabel);
-  const duracionVisita = duracion ? Number(duracion) : null;
-
-  // En lugar de usar un hidden, podemos leer directamente los botones activos
-  const dayBtns = document.querySelectorAll(".day-btn");
-  const selected = new Set();
-  dayBtns.forEach((btn) => {
-    if (btn.classList.contains("active")) {
-      selected.add(btn.dataset.day); // asumiendo data-day="L" etc.
-    }
-  });
-
-  return {
-    lunes: selected.has("L"),
-    martes: selected.has("M"),
-    miercoles: selected.has("X"),
-    jueves: selected.has("J"),
-    viernes: selected.has("V"),
-    sabado: selected.has("S"),
-    domingo: selected.has("D"),
-    horarioAtencionInicio,
-    horarioAtencionFin,
-    duracionVisita,
   };
 }

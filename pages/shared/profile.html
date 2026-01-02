@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="/src/css/styles.css">
+    <link rel="stylesheet" href="/src/css/pages/signup.css">
     <link rel="stylesheet" href="/src/css/pages/profile.css">
     <script type="module" src="/src/js/shared/profile.js"></script>
 </head>
@@ -51,44 +52,19 @@
                             <span for="tipoUsuario" class="label-info">Cliente</span>
                         </div>
 
-                        <!-- Nombre -->
+                        <!-- Nombre Completo -->
                         <div class="form-group blue-box">
-                            <label for="nombre">Nombre Completo</label>
-                            <span for="nombre" class="label-info">Mike Hernandez Rivera</span>
+                            <label for="nombreCompleto">Nombre Completo</label>
+                            <span id="nombreLabel" class="label-info">Mike Hernandez Rivera</span>
+                            <input type="text" id="nombreCompleto" class="form-input profile-edit-field">
                         </div>
 
                         <!-- Fecha de Nacimiento -->
                         <div class="form-group blue-box">
                             <label for="fechaNacimiento">Fecha de Nacimiento</label>
-                            <input type="date" id="fechaNacimiento" class="form-input" required min="1900-01-01" max="2007-01-01">
-                        </div>
-
-                        <!-- Contraseña -->
-                        <div class="form-group blue-box">
-                            <label for="contrasenia">Contraseña</label>
-                            <div class="input-wrapper">
-                                <input type="password" id="contrasenia" class="form-input" required>
-                                <i class="fa-solid fa-eye input-icon toggle-password"  id="togglePassword"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="password-guide">
-                            <p>Tu contraseña deberá incluir:</p>
-                            <ul>
-                                <li id="rule-length"><i class="fa-solid fa-circle"></i> Mínimo 8 caracteres</li>
-                                <li id="rule-upper"><i class="fa-solid fa-circle"></i> Una mayúscula (A-Z)</li>
-                                <li id="rule-lower"><i class="fa-solid fa-circle"></i> Una minúscula (a-z)</li>
-                                <li id="rule-number"><i class="fa-solid fa-circle"></i> Un número (0-9)</li>
-                            </ul>
-                        </div>
-
-                        <!-- Confirmar Contraseña -->
-                        <div class="form-group blue-box">
-                            <label for="confirmarContrasenia">Confirmar Contraseña</label>
-                            <div class="input-wrapper">
-                                <input type="password" id="confirmarContrasenia" class="form-input" required>
-                                <i id="matchIcon" class="input-icon fa-solid" style="right: 15px; display: none;"></i>
-                            </div>
+                            <span id="fechaNacimientoLabel" class="label-info">12/03/1995</span>
+                            <input type="date" id="fechaNacimiento" class="form-input profile-edit-field"
+                                    min="1900-01-01" max="2007-01-01">
                         </div>
                     </div>
 
@@ -100,42 +76,69 @@
                             <div class="photo-preview" id="photoPreview">
                                 <i class="fa-solid fa-user"></i>
                             </div>
-                            <!-- Input file oculto -->
-                        <input type="file" id="fotoPerfil" accept=".jpg, .jpeg, .png, .webp" hidden>
-                            
-                            <!-- Botón actualizado según tu solicitud -->
-                <!-- TO DO -->
-                            <button type="button" class="btn btn-register" onclick="document.getElementById('fotoPerfil').click()">
+
+                            <input type="file" id="fotoPerfil" accept=".jpg, .jpeg, .png, .webp" hidden>
+
+                            <!-- botón editar foto (le añadimos id para manejarlo en JS) -->
+                            <button type="button" id="btnEditPhoto" class="btn btn-register">
                                 Editar Foto
                             </button>
-                            
-                            <small class="upload-hint">Formato JPG/JPEG, Máx 1MB</small>
-                            <p id="fileError" class="error-text"></p>
-                        </div>
-                        
-                        <h2 class="section-subtitle title-blue">Datos de Contacto</h2>
-                        <!-- Teléfono -->
-                        <div class="form-group blue-box">
-                            <label for="telefono">Número de Teléfono</label>
-                            <input type="number" id="telefono" class="form-input" required min="0">
-                        </div><!-- NO NEGATIVOS, FORMATO TELÉFONO? -->
 
-                        <!-- Correo -->
-                        <div class="form-group blue-box">
-                            <label for="correo">Correo Electrónico</label>
-                            <input type="email" id="correo" class="form-input" required>
+                            <!-- OJO: aquí pon 10MB para coincidir con backend -->
+                            <small class="upload-hint" id="lbPhotoWarning">Formatos JPG, PNG o WEBP. Máx 10MB</small>
+                            <p id="fileError" class="error-text"></p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SECCIÓN INFERIOR: CONFIGURAR AGENDA -->
-                <div id="agendaSection" class="agenda-section hidden">
-                    <h2 class="section-subtitle title-blue">Configurar Agenda</h2>
-                    
+                <!-- SECCIÓN INTERMEDIA: DATOS DE CONTACTO -->
+                <h2 class="section-subtitle title-blue contact-title">Datos de Contacto</h2>
+                <div class="contact-grid">
+                    <!-- Teléfono -->
+                    <div class="form-group blue-box">
+                        <label for="telefono">Número de Teléfono</label>
+                        <span id="telefonoLabel" class="label-info">+52 555 555 5555</span>
+                        <input type="text" id="telefono" class="form-input profile-edit-field">
+                    </div>
+
+                    <!-- Correo -->
+                    <div class="form-group blue-box">
+                        <label for="correo">Correo Electrónico</label>
+                        <span id="correoLabel" class="label-info">correo@ejemplo.com</span>
+                        <input type="email" id="correo" class="form-input profile-edit-field">
+                    </div>
+                </div>
+
+                <!-- Botón de Envío -->
+                <div class="form-actions-register">
+                    <button type="button" id="btnEditProfile" class="btn btn-primary-rect">
+                        Editar Perfil
+                    </button>
+
+                    <button type="submit" id="btnSaveProfile" class="btn btn-primary-rect" style="display:none;">
+                        Guardar cambios
+                    </button>
+
+                    <button type="button" id="btnCancelEdit" class="btn" style="display:none;">
+                        Cancelar
+                    </button>
+                </div>
+                <p id="mainError" class="error-message" hidden></p>
+            </form>
+        </div>
+        <!-- SECCIÓN INFERIOR: CONFIGURAR AGENDA (ACORDEÓN) -->
+        <div class="white-main-card agenda-card" id="agendaCard">
+            <!-- Cabecera clickable -->
+            <button type="button" id="agendaAccordionHeader" class="agenda-header">
+                <h2 class="section-subtitle title-blue">Configurar Agenda</h2>
+                <i class="fa-solid fa-chevron-down agenda-chevron"></i>
+            </button>
+
+            <!-- Cuerpo colapsable -->
+            <div id="agendaAccordionBody" class="agenda-body">
+                <div id="agendaSection" class="agenda-section">
                     <div class="agenda-grid">
-                        
                         <!-- 1. Disponibilidad -->
-                        <!-- Agregada clase blue-box -->
                         <div class="agenda-item item-days form-group blue-box">
                             <label>Disponibilidad <span class="info-text">(Seleccione días disponibles)</span></label>
                             <div class="days-container">
@@ -147,7 +150,6 @@
                                 <button type="button" class="day-btn" data-day="S">S</button>
                                 <button type="button" class="day-btn" data-day="D">D</button>
                             </div>
-                            <input type="hidden" id="diasSeleccionados" name="diasSeleccionados">
                         </div>
 
                         <!-- 2. Horario de Atención -->
@@ -155,43 +157,147 @@
                             <label>Horario de Atención</label>
                             <div class="hours-inputs">
                                 <select id="horaInicio" class="form-input">
-                                    <option value="" disabled selected>Hora Inicio</option>
-                                    <!-- JS llena esto -->
+                                <option value="" disabled selected>Hora Inicio</option>
                                 </select>
                                 <select id="horaFin" class="form-input">
-                                    <option value="" disabled selected>Hora Máxima</option>
-                                    <!-- JS llena esto -->
+                                <option value="" disabled selected>Hora Máxima</option>
                                 </select>
                             </div>
                         </div>
 
-                        <!-- 3. Duración Visitas -->
-                        <div class="agenda-item item-duration form-group blue-box">
-                            <label>Duración Visitas</label>
-                            <select id="duracionVisita" class="form-input">
+                        <!-- 3. Duración Visitas + botón editar/guardar agenda alineado a la derecha -->
+                        <div class="agenda-item item-duration form-group blue-box agenda-duration-row">
+                            <div class="agenda-duration-left">
+                                <label>Duración Visitas</label>
+                                <select id="duracionVisita" class="form-input">
                                 <option value="30">30 minutos</option>
                                 <option value="60">60 minutos (1 hr)</option>
                                 <option value="90">90 minutos (1.5 hrs)</option>
                                 <option value="120">120 minutos (2 hrs)</option>
-                            </select>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="agenda-actions">
+                            <button type="button" id="btnEditAgenda" class="btn btn-primary-rect">
+                            Editar agenda
+                            </button>
+                            <button type="button" id="btnSaveAgenda" class="btn btn-primary-rect" style="display:none;">
+                            Guardar agenda
+                            </button>
+                            <button type="button" id="btnCancelAgenda" class="btn btn-outline-danger" style="display:none;">
+                            Cancelar
+                            </button>
                         </div>
 
-                        <!-- 4. Espacio Vacío -->
+                        <!-- 4. Espacio vacío opcional -->
                         <div class="agenda-item item-empty"></div>
                     </div>
                 </div>
-
-                <!-- Botón de Envío -->
-                <div class="form-actions-register">
-                    <button type="submit" class="btn btn-primary-rect">Crear Cuenta</button>
-                </div>
-                
-                <p id="mainError" class="error-message" hidden></p>
-            </form>
+            </div>
         </div>
-        <div class="white-main-card">
-            <h2 class="section-subtitle title-blue">Cambiar Dirección de Correo Electrónico</h2>
-            
+
+
+        <!-- CAMBIO DE CONTRASEÑA (ACORDEÓN) -->
+        <div class="white-main-card password-card">
+            <!-- Header clickable -->
+            <button type="button" class="password-header">
+                <h2 class="section-subtitle title-blue">Cambiar contraseña</h2>
+                <i class="fa-solid fa-chevron-down password-chevron"></i>
+            </button>
+
+            <!-- Cuerpo colapsable -->
+            <div class="password-body">
+                <form id="passwordForm" class="password-form">
+
+                <!-- Contraseña actual -->
+                <div class="form-group blue-box">
+                    <label for="currentPassword">Contraseña actual</label>
+                    <div class="input-wrapper">
+                    <input
+                        type="password"
+                        id="currentPassword"
+                        class="form-input"
+                        autocomplete="current-password"
+                        disabled
+                    >
+                    <i
+                        class="fa-solid fa-eye input-icon toggle-password"
+                        id="toggleCurrentPassword"
+                    ></i>
+                    </div>
+                </div>
+
+                <!-- Nueva contraseña -->
+                <div class="form-group blue-box">
+                    <label for="newPassword">Nueva contraseña</label>
+                    <div class="input-wrapper">
+                    <input
+                        type="password"
+                        id="newPassword"
+                        class="form-input"
+                        autocomplete="new-password"
+                        disabled
+                    >
+                    <i
+                        class="fa-solid fa-eye input-icon toggle-password"
+                        id="toggleNewPassword"
+                    ></i>
+                    </div>
+                </div>
+
+                <!-- Guía de contraseña (misma de signup) -->
+                <div class="password-guide">
+                    <p>Tu contraseña deberá incluir:</p>
+                    <ul>
+                    <li id="rule-length"><i class="fa-solid fa-circle"></i> Mínimo 8 caracteres</li>
+                    <li id="rule-upper"><i class="fa-solid fa-circle"></i> Una mayúscula (A-Z)</li>
+                    <li id="rule-lower"><i class="fa-solid fa-circle"></i> Una minúscula (a-z)</li>
+                    <li id="rule-number"><i class="fa-solid fa-circle"></i> Un número (0-9)</li>
+                    </ul>
+                </div>
+
+                <!-- Confirmar nueva contraseña -->
+                <div class="form-group blue-box">
+                    <label for="confirmNewPassword">Confirmar nueva contraseña</label>
+                    <div class="input-wrapper">
+                    <input
+                        type="password"
+                        id="confirmNewPassword"
+                        class="form-input"
+                        autocomplete="new-password"
+                        disabled
+                    >
+                    <i id="matchIcon" class="input-icon fa-solid" style="right: 15px; display: none;"></i>
+                    </div>
+                </div>
+
+                <!-- Botones -->
+                <div class="password-actions">
+                    <button type="submit" id="btnSavePassword" class="btn btn-primary-rect">
+                    Guardar contraseña
+                    </button>
+                    <button type="button" id="btnCancelPassword" class="btn btn-outline-danger">
+                    Cancelar
+                    </button>
+                </div>
+
+                <p id="passwordError" class="error-message" hidden></p>
+                </form>
+            </div>
+        </div>
+
+        <div class="white-main-card danger-card">
+            <div class="danger-row">
+                <h2 class="section-subtitle danger-title">Eliminar cuenta</h2>
+                <div class="danger-actions">
+                <p class="danger-text">
+                    Esta acción es permanente. Se eliminará tu cuenta y no podrás recuperarla.
+                </p>
+                <button type="button" id="btnDeleteAccount" class="btn btn-danger">
+                    Eliminar cuenta
+                </button>
+                </div>
+            </div>
         </div>
     </main>
 </body>

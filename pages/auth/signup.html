@@ -22,7 +22,6 @@
     <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
-
     <!-- Header -->
     <header class="main-header">
         <div class="header-left">
@@ -114,30 +113,18 @@
                             <div class="photo-preview" id="photoPreview">
                                 <i class="fa-solid fa-user"></i>
                             </div>
-                            <!-- Input file oculto -->
-                        <input type="file" id="fotoPerfil" accept=".jpg, .jpeg, .png, .webp" hidden>
-                            
-                            <!-- Botón actualizado según tu solicitud -->
-                <!-- TO DO -->
-                            <button type="button" class="btn btn-register" onclick="document.getElementById('fotoPerfil').click()">
-                                Cargar Foto
-                            </button>
-                            
-                            <small class="upload-hint">Formato JPG/JPEG, Máx 1MB</small>
-                            <p id="fileError" class="error-text"></p>
-                        </div>
-                        
-                        <h2 class="section-subtitle title-blue">Datos de Contacto</h2>
-                        <!-- Teléfono -->
-                        <div class="form-group blue-box">
-                            <label for="telefono">Número de Teléfono</label>
-                            <input type="number" id="telefono" class="form-input" required min="0">
-                        </div><!-- NO NEGATIVOS, FORMATO TELÉFONO? -->
 
-                        <!-- Correo -->
-                        <div class="form-group blue-box">
-                            <label for="correo">Correo Electrónico</label>
-                            <input type="email" id="correo" class="form-input" required>
+                            <input type="file" id="fotoPerfil" accept=".jpg, .jpeg, .png, .webp" hidden>
+
+                            <!-- botón editar foto (le añadimos id para manejarlo en JS) -->
+                            <button type="button" id="btnEditPhoto" class="btn btn-register"
+                                    onclick="document.getElementById('fotoPerfil').click()">
+                                Editar Foto
+                            </button>
+
+                            <!-- OJO: aquí pon 10MB para coincidir con backend -->
+                            <small class="upload-hint">Formatos JPG, PNG o WEBP. Máx 10MB</small>
+                            <p id="fileError" class="error-text"></p>
                         </div>
                     </div>
                 </div>

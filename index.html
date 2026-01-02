@@ -19,39 +19,45 @@
 
 <body>
     <header class="main-header">
-    <div class="header-left">
-        <img src="/logo.jpg" alt="Logo Inmuebles" class="logo"
-            onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
-        <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
-        <i class="fa-solid fa-building"></i> Inmuebles
-        </div>
-        <h1 class="site-title">Bienvenid@ a Inmuebles a tu Alcance</h1>
-    </div>
-
-    <div class="header-actions">
-        <!-- Invitado -->
-        <div id="guestHeaderActions" class="header-actions-guest">
-        <a href="/pages/auth/signup.html" class="btn btn-register"><strong>Regístrate</strong></a>
-        <a href="/pages/auth/login.html" class="btn btn-login"><strong>Iniciar Sesión</strong></a>
+        <div class="header-left">
+            <img src="/logo.jpg" alt="Logo Inmuebles" class="logo"
+                onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
+            <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
+            <i class="fa-solid fa-building"></i> Inmuebles
+            </div>
+            <h1 class="site-title">Bienvenid@ a Inmuebles a tu Alcance</h1>
         </div>
 
-        <!-- Usuario logueado (oculto por defecto) -->
-        <div id="userHeaderActions" class="header-actions-user hidden">
-        <button id="userMenuButton" class="user-pill">
-            <div id="userAvatarCircle" class="avatar-circle">U</div>
-            <span id="userNameLabel" class="user-name-label">Mi cuenta</span>
-            <i class="fa-solid fa-caret-down user-menu-caret"></i>
-        </button>
-        <div id="userMenu" class="user-menu" hidden>
-            <a href="/pages/account/profile.html" class="user-menu-item">
-            <i class="fa-solid fa-user"></i> Mi perfil
-            </a>
-            <!-- Puedes agregar más opciones según rol -->
-            <button type="button" id="logoutBtn" class="user-menu-item user-menu-logout">
-            <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
-            </button>
+        <div class="header-actions">
+            <!-- Invitado -->
+            <div id="guestHeaderActions" class="header-actions-guest">
+                <a href="/pages/auth/signup.html" class="btn btn-register"><strong>Regístrate</strong></a>
+                <a href="/pages/auth/login.html" class="btn btn-login"><strong>Iniciar Sesión</strong></a>
+            </div>
+
+            <!-- Usuario logueado (oculto por defecto) -->
+            <div id="userHeaderActions" class="header-actions-user hidden">
+                <button id="userMenuButton" class="btn btn-register user-pill">
+                    <div id="userAvatarCircle" class="avatar-circle">U</div>
+                    <span id="userNameLabel" class="user-name-label">Mi cuenta</span>
+                    <i class="fa-solid fa-caret-down user-menu-caret"></i>
+                </button>
+
+
+                <!-- aquí añadimos hide + none para el dropdown -->
+                <div id="userMenu" class="user-menu">
+                    <a href="/pages/shared/profile.html" class="user-menu-item" id="menuItemProfile">
+                        <i class="fa-solid fa-user"></i> Mi perfil
+                    </a>
+                    <button type="button" class="user-menu-item" id="menuItemHistory" style="display:none;">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Historial movimientos
+                    </button>
+                    <button type="button" id="logoutBtn" class="user-menu-item user-menu-logout">
+                        <i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
     </header>
 
 
@@ -87,5 +93,9 @@
             <!-- Las tarjetas se generan en JS -->
         </div>
     </main>
+
+    <!-- Footer (se inyecta desde un partial) -->
+    <div data-footer></div>
+    <script type="module" src="/src/js/shared/footer.js"></script>
 </body>
 </html>

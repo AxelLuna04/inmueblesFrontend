@@ -19,3 +19,283 @@
   padding: 40px 20px;
   background: #dfdfdf;
 }
+
+/* Por defecto: solo se ven los textos estáticos */
+.profile-edit-field {
+  display: none;
+}
+
+/* Cuando el formulario esté en modo edición */
+.profile-edit-mode .profile-edit-field {
+  display: block;
+}
+
+.profile-edit-mode .label-info {
+  display: none;
+}
+
+/* Foto de perfil más grande solo en la página de perfil */
+.profile-main .photo-preview {
+  width: 11.25rem;   /* 180px */
+  height: 11.25rem;
+  border-radius: 0.75rem; /* un poco más redondeada si quieres */
+}
+
+
+.danger-card {
+  border: 1px solid #E3452F;
+  background-color: #fff5f5;
+}
+
+.danger-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.section-subtitle.danger-title {
+  color: #E3452F;
+  border-color: #f5c2c7;
+}
+
+.danger-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+.danger-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #8a1f1f;
+}
+
+.btn-danger {
+  background-color: #E3452F;
+  color: #fff;
+}
+
+/* Sección de datos de contacto horizontal */
+.contact-title {
+  margin-top: 1.5rem;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+/* En la página de perfil, la agenda no lleva borde punteado ni relleno extra */
+.profile-main .agenda-section {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 1.5rem; /* puedes ajustar o dejar 0 */
+}
+
+.btn-outline-danger {
+  background-color: #fff;
+  color: #E3452F;
+  border: 1px solid #E3452F;
+}
+
+.btn-outline-danger:hover {
+  background-color: #ffecec;
+  opacity: 1;              /* para que no se atenúe con el hover genérico */
+  transform: translateY(-2px);
+}
+
+/* Por defecto, solo se ven los spans de label-info en agenda */
+.agenda-edit-field {
+  display: none;
+}
+
+.agenda-edit-mode .agenda-edit-field {
+  display: block;
+}
+
+.agenda-edit-mode .label-info {
+  display: none;
+}
+
+/* Botones de agenda alineados a la derecha en la cuadrícula */
+.agenda-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+/* ====== AGENDA COMO ACORDEÓN ====== */
+
+/* Contenedor de la tarjeta (ya usas white-main-card, esto solo añade detalles) */
+.agenda-card {
+  padding-top: 0; /* que el header marque el inicio visual */
+}
+
+/* Cabecera clickable de la agenda */
+.agenda-header {
+  width: 100%;
+  padding: 2.5rem 1.25rem 0.9rem;      /* un poco más de aire vertical y horizontal */
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;          /* centra verticalmente título y flecha */
+  justify-content: space-between;
+  cursor: pointer;
+  color: var(--color-primary-dark); /* mismo color que tus títulos azules */
+}
+
+
+/* Reutilizamos tu título, solo ajustamos margen para que se vea más compacto */
+.agenda-header .section-subtitle {
+  margin: 0;              /* antes solo quitabas margin-bottom, aquí lo quitamos todo */
+  border-bottom: none;
+}
+
+/* Flecha */
+.agenda-chevron {
+  font-size: 1.6rem;      /* mucho más notoria */
+  line-height: 1;
+  color: inherit;         /* usa el mismo color que el texto del header */
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/* Flecha girada cuando está abierto (esto ya lo tienes) */
+.agenda-card.agenda-open .agenda-chevron {
+  transform: rotate(180deg);
+}
+
+
+/* Cuerpo colapsable */
+.agenda-body {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 1rem;
+  transition:
+    max-height 0.25s ease,
+    opacity 0.2s ease,
+    padding-top 0.2s ease;
+}
+
+/* Cuando la tarjeta está abierta */
+.agenda-card.agenda-open .agenda-body {
+  max-height: 600px; /* suficiente para el contenido */
+  opacity: 1;
+  padding-top: 0.75rem;
+}
+
+/* Ajustes de la sección agenda dentro del body en perfil */
+.profile-main .agenda-section {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0.5rem;
+}
+
+/* Fila de duración + botones al lado derecho */
+.agenda-duration-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.agenda-duration-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.agenda-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* ====== CAMBIO DE CONTRASEÑA (ACORDEÓN) ====== */
+
+.password-card {
+  padding-top: 0;
+}
+
+/* Header clickable */
+.password-header {
+  width: 100%;
+  padding: 2.5rem 1.25rem 0.9rem; /* mismo truco que usaste en agenda */
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  color: var(--color-primary-dark);
+}
+
+/* Título dentro del header */
+.password-header .section-subtitle {
+  margin: 0;
+  border-bottom: none;
+}
+
+/* Flecha */
+.password-chevron {
+  font-size: 1.6rem;
+  line-height: 1;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+/* Cuerpo colapsable */
+.password-body {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 1.25rem;
+  transition:
+    max-height 0.25s ease,
+    opacity 0.2s ease,
+    padding-top 0.2s ease,
+    padding-bottom 0.2s ease;
+}
+
+/* Abierto */
+.password-card.password-open .password-body {
+  max-height: 600px;
+  opacity: 1;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+/* Flecha girada cuando está abierto */
+.password-card.password-open .password-chevron {
+  transform: rotate(180deg);
+}
+
+/* Botones alineados a la derecha */
+.password-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+
+/* Responsive: en móvil, la parte de agenda se apila */
+@media (max-width: 768px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .agenda-duration-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .agenda-actions {
+    justify-content: flex-end;
+  }
+}

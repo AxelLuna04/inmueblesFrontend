@@ -32,7 +32,7 @@ export default defineConfig({
         listingDetails: resolve(__dirname, 'pages/shared/listingDetail.html'),
         pay: resolve(__dirname, 'pages/client/pay.html'),
 
-        historial: resolve(__dirname, 'pages/admin/historial.html')
+        historial: resolve(__dirname, 'pages/admin/history.html')
       }
     }
   }

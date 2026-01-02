@@ -176,7 +176,7 @@ function displayUserOptions() {
         case "ADMIN":
             const historialBtn = document.createElement("a");
             historialBtn.classList.add("btn", "btn-register");
-            historialBtn.href = "/pages/admin/historial.html";
+            historialBtn.href = "/pages/admin/history.html";
             historialBtn.innerHTML = `<strong>Ver historial</strong>`;
             dataVarDiv.appendChild(historialBtn);
             break;

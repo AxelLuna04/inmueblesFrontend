@@ -1,0 +1,173 @@
+
+/* Footer base */
+.site-footer{
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  width: 100%;
+}
+
+.site-footer__wrapper{
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main layout */
+.site-footer__main{
+  display: grid;
+  grid-template-columns: minmax(14rem, 18rem) 1fr;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding: 0.5rem 0.5rem 1.5rem;
+}
+
+/* Brand (logo + texto debajo) */
+.site-footer__brand{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.site-footer__logo{
+  display:inline-flex;
+  align-items:center;
+  width: fit-content;
+}
+
+.site-footer__logo-img{
+  height: 3.5rem;   /* ajusta aquí: 2.25–3rem suele verse bien */
+  width: auto;       /* mantiene proporción */
+  max-width: 16rem;  /* evita que se dispare en pantallas grandes */
+  display:block;
+  opacity: 80%;
+}
+
+.site-footer__tagline h3{
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: var(--footer-text);
+}
+
+.site-footer__tagline p{
+  margin: 0;
+  color: var(--footer-text-muted);
+}
+
+/* Columns: estilos del ejemplo 02 */
+/* Columns: alineadas a la derecha sin mover el brand */
+.site-footer__cols{
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: flex-start;
+
+  justify-content: flex-end; /* <- empuja las columnas hacia la derecha */
+  margin-left: auto;         /* <- asegura que el grupo completo se pegue a la derecha */
+  width: fit-content;        /* <- el grupo mide lo que ocupan sus columnas */
+  max-width: 100%;           /* <- evita desbordes */
+}
+
+.site-footer__col{
+  min-width: 10rem;
+}
+
+.site-footer__col h3{
+  color: var(--footer-text);
+  margin: 0 0 1.5rem 0;
+  font-size: 1.125rem;
+}
+
+.site-footer__col ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.site-footer__col li{
+  margin-bottom: 1rem; /* separación vertical */
+}
+
+.site-footer__col a{
+  color: var(--footer-text);
+  text-decoration: none;
+}
+
+.site-footer__col a:hover{
+  text-decoration: underline;
+}
+
+.site-footer__copy{
+  color: var(--footer-text-muted);
+}
+
+/* Bottom: línea + icons + copyright (layout del ejemplo 03, icons a la izquierda) */
+.site-footer__bottom{
+  border-top: 1px solid var(--footer-border, #aabfff);
+  padding: 1rem 0.5rem 0;
+  display: flex;
+  align-items: center;          /* <- en vez de end */
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.site-footer__social{
+  margin-right: auto;           /* <- empuja todo lo demás a la derecha */
+}
+
+.site-footer__social ul{
+  display: flex;                /* <- horizontal */
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.site-footer__social a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color: var(--footer-text, #FAFBFC);
+  text-decoration:none;
+}
+
+.site-footer__social svg{
+  width: 1.5rem;
+  height: 1.5rem;
+  display:block;
+  transition: transform .2s ease-in-out;
+}
+
+.site-footer__social a:hover svg{
+  transform: scale(1.1);
+}
+
+
+/* Responsive */
+@media (max-width: 900px){
+  .site-footer__main{
+    grid-template-columns: 1fr;
+  }
+
+  .site-footer__cols{
+    justify-content: center;
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 800px){
+  .site-footer__bottom{
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .site-footer__social{
+    margin-right: 0;
+  }
+}
+

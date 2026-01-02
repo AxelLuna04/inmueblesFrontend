@@ -1,4 +1,4 @@
-.hidden { display: none; }
+.hidden { display: none !important; }
 
 .page-blur-bg::before{
   content:"";
