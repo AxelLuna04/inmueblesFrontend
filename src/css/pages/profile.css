@@ -30,9 +30,17 @@
   display: block;
 }
 
-.profile-edit-mode .label-info {
+/* SOLO ocultar los spans que sean editables */
+.profile-edit-mode .label-info--editable {
   display: none;
 }
+
+
+/* Labels que nunca se ocultan en modo edición */
+.profile-edit-mode .label-info--static {
+  display: inline-block;
+}
+
 
 /* Foto de perfil más grande solo en la página de perfil */
 .profile-main .photo-preview {
@@ -216,6 +224,103 @@
   align-items: center;
 }
 
+/* ===== PREFERENCIAS (ACORDEÓN) ===== */
+
+.preferences-card {
+  padding-top: 0;
+}
+
+/* Cabecera clickable */
+.preferences-header {
+  width: 100%;
+  padding: 2.5rem 1.25rem 0.9rem; /* mismo truco que usaste en agenda */
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  color: var(--color-primary-dark);
+}
+
+/* Título dentro del header */
+.preferences-header .section-subtitle {
+  margin: 0;
+  border-bottom: none;
+}
+
+/* Flecha del header */
+.preferences-chevron {
+  font-size: 1.4rem;
+  transition: transform 0.2s ease;
+}
+
+/* Cuerpo colapsable */
+.preferences-body {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0 1.25rem;
+  transition:
+    max-height 0.25s ease,
+    opacity 0.2s ease,
+    padding-top 0.2s ease;
+}
+
+/* Cuando está abierto */
+.preferences-card.preferences-open .preferences-body {
+  max-height: 600px;
+  opacity: 1;
+  padding-top: 0.75rem;
+}
+
+/* Flecha girada al abrir */
+.preferences-card.preferences-open .preferences-chevron {
+  transform: rotate(180deg);
+}
+
+/* Grid 2x2 */
+.preferences-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Texto explicativo */
+.preferences-hint {
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0 0 0.75rem;
+}
+
+/* Acciones alineadas a la derecha */
+.preferences-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Modo edición de preferencias:
+   - por defecto solo se ven los spans (.preferences-label)
+   - en edición se muestran inputs y se ocultan spans */
+.preferences-edit-field {
+  display: none;
+}
+
+.preferences-label {
+  display: inline-block;
+}
+
+.preferences-card.preferences-edit-mode .preferences-edit-field {
+  display: block;
+}
+
+.preferences-card.preferences-edit-mode .preferences-label {
+  display: none;
+}
+
 /* ====== CAMBIO DE CONTRASEÑA (ACORDEÓN) ====== */
 
 .password-card {
@@ -284,6 +389,8 @@
 }
 
 
+
+
 /* Responsive: en móvil, la parte de agenda se apila */
 @media (max-width: 768px) {
   .contact-grid {
@@ -297,5 +404,9 @@
 
   .agenda-actions {
     justify-content: flex-end;
+  }
+
+  .preferences-grid {
+    grid-template-columns: 1fr;
   }
 }

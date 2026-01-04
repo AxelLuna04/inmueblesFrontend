@@ -1,8 +1,12 @@
 // src/js/app.js
 import { fetchPublicListings, mapPublicCardToFront } from "../../api/listingsService.js";
 import { initHeader } from "../shared/header.js";
+import { initFooter } from "../shared/footer.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  initHeader();
+  initFooter();
+  
   const container = document.getElementById("propertiesContainer");
   const searchInput = document.getElementById("searchInput");
   const searchIcon = document.querySelector(".search-icon");
@@ -12,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let lastPage = false;
   let properties = [];
 
-  initHeader();
 
   function renderProperties(list) {
     if (!list.length) {

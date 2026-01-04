@@ -1,3 +1,4 @@
+// src/api/catalogueService.js
 import { ErrorApi } from '../errors/errorApi.js';
 
 const API_BASE = import.meta.env.VITE_API_BASE + "/v1" || '/api/v1';
@@ -26,4 +27,41 @@ export async function getPayMethods() {
     });
     if (!res.ok) throw new ErrorApi("No se pudieron cargar los métodos de pago.");
     return await res.json();
+}
+
+/**
+ * Devuelve un catálogo de ocupaciones.
+ * Cuando tengas la ruta real en backend, ajusta la URL y descomenta el fetch.
+ */
+export async function fetchOcupaciones() {
+  // ======== IMPLEMENTACIÓN REAL (dejar comentada por ahora) ========
+  /*
+  const token = localStorage.getItem("accessToken");
+  if (!token) throw new Error("No hay sesión activa");
+
+
+  // AJUSTA LA RUTA REAL AL SERVIDOR
+
+  const res = await fetch(`${API_BASE}/catalogos/ocupaciones`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Error al cargar catálogo de ocupaciones.");
+  }
+
+  // Esperando algo tipo: [{ id: 1, nombre: "Empleado" }, ...]
+  return res.json();
+  */
+
+  // ======== MODO DEV: datos fake para no romper nada ========
+  return [
+    { id: 1, nombre: "Empleado" },
+    { id: 2, nombre: "Independiente" },
+    { id: 3, nombre: "Estudiante" },
+    { id: 4, nombre: "Jubilado" },
+  ];
 }

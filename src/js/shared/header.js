@@ -2,11 +2,34 @@
 import { auth, refreshIfNeeded, getSessionInfoFromToken } from "../../utils/authManager.js";
 import { fetchMyProfile } from "../../api/profileService.js";
 
+// 1. IMPORTAR HTML Y CSS
+import headerHtml from '../../../pages/shared/header.html?raw';
+import '../../css/components/header.css';
+
 // Atajo de desarrollador: mostrar header de usuario aunque no haya token
 // Pon esto en false cuando conectes todo al backend.
 const DEV_FAKE_USER = true;
 
 export async function initHeader() {
+  // 2. INYECCIÓN DEL HTML
+  // Buscamos el marcador <div data-header> en el DOM
+  const mountPoint = document.querySelector("[data-header]");
+  
+  if (mountPoint) {
+    // Usamos replaceWith para que el <div> desaparezca y quede el <header> limpio
+    const tpl = document.createElement("template");
+    tpl.innerHTML = headerHtml.trim();
+    const headerElement = tpl.content.firstElementChild;
+    mountPoint.replaceWith(headerElement);
+  } else {
+    // Si no hay marcador, asumimos que quizás el header ya está en el HTML (fallback)
+    // o que no se debe renderizar.
+    // console.log("No se encontró [data-header], buscando elementos existentes...");
+  }
+
+  // 3. A PARTIR DE AQUÍ, TU LÓGICA ORIGINAL SE MANTIENE IGUAL
+  // (Ahora que el HTML existe en el DOM, getElementById funcionará)
+
   const guest = document.getElementById("guestHeaderActions");
   const user  = document.getElementById("userHeaderActions");
   if (!guest || !user) return;
@@ -70,6 +93,7 @@ export async function initHeader() {
   try {
     profile = await fetchMyProfile(); // PerfilResponse
   } catch {
+    // Fallback silencioso
     // si falla, seguimos con la info mínima del token
   }
 
@@ -134,7 +158,7 @@ export async function initHeader() {
 }
 
 // ----------------------
-// Dropdown del perfil
+// Funciones auxiliares (sin cambios)
 // ----------------------
 function wireUserDropdown() {
   const profileBtn = document.getElementById("userMenuButton");

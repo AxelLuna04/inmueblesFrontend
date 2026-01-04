@@ -18,14 +18,21 @@ import {
   buildDiasSummary,
 } from "../../utils/agendaUtils.js";
 import { fetchAgenda, saveAgenda } from "../../api/agendaService.js";
+import { fetchOcupaciones } from "../../api/catalogueService.js";
 
+// MODO DEV
 const DEV_BYPASS_AUTH = true; // <-- Pónlo en false antes de subir a prod
+const DEV_SHOW_ALL_SECTIONS = true;
 
 let originalProfile = null;   // Perfil mapeado al front
 let pendingPhotoFile = null;  // Archivo de foto pendiente
 
 let agendaLoaded = false;      // ya llamamos a GET /agenda
 let originalAgenda = null;     // último ConfigurarAgendaResponse
+
+let ocupacionesCatalog = [];
+let ocupacionesLoaded  = false;
+
 
 // Reglas de contraseña (mismas que en signup)
 const PASSWORD_RULES = [
@@ -62,27 +69,6 @@ function isPasswordStrong(value) {
 // =========================
 //  INICIO DE PÁGINA
 // =========================
-/*document.addEventListener("DOMContentLoaded", async () => {
-  try {
-    setEditing(false);
-
-    await loadProfile();
-    setEditing(false);
-
-    wireEditProfile();
-    initAgendaOnProfile();
-    wireAgendaAccordion();          // si ya lo tienes
-    wirePasswordAccordion();        // NUEVO
-    wireDeleteAccount();
-
-    // toggles de ojo para contraseña actual y nueva
-    enablePasswordToggle("#toggleCurrentPassword", "#currentPassword");
-    enablePasswordToggle("#toggleNewPassword", "#newPassword");
-  } catch (err) {
-    console.error("Error cargando perfil:", err);
-    showMainError("No se pudo cargar tu perfil. Intenta más tarde.");
-  }
-});*/
 document.addEventListener("DOMContentLoaded", async () => {
     // 1) Solo pide sesión si NO estás en modo dev
     if (!DEV_BYPASS_AUTH) {
@@ -96,6 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     wireEditProfile();
     initAgendaOnProfile();      // agenda (roles + lazy-load)
     wireAgendaAccordion();      // header de agenda (flecha / abrir-cerrar)
+    wirePreferencesAccordion();
     wirePasswordAccordion();    // NUEVO: acordeón de cambio de contraseña
     wireDeleteAccount();        // eliminar cuenta
 
@@ -103,16 +90,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     enablePasswordToggle("#toggleCurrentPassword", "#currentPassword");
     enablePasswordToggle("#toggleNewPassword", "#newPassword");
 
+    // 🔹 MODO DEV: cargar catálogo de ocupaciones aunque no haya perfil/sesión
+    // ensureOcupacionesLoaded();  // <-- ESTA LÍNEA
+
     // 3) Cargar perfil ASÍNCRONO sin bloquear el wiring de la UI
     loadProfile()
-        .then(() => {
-        // por si setEditing(false) depende de datos posteriores
+      .then(() => {
         setEditing(false);
-        })
-        .catch((err) => {
+        applyRoleVisibility();    // NUEVO: ajusta qué tarjetas se ven según rol
+      })
+      .catch((err) => {
         console.error("Error cargando perfil:", err);
         showMainError("No se pudo cargar tu perfil. Intenta más tarde.");
-        });
+        // Sin perfil, pero con DEV_SHOW_ALL_SECTIONS=true, seguirás viendo todo
+        applyRoleVisibility();
+      });
 });
 
 
@@ -126,6 +118,12 @@ async function loadProfile() {
   const raw = await fetchMyProfile();           // PerfilResponse del backend
   originalProfile = mapProfileDataToFront(raw); // normalizamos nombres
   fillProfileUI(originalProfile);
+  applyStaticFieldsByRole();
+  // Si es cliente, vamos precargando el catálogo de ocupaciones
+  if (originalProfile.tipoUsuario === "CLIENTE") {
+    await ensureOcupacionesLoaded();
+    applyOcupacionFromProfile(originalProfile);
+  }
 }
 
 function fillProfileUI(p) {
@@ -189,7 +187,95 @@ function fillProfileUI(p) {
     }
   }
   if (fileError) fileError.textContent = "";
+  fillPreferencesFromProfile(p);
 }
+
+async function ensureOcupacionesLoaded() {
+  if (ocupacionesLoaded) return;
+
+  try {
+    ocupacionesCatalog = await fetchOcupaciones();
+    ocupacionesLoaded = true;
+    fillOcupacionSelect();
+
+    // Si ya tenemos perfil cargado, sincronizamos el valor con la ocupación del perfil
+    if (originalProfile) {
+      applyOcupacionFromProfile(originalProfile);
+    }
+  } catch (err) {
+    console.error("Error cargando ocupaciones:", err);
+  }
+}
+
+function fillOcupacionSelect() {
+  const select = document.getElementById("idOcupacion");
+  if (!select) return;
+
+  // Deja solo el placeholder
+  select.innerHTML = '<option value="">Selecciona una ocupación</option>';
+
+  ocupacionesCatalog.forEach((o) => {
+    const opt = document.createElement("option");
+    opt.value = String(o.id);
+    opt.textContent = o.nombre;
+    select.appendChild(opt);
+  });
+}
+
+function applyOcupacionFromProfile(p) {
+  const select = document.getElementById("idOcupacion");
+  const label  = document.getElementById("ocupacionLabel");
+  if (!select || !label) return;
+
+  const id = p.ocupacion ?? p.idOcupacion ?? null; // según cómo lo tengas en el mapeo
+  if (!id) {
+    label.textContent = "—";
+    select.value = "";
+    return;
+  }
+
+  const idStr = String(id);
+  select.value = idStr;
+
+  const found = ocupacionesCatalog.find((o) => String(o.id) === idStr);
+  label.textContent = found ? found.nombre : `ID ${idStr}`;
+}
+
+function applyStaticFieldsByRole() {
+  const tipoSpan   = document.querySelector('[for="tipoUsuario"].label-info, span[for="tipoUsuario"], .label-info-tipo');
+  const fechaSpan  = document.getElementById("fechaNacimientoLabel");
+  const fechaInput = document.getElementById("fechaNacimiento");
+  const telSpan    = document.getElementById("telefonoLabel");
+  const telInput   = document.getElementById("telefono");
+
+  // Tipo de usuario: siempre estático
+  if (tipoSpan) {
+    tipoSpan.classList.add("label-info--static");
+  }
+
+  // Fecha nacimiento: siempre estática
+  if (fechaSpan) {
+    fechaSpan.classList.add("label-info--static");
+  }
+  if (fechaInput) {
+    fechaInput.disabled = true;
+    fechaInput.classList.remove("profile-edit-field");
+    fechaInput.style.display = "none";
+  }
+
+  // Teléfono: si es CLIENTE → siempre estático
+  if (originalProfile?.tipoUsuario === "CLIENTE") {
+    if (telSpan) {
+      telSpan.classList.add("label-info--static");
+    }
+    if (telInput) {
+      telInput.disabled = true;
+      telInput.classList.remove("profile-edit-field");
+      telInput.style.display = "none";
+    }
+  }
+}
+
 
 // =========================
 //  MODO EDICIÓN PERFIL
@@ -336,30 +422,37 @@ function setEditing(isEditing) {
 
   if (!form) return;
 
-  // Clase para mostrar/ocultar label-info vs inputs
   if (isEditing) {
     form.classList.add("profile-edit-mode");
   } else {
     form.classList.remove("profile-edit-mode");
   }
 
-  // Inputs editables
   const nombreInput = document.getElementById("nombreCompleto");
   const telInput    = document.getElementById("telefono");
-  const editableInputs = [nombreInput, telInput];
+  // const editableInputs = [nombreInput, telInput];
+
+  // NUEVO: solo habilitar teléfono si es VENDEDOR
+  const editableInputs = [];
+  if (nombreInput) editableInputs.push(nombreInput);
+
+  const rol = originalProfile?.tipoUsuario;
+  if (rol === "VENDEDOR" && telInput) {
+    editableInputs.push(telInput);
+  }
 
   editableInputs.forEach((input) => {
     if (!input) return;
     input.disabled = !isEditing;
   });
 
-  // Botones y controles de foto
   if (btnEdit)        btnEdit.style.display        = isEditing ? "none"        : "inline-flex";
   if (btnSave)        btnSave.style.display        = isEditing ? "inline-flex" : "none";
   if (btnCancel)      btnCancel.style.display      = isEditing ? "inline-flex" : "none";
   if (btnPhoto)       btnPhoto.style.display       = isEditing ? "inline-flex" : "none";
   if (lbPhotoWarning) lbPhotoWarning.style.display = isEditing ? "inline-flex" : "none";
 }
+
 
 
 /**
@@ -371,6 +464,10 @@ function buildProfilePatchBody(original) {
 
   const nombreInput   = document.getElementById("nombreCompleto");
   const telefonoInput = document.getElementById("telefono");
+  const ocupSelect    = document.getElementById("idOcupacion");
+  const presupuestoInput   = document.getElementById("presupuesto");
+  const ubicacionInput     = document.getElementById("ubicacionInteres");
+  const miembrosInput      = document.getElementById("miembrosFamilia");
 
   const newNombre   = nombreInput?.value.trim() || "";
   const newTelefono = telefonoInput?.value.trim() || "";
@@ -379,13 +476,119 @@ function buildProfilePatchBody(original) {
     body.nombreCompleto = newNombre;
   }
 
-  // teléfono solo aplica realmente a VENDEDOR, pero si el DTO de cliente no lo usa, lo ignorará
-  if (newTelefono !== (original.telefono || "")) {
-    body.telefono = newTelefono || null;
+  if (original.tipoUsuario === "VENDEDOR") {
+    if (newTelefono !== (original.telefono || "")) {
+      body.telefono = newTelefono || null;
+    }
+  }
+
+  if (original.tipoUsuario === "CLIENTE") {
+    // Preferencias
+    const newPresupuesto = presupuestoInput?.value.trim() || "";
+    const newUbicacion   = ubicacionInput?.value.trim() || "";
+    const newMiembros    = miembrosInput?.value.trim() || "";
+    const newOcupIdStr   = ocupSelect?.value || "";
+
+    if (newPresupuesto !== "" && Number(newPresupuesto) !== (original.presupuesto ?? null)) {
+      body.presupuesto = Number(newPresupuesto);
+    } else if (newPresupuesto === "" && original.presupuesto != null) {
+      body.presupuesto = null;
+    }
+
+    if (newUbicacion !== (original.ubicacionInteres || "")) {
+      body.ubicacionInteres = newUbicacion || null;
+    }
+
+    if (newMiembros !== (original.miembrosFamilia || "")) {
+      body.numeroMiembrosFamilia = newMiembros || null;
+    }
+
+    if (newOcupIdStr) {
+      const newOcupId = Number(newOcupIdStr);
+      if (newOcupId !== (original.ocupacion ?? original.idOcupacion ?? null)) {
+        body.idOcupacion = newOcupId;
+      }
+    } else if (original.ocupacion || original.idOcupacion) {
+      // Si antes tenía ocupación y ahora borró la selección
+      body.idOcupacion = null;
+    }
   }
 
   return body;
 }
+
+
+function fillPreferencesFromProfile(p) {
+  const presupuestoLabel = document.getElementById("presupuestoLabel");
+  const presupuestoInput = document.getElementById("presupuesto");
+
+  if (presupuestoLabel) {
+    presupuestoLabel.textContent =
+      p.presupuesto != null ? p.presupuesto.toString() : "—";
+  }
+  if (presupuestoInput) {
+    presupuestoInput.value = p.presupuesto != null ? p.presupuesto : "";
+  }
+
+  const ubicacionLabel = document.getElementById("ubicacionLabel");
+  const ubicacionInput = document.getElementById("ubicacionInteres");
+
+  if (ubicacionLabel) {
+    ubicacionLabel.textContent = p.ubicacionInteres || "—";
+  }
+  if (ubicacionInput) {
+    ubicacionInput.value = p.ubicacionInteres || "";
+  }
+
+  const miembrosLabel = document.getElementById("miembrosLabel");
+  const miembrosInput = document.getElementById("numeroMiembrosFamilia");
+
+  if (miembrosLabel) {
+    miembrosLabel.textContent = p.miembrosFamilia || "—";
+  }
+  if (miembrosInput) {
+    miembrosInput.value = p.miembrosFamilia || "";
+  }
+
+  const ocupacionLabel = document.getElementById("ocupacionLabel");
+  const ocupacionInput = document.getElementById("idOcupacion");
+
+  if (ocupacionLabel) {
+    ocupacionLabel.textContent =
+      p.ocupacion != null ? p.ocupacion.toString() : "—";
+  }
+  if (ocupacionInput) {
+    ocupacionInput.value = p.ocupacion != null ? p.ocupacion : "";
+  }
+}
+
+function applyRoleVisibility() {
+  const agendaCard      = document.getElementById("agendaCard");
+  const preferencesCard = document.getElementById("preferencesCard");
+
+  if (!agendaCard && !preferencesCard) return;
+
+  // Modo dev: mostramos todo sin importar rol o si no hay perfil
+  if (DEV_SHOW_ALL_SECTIONS || !originalProfile) {
+    if (agendaCard)      agendaCard.style.display = "";
+    if (preferencesCard) preferencesCard.style.display = "";
+    return;
+  }
+
+  const rol = originalProfile.tipoUsuario;
+
+  if (rol === "CLIENTE") {
+    if (agendaCard)      agendaCard.style.display = "none";
+    if (preferencesCard) preferencesCard.style.display = "";
+  } else if (rol === "VENDEDOR") {
+    if (agendaCard)      agendaCard.style.display = "";
+    if (preferencesCard) preferencesCard.style.display = "none";
+  } else {
+    if (agendaCard)      agendaCard.style.display = "none";
+    if (preferencesCard) preferencesCard.style.display = "none";
+  }
+}
+
 
 // =========================
 //  ELIMINAR CUENTA
@@ -476,6 +679,198 @@ function wireAgendaAccordion() {
 }
 
 // =========================
+//  PREFERENCIAS ACORDEÓN
+// =========================
+function wirePreferencesAccordion() {
+  const card    = document.getElementById("preferencesCard");
+  const header  = document.getElementById("preferencesHeader");
+  const body    = document.getElementById("preferencesBody");
+  const btnEdit   = document.getElementById("btnEditPreferences");
+  const btnSave   = document.getElementById("btnSavePreferences");
+  const btnCancel = document.getElementById("btnCancelPreferences");
+
+  if (!card || !header || !body) return;
+
+  const isOpen = () => card.classList.contains("preferences-open");
+
+  const openCard = () => {
+    card.classList.add("preferences-open");
+    setPreferencesEditing(false); // al abrir, solo lectura
+  };
+
+  const closeCard = () => {
+    card.classList.remove("preferences-open");
+    setPreferencesEditing(false);
+  };
+
+  const toggleCard = () => {
+    if (isOpen()) {
+      closeCard();
+    } else {
+      openCard();
+    }
+  };
+
+  // Header: abrir/cerrar
+  header.addEventListener("click", (e) => {
+    const target = e.target;
+    if (
+      target.closest("#btnEditPreferences") ||
+      target.closest("#btnSavePreferences") ||
+      target.closest("#btnCancelPreferences")
+    ) {
+      return;
+    }
+    toggleCard();
+  });
+
+  // Botón Editar
+  if (btnEdit) {
+    btnEdit.addEventListener("click", (e) => {
+      e.stopPropagation();
+      clearMainError();
+      setPreferencesEditing(true);
+    });
+  }
+
+  // Botón Cancelar
+  if (btnCancel) {
+    btnCancel.addEventListener("click", (e) => {
+      e.stopPropagation();
+      clearMainError();
+      setPreferencesEditing(false);
+      if (originalProfile) {
+        fillPreferencesFromProfile(originalProfile);
+      }
+    });
+  }
+
+  // Botón Guardar
+  if (btnSave) {
+    btnSave.addEventListener("click", async (e) => {
+      e.stopPropagation();
+      clearMainError();
+
+      if (!originalProfile || originalProfile.tipoUsuario !== "CLIENTE") {
+        showMainError("Solo los clientes pueden editar sus preferencias.");
+        return;
+      }
+
+      const patchBody = buildPreferencesPatchBody(originalProfile);
+      const hasChanges = Object.keys(patchBody).length > 0;
+
+      if (!hasChanges) {
+        setPreferencesEditing(false);
+        return;
+      }
+
+      try {
+        const updatedRaw = await patchMyProfile(patchBody);
+        originalProfile = mapProfileDataToFront(updatedRaw);
+        fillPreferencesFromProfile(originalProfile);
+        setPreferencesEditing(false);
+        alert("Preferencias actualizadas correctamente.");
+      } catch (err) {
+        console.error(err);
+        showMainError(err.message || "Error al guardar las preferencias.");
+      }
+    });
+  }
+
+  // Estado inicial: cerrada
+  closeCard();
+}
+
+function setPreferencesEditing(isEditing) {
+  const card      = document.getElementById("preferencesCard");
+  const btnEdit   = document.getElementById("btnEditPreferences");
+  const btnSave   = document.getElementById("btnSavePreferences");
+  const btnCancel = document.getElementById("btnCancelPreferences");
+
+  const presupuestoInput = document.getElementById("presupuesto");
+  const ubicacionInput   = document.getElementById("ubicacionInteres");
+  const miembrosInput    = document.getElementById("numeroMiembrosFamilia");
+  const ocupacionInput   = document.getElementById("idOcupacion");
+
+  if (!card) return;
+
+  if (isEditing) {
+    card.classList.add("preferences-edit-mode");
+  } else {
+    card.classList.remove("preferences-edit-mode");
+  }
+
+  [presupuestoInput, ubicacionInput, miembrosInput, ocupacionInput].forEach((el) => {
+    if (el) el.disabled = !isEditing;
+  });
+
+  if (btnEdit)   btnEdit.style.display   = isEditing ? "none"        : "inline-flex";
+  if (btnSave)   btnSave.style.display   = isEditing ? "inline-flex" : "none";
+  if (btnCancel) btnCancel.style.display = isEditing ? "inline-flex" : "none";
+}
+
+/**
+ * Solo mandamos campos de preferencias que realmente cambiaron
+ * y que no están vacíos (no forzamos limpiar nada aún).
+ */
+function buildPreferencesPatchBody(original) {
+  const body = {};
+  if (!original || original.tipoUsuario !== "CLIENTE") {
+    return body;
+  }
+
+  const presupuestoInput = document.getElementById("presupuesto");
+  const ubicacionInput   = document.getElementById("ubicacionInteres");
+  const miembrosInput    = document.getElementById("numeroMiembrosFamilia");
+  const ocupacionInput   = document.getElementById("idOcupacion");
+
+  // Presupuesto
+  if (presupuestoInput) {
+    const raw = presupuestoInput.value.trim();
+    if (raw !== "") {
+      const val = Number(raw.replace(",", ""));
+      const originalVal = original.presupuesto != null ? Number(original.presupuesto) : null;
+      if (!Number.isNaN(val) && val !== originalVal) {
+        body.presupuesto = val;
+      }
+    }
+  }
+
+  // Ubicación de interés
+  if (ubicacionInput) {
+    const val = ubicacionInput.value.trim();
+    const originalVal = original.ubicacionInteres || "";
+    if (val && val !== originalVal) {
+      body.ubicacionInteres = val;
+    }
+  }
+
+  // Número de miembros de familia
+  if (miembrosInput) {
+    const val = miembrosInput.value.trim();
+    const originalVal = original.miembrosFamilia || "";
+    if (val && val !== originalVal) {
+      body.numeroMiembrosFamilia = val;
+    }
+  }
+
+  // Ocupación (id numérico)
+  if (ocupacionInput) {
+    const raw = ocupacionInput.value.trim();
+    if (raw !== "") {
+      const val = parseInt(raw, 10);
+      const originalVal = original.ocupacion != null ? parseInt(original.ocupacion, 10) : null;
+      if (!Number.isNaN(val) && val !== originalVal) {
+        body.idOcupacion = val;
+      }
+    }
+  }
+
+  return body;
+}
+
+
+// =========================
 //  CAMBIO DE CONTRASEÑA
 // =========================
 function wirePasswordAccordion() {
@@ -486,7 +881,7 @@ function wirePasswordAccordion() {
 
   const currentPwd = document.getElementById("currentPassword");
   const newPwd     = document.getElementById("newPassword");
-  const confirmPwd = document.getElementById("confirmNewPassword"); // <- OJO, el id real
+  const confirmPwd  = document.getElementById("confirmNewPassword");
   const btnSave    = document.getElementById("btnSavePassword");
   const btnCancel  = document.getElementById("btnCancelPassword");
 
