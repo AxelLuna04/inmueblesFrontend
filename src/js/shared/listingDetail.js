@@ -116,14 +116,14 @@ function loadHeaderDetails(){
     if (state.rol != "CLIENTE" && state.rol != "VENDEDOR") {
         const registerBtn = document.createElement("a");
         registerBtn.classList.add("btn", "btn-register");
-        registerBtn.href = "pages/auth/signup.html";
+        registerBtn.href = "/pages/auth/signup.html";
         registerBtn.innerHTML = `
             <strong>Regístrate</strong>
         `;
 
         const loginBtn = document.createElement("a");
         loginBtn.classList.add("btn", "btn-login");
-        loginBtn.href = "pages/auth/login.html";
+        loginBtn.href = "/pages/auth/login.html";
         loginBtn.innerHTML = `
             <strong>Iniciar sesión</strong>
         `;
