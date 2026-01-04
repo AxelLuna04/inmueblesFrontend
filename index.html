@@ -28,22 +28,21 @@
         </div>
 
         <div class="filters-container">
-            <div class="filter-box">
-                <span>Tipo Inmueble</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
-            <div class="filter-box">
-                <span>Tipo de Operación</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
-            <div class="filter-box">
-                <span>Rango de Precio</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
-            <div class="filter-box">
-                <span>Características</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
+            <select class="filter-box" id="listingTypeSelect" required>
+                <option value="0">Tipo de Inmueble</option>
+                <option value="1">Casa</option>
+                <option value="2">Departamento</option>
+                <option value="3">Cuarto</option>
+                <option value="4">Oficina</option>
+                <option value="5">Terreno</option>
+            </select>
+            <select class="filter-box" id="operationTypeSelect" required>
+                <option value="0">Tipo de Operación</option>
+                <option value="VENTA">Venta</option>
+                <option value="RENTA">Renta</option>
+            </select>
+            <input class="filter-box" type="text" id="minPriceInput" placeholder="Precio mínimo...">
+            <input class="filter-box" type="text" id="maxPriceInput" placeholder="Precio máximo...">
         </div>
     </nav>
 

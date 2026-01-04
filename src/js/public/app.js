@@ -10,6 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("propertiesContainer");
   const searchInput = document.getElementById("searchInput");
   const searchIcon = document.querySelector(".search-icon");
+  
+  const listingTypeSelect = document.getElementById("listingTypeSelect");
+  const operationTypeSelect = document.getElementById("operationTypeSelect");
+  const minPriceInput = document.getElementById("minPriceInput");
+  const maxPriceInput = document.getElementById("maxPriceInput");
 
   let currentSearch = "";
   let currentPage = 0;
@@ -69,7 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const pageData = await fetchPublicListings({
         page: currentPage,
         size: 12,
-        q: currentSearch || ""
+        q: currentSearch || "",
+        listingType: listingTypeSelect.value || 0,
+        minPrice: minPriceInput.value || 0,
+        maxPrice: maxPriceInput.value || 0
       });
 
       properties = pageData.content.map(mapPublicCardToFront);

@@ -80,9 +80,12 @@ function buildSamplePage(content = SAMPLE_PUBLIC_LISTINGS) {
 // --------------------------------------
 
 // Public feed (index)
-export async function fetchPublicListings({ page = 0, size = 12, q = "" } = {}) {
+export async function fetchPublicListings({ page = 0, size = 12, q = "", listingType = 0, minPrice = 0, maxPrice = 0 } = {}) {
   const params = new URLSearchParams({ page, size });
   if (q) params.append("q", q);
+  if (listingType != 0) params.append("tipo", listingType);
+  if (minPrice != 0) params.append("pmin", minPrice);
+  if (maxPrice != 0) params.append("pmax", maxPrice);
 
   try {
     const res = await fetch(`${LISTINGS_URL}?${params.toString()}`);
