@@ -1,5 +1,6 @@
 import { getPayMethods } from '../../api/catalogueService.js';
 import { postPayApi } from '../../api/payService.js';
+import { CLIENTE } from '../../utils/constants.js';
 import {
     stringOrNull,
     floatOrNull,
@@ -11,6 +12,7 @@ import {
     NOTIF_RED,
     NOTIF_ORANGE
 } from '../../utils/notifications.js';
+import { requireAuth } from '../../utils/routeGuard.js';
 
 //HELPER
 const $ = (id) => document.getElementById(id);
@@ -57,6 +59,8 @@ document.addEventListener("DOMContentLoaded", innit);
 
 async function innit() {
     console.log("Inicializando la página")
+
+    requireAuth(CLIENTE);
 
     const params = new URLSearchParams(window.location.search);
     state.id = params.get("id");
