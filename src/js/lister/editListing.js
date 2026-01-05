@@ -129,8 +129,9 @@ function loadEvents(){
         renderCharacteristics();
 
         displayGeneralCharacs();
+    });
 
-        searchBtn.addEventListener('click', doSearch);
+    searchBtn.addEventListener('click', doSearch);
 
         address.addEventListener('keydown', (ev) => {
             if (ev.key === "Enter") {
@@ -138,9 +139,6 @@ function loadEvents(){
                 doSearch();
             }
         });
-
-        console.log("Eventos cargados");
-    });
   
     photosInput.addEventListener("change", (e) => {
       const news = Array.from(e.target.files || []).filter(f => f.type.startsWith("image/"));
@@ -172,6 +170,8 @@ function loadEvents(){
     cancelBtn.addEventListener("click", (e)=> {
         window.location.href = `/pages/shared/listingDetail.html?id=${state.id}`;
     })
+
+    console.log("Eventos cargados");
 }
 
 function displayGeneralCharacs() {
