@@ -67,7 +67,7 @@ async function loadListingData() {
 
 async function loadHistorial() {
     try {
-        state.movements = getHistorialTest() //await getHistorial(state.id);
+        state.movements = await getHistorial(state.id);
     } catch(err) {
         if (err.name === "ErrorApi") return showNotif(err.message, NOTIF_RED, 5000);
         console.error(`Error del front: ${err}`);

@@ -37,24 +37,6 @@ export function getHistorialTest() {
             descripcion: "Inmueble vendido"
         },
         {
-            idMovimiento: 5,
-            tipoMovimiento: "RENTA",
-            fechaInicio: "2026-04-21",
-            fechaFin: null,
-            nombreCliente: "Erika Monfil Medina",
-            precio: 2500,
-            descripcion: "Inmueble rentado"
-        },
-        {
-            idMovimiento: 5,
-            tipoMovimiento: "RENTA",
-            fechaInicio: "2026-02-13",
-            fechaFin: "2026-04-15",
-            nombreCliente: "Alberto Jaramillo López",
-            precio: 2000,
-            descripcion: "Inmueble rentado"
-        },
-        {
             idMovimiento: 4,
             tipoMovimiento: "APROBACION",
             fechaInicio: "2026-02-09",
