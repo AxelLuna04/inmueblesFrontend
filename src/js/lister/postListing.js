@@ -16,6 +16,9 @@ import {
 } from '../../utils/notifications.js';
 import { initFooter } from "../shared/footer.js";
 import { initHeader } from "../shared/header.js";
+import { requireAuth } from '../../utils/routeGuard.js';
+import { VENDEDOR } from '../../utils/constants.js';
+import { auth } from '../../utils/authManager.js';
 
 //HELPERS
 const $ = (id) => document.getElementById(id);
@@ -66,6 +69,8 @@ var bathroomsNumberInput = null;
 const toiletsNumberDiv = $('toiletsNumberDiv');
 var toiletsNumberLabel = null;
 var toiletsNumberInput = null;
+
+const cancelBtn = $('cancelBtn');
 
 //OTHER ELEMENTS
 var marker = null;
@@ -178,6 +183,10 @@ function loadEvents(){
     title.addEventListener("input", ()=> {
         var length = intOrNull(title.value.length);
         counterTitle.textContent = `${length}/50`;
+    })
+
+    cancelBtn.addEventListener("click", (e)=> {
+        if ( requireAuth(VENDEDOR)) window.location.href = "/pages/lister/dashboard.html";
     })
 }
 
@@ -510,7 +519,7 @@ async function onSubmitCrearPublicacion(e){
 
     let valid = validateForm();
 
-    if (valid) await postListing();
+    if (valid && requireAuth(VENDEDOR)) await postListing();
 }
 
 async function postListing(){

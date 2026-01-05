@@ -46,6 +46,7 @@
     display: flex;
     justify-content: flex-end;
     width: 100%;
+    gap: 1rem;
 }
 
 .post-publication-main .card-title {
@@ -166,6 +167,11 @@
 
 .post-publication-main .btn-publish {
     background-color: #118BFF;
+    color: white;
+}
+
+.post-publication-main .btn-cancel {
+    background-color: #8e1919;
     color: white;
 }
 
