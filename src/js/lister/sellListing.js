@@ -13,6 +13,11 @@ import {
 import placeholderImg from '/src/assets/images/placeholder.jpg';
 import { getParties, sellListingApi } from '../../api/sellListingService.js';
 
+import { initHeader } from '../../js/shared/header.js';
+import { initFooter } from '../../js/shared/footer.js';
+import { requireAuth } from '../../utils/routeGuard.js';
+import { VENDEDOR } from '../../utils/constants.js';
+
 //HELPERS
 const $ = (id) => document.getElementById(id);
 
@@ -49,6 +54,11 @@ document.addEventListener("DOMContentLoaded", innit);
 
 async function innit() {
     console.log("Inicializando ventana");
+
+    initHeader();
+    initFooter();
+
+    requireAuth(VENDEDOR);
 
     await loadListingData();
     await loadPartiesData();
