@@ -14,7 +14,8 @@ import {
     NOTIF_RED,
     NOTIF_ORANGE
 } from '../../utils/notifications.js';
-
+import { initFooter } from "../shared/footer.js";
+import { initHeader } from "../shared/header.js";
 
 //HELPERS
 const $ = (id) => document.getElementById(id);
@@ -74,6 +75,9 @@ document.addEventListener("DOMContentLoaded", innit);
 
 //INITIALIZATE PAGE
 async function innit(){
+    initHeader();
+    initFooter();
+
     loadEvents();
     inniCommonCharacInputs();
 
