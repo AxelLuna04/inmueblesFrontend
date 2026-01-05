@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = list
       .map(
         (p) => `
-        <article class="property-card ${p.estado=="PENDIENTE" ? "property-card-pending" : p.estado=="RECHAZADA" ? "property-card-refuted" : ""}" data-id="${p.id}" data-state="${p.estado}">
+        <article class="property-card ${p.estado=="PENDIENTE" ? "property-card-pending" : p.estado=="RECHAZADA" ? "property-card-refuted" : p.estado=="VENDIDA" ? "property-card-accepted" : ""}" data-id="${p.id}" data-state="${p.estado}" >
           <div class="property-image-wrapper">
             <img src="${p.imagen || ""}"
                  alt="${p.titulo || "Inmueble"}"

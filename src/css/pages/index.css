@@ -136,6 +136,10 @@
     background-color: #ea7c7c;
 }
 
+.property-card-accepted {
+    background-color: aquamarine;
+}
+
 
 
 /* Contenedor Imagen (para el zoom interno) */
