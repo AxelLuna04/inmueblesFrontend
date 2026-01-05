@@ -125,12 +125,12 @@ function displayUserOptions() {
             editListingBtn.innerHTML = `
                 <Strong>Editar Publicación</Strong>       
             `;
-            const removeListingBtn = document.createElement("a");
+            /*const removeListingBtn = document.createElement("a");
             removeListingBtn.classList.add("btn", "btn-remove-listing");
             //TODO
             removeListingBtn.innerHTML = `
                 <Strong>Eliminar Publicación</Strong>          
-            `;
+            `;*/
             const sellListingBtn = document.createElement("a");
             sellListingBtn.classList.add("btn", "btn-register");
             sellListingBtn.href = `/pages/lister/sellListing.html?id=${state.id}`;
