@@ -6,7 +6,7 @@ import { auth } from "../../utils/authManager.js";
 import { VENDEDOR } from "../../utils/constants.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  initHeader();
+  initHeader({ title: "Bienvenid@ a Inmuebles a tu Alcance" });
   initFooter();
 
   if (auth.role() == VENDEDOR) window.location.href = "/pages/lister/dashboard";
