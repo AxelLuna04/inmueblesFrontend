@@ -98,7 +98,7 @@ async function innit() {
     console.log("Inicializacndo página");
 
     initFooter();
-    initHeader();
+    initHeader({ title: "Edita tu inmueble" });
 
     requireAuth(VENDEDOR);
 

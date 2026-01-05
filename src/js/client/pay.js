@@ -64,7 +64,7 @@ async function innit() {
 
     requireAuth(CLIENTE);
 
-    initHeader();
+    initHeader({ title: "Datos del vendedor" });
     initFooter();
 
     const params = new URLSearchParams(window.location.search);

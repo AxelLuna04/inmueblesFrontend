@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", innit);
 async function innit() {
     console.log("Inicializando página")
 
-    initHeader();
+    initHeader({ title: "Historial de la publicación" });
     initFooter();
 
     await loadListingData();
@@ -67,7 +67,7 @@ async function loadListingData() {
 
 async function loadHistorial() {
     try {
-        state.movements = await getHistorial(state.id);
+        state.movements = getHistorialTest() //await getHistorial(state.id);
     } catch(err) {
         if (err.name === "ErrorApi") return showNotif(err.message, NOTIF_RED, 5000);
         console.error(`Error del front: ${err}`);

@@ -61,8 +61,8 @@ document.addEventListener("DOMContentLoaded", innit);
 async function innit() {
     console.log("Inicializando página");
 
-    initHeader()
-    initFooter()
+    initHeader({ title: "Detalles de la publicación"});
+    initFooter();
     
     await loadListingData();
     displayListingData();

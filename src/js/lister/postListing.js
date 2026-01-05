@@ -80,7 +80,7 @@ document.addEventListener("DOMContentLoaded", innit);
 
 //INITIALIZATE PAGE
 async function innit(){
-    initHeader();
+    initHeader({title: "Publica tu inmueble"});
     initFooter();
     requireAuth(VENDEDOR);
 

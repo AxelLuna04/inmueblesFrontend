@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", innit);
 async function innit() {
     console.log("Inicializando ventana");
 
-    initHeader();
+    initHeader({ title: "Vender inmueble" });
     initFooter();
 
     requireAuth(VENDEDOR);

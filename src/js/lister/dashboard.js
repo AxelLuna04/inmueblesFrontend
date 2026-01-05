@@ -6,7 +6,7 @@ import { initFooter } from "../shared/footer.js";
 import { initHeader } from "../shared/header.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  initHeader();
+  initHeader({ title: "Tus publicaciones" });
   initFooter();
 
   requireAuth(VENDEDOR);
