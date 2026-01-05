@@ -96,9 +96,9 @@ export async function refreshIfNeeded() {
 //TO DO: RUTAS HTML (PÁGINAS)
 export function goHomeByRole(rol) {
   switch (rol) {
-    case "ADMIN":    
+    /*case "ADMIN":    
       window.location.href = "/pages/admin/dashboard.html";
-      break;
+      break;*/
     case "VENDEDOR": 
       window.location.href = "/pages/lister/dashboard.html";
       break;

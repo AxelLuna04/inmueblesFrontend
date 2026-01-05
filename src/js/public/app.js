@@ -4,7 +4,7 @@ import { initHeader } from "../shared/header.js";
 import { initFooter } from "../shared/footer.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  initHeader();
+  initHeader({ title: "Bienvenid@ a Inmuebles a tu Alcance" });
   initFooter();
   
   const container = document.getElementById("propertiesContainer");

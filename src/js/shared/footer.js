@@ -1,4 +1,5 @@
 // src/js/shared/footer.js
+import { auth, getSessionInfoFromToken } from "../../utils/authManager.js";
 
 // 1. Importamos el HTML crudo (nota el ?raw al final)
 // Asegúrate de que la ruta relativa sea correcta desde donde está este archivo JS
@@ -19,17 +20,41 @@ export function initFooter() {
 
   const footerEl = tpl.content.firstElementChild;
   
-  if (footerEl) {
-    mount.replaceWith(footerEl);
-    
-    // 4. Lógica dinámica (año actual)
-    const yearEl = document.querySelector("[data-footer-year]");
-    if (yearEl) {
-      yearEl.textContent = new Date().getFullYear();
-    }
-    
-    // Aquí puedes agregar listeners para eventos del footer si hiciera falta
-  } else {
+  if (!footerEl) {
     console.error("El archivo footer.html parece estar vacío.");
+    return;
+  } else {
+    mount.replaceWith(footerEl);
+
+    const yearEl = document.querySelector("[data-footer-year]");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // Link del logo según rol
+    setFooterBrandTarget();
+  }
+}
+
+function normalizeRole(rol) {
+  if (!rol) return null;
+  const r = String(rol).toUpperCase().trim();
+  return r.startsWith("ROLE_") ? r.replace("ROLE_", "") : r;
+}
+
+function setFooterBrandTarget() {
+  const link = document.getElementById("footerBrandLink");
+  if (!link) return;
+
+  const token = auth.token();
+  let rol = null;
+
+  if (token) {
+    const session = getSessionInfoFromToken();
+    rol = normalizeRole(session?.rol || auth.role());
+  }
+  
+  if (rol === "VENDEDOR") {
+    link.setAttribute("href", "/pages/lister/dashboard.html");
+  } else {
+    link.setAttribute("href", "/");
   }
 }
