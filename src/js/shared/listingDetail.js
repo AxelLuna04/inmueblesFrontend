@@ -10,6 +10,8 @@ import {
  } from '../../utils/notifications.js';
 
  import placeholderImg from '/src/assets/images/placeholder.jpg';
+import { initHeader } from './header.js';
+import { initFooter } from './footer.js';
 
 //HELPERS
 const $ = (id) => document.getElementById(id);
@@ -58,9 +60,11 @@ document.addEventListener("DOMContentLoaded", innit);
 
 async function innit() {
     console.log("Inicializando página");
+
+    initHeader()
+    initFooter()
     
     await loadListingData();
-    loadHeaderDetails();
     displayListingData();
     displayUserOptions();
 

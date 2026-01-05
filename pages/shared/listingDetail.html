@@ -23,28 +23,17 @@
     <script type="module" src="../../src/js/shared/listingDetail.js"></script>
 </head>
 <body>
-    <header class="main-header">
-        <div class="header-left">
-            <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
-            <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
-                <i class="fa-solid fa-building"></i> Inmuebles
-            </div>
-            
-            <h1 class="site-title" id="pageTitle">Detalles inmueble</h1>
-        </div>
-        <div class="header-actions" id="headerOptionsDiv">
-        </div>
-    </header>
+    <div data-header></div>
 
     <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <nav class="data-var">
-        <div>
-            <h1 id="price">PRECIO</h1>
+        <h1 id="pageTitle" >TITULO DEL INMUEBLE</h1>
+        <div class="data-second-floor">
+            <h2 id="price">PRECIO</h2>
+            <div id="dataVarDiv" class="data-options">
+            </div>
         </div>  
-        
-        <div id="dataVarDiv">
-        </div>
     </nav>
 
     <main class="post-publication-main">
@@ -76,9 +65,8 @@
                 </div>
             </div>
         </div>
-        <div id="refusedMotiveDiv"> <!--Refused motive-->
-            
-        </div>
     </main>
+
+    <div data-footer></div>
 </body>
 </html>
