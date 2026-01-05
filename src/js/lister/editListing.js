@@ -170,7 +170,7 @@ function loadEvents(){
     })
 
     cancelBtn.addEventListener("click", (e)=> {
-        window.location.href = `/pages/shared/listingDetail.htm?id=${state.id}`;
+        window.location.href = `/pages/shared/listingDetail.html?id=${state.id}`;
     })
 }
 
