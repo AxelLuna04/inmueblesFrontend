@@ -140,7 +140,6 @@ function displayUserOptions() {
             dataVarDiv.appendChild(editListingBtn);
             dataVarDiv.appendChild(removeListingBtn);
             dataVarDiv.appendChild(sellListingBtn);
-            displayRefusedMotive();
             break;
         case "ADMIN":
             const historialBtn = document.createElement("a");
@@ -161,26 +160,6 @@ function displayUserOptions() {
     }
 
     console.log("Opciones por usuario desplegadas");
-}
-
-function displayRefusedMotive() {
-    console.log("Desplegando la sección para ver el motivo de rechazo");
-
-    refusedMotiveDiv.classList.add("card", "card-rounded");
-    const refusedMotiveTitle = document.createElement("label");
-    refusedMotiveTitle.classList.add("text-title-section");
-    refusedMotiveTitle.innerHTML = "<strong>Motivo del rechazo:</strong>"
-    const motiveLabel = document.createElement("label");
-    motiveLabel.innerHTML = "Esta publicación no ha sido rechazada.";
-
-    if (stringOrNull(state.refusedMotive) !== null) {
-        motiveLabel.appendChild = state.refusedMotive;
-    }
-
-    refusedMotiveDiv.appendChild(refusedMotiveTitle);
-    refusedMotiveDiv.appendChild(motiveLabel);
-
-    console.log("Motivo del rechazo desplegado");
 }
 
 function displayListingData() {
