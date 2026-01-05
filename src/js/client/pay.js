@@ -13,6 +13,8 @@ import {
     NOTIF_ORANGE
 } from '../../utils/notifications.js';
 import { requireAuth } from '../../utils/routeGuard.js';
+import { initHeader } from '../../js/shared/header.js';
+import { initFooter } from '../../js/shared/footer.js';
 
 //HELPER
 const $ = (id) => document.getElementById(id);
@@ -61,6 +63,9 @@ async function innit() {
     console.log("Inicializando la página")
 
     requireAuth(CLIENTE);
+
+    initHeader();
+    initFooter();
 
     const params = new URLSearchParams(window.location.search);
     state.id = params.get("id");
