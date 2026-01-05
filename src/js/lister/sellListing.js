@@ -49,6 +49,8 @@ const soldDateInput = $('soldDateInput');
 const soldListingBtn = $('soldListingBtn');
 const notification = $('notification');
 
+const cancelBtn = $('cancelBtn');
+
 //INNIT
 document.addEventListener("DOMContentLoaded", innit);
 
@@ -184,6 +186,10 @@ function loadEvents() {
 
     soldListingBtn.addEventListener("click", (e) => {
         if (validateInputs()) sellListing();
+    })
+
+    cancelBtn.addEventListener("click", (e)=> {
+        window.location.href = `/pages/shared/listingDetail.html?id=${state.id}`;
     })
 
     console.log("Eventos cargados con éxito");
