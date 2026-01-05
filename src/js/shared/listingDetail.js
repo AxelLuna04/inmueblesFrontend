@@ -113,41 +113,6 @@ function insertListingData(data) {
     console.log("Datos del inmueble asignados en el estado");
 }
 
-function loadHeaderDetails(){
-    console.log("Cargando detalles del header");
-    console.log("ROL: " + state.rol);
-
-    if (state.rol != "CLIENTE" && state.rol != "VENDEDOR") {
-        const registerBtn = document.createElement("a");
-        registerBtn.classList.add("btn", "btn-register");
-        registerBtn.href = "/pages/auth/signup.html";
-        registerBtn.innerHTML = `
-            <strong>Regístrate</strong>
-        `;
-
-        const loginBtn = document.createElement("a");
-        loginBtn.classList.add("btn", "btn-login");
-        loginBtn.href = "/pages/auth/login.html";
-        loginBtn.innerHTML = `
-            <strong>Iniciar sesión</strong>
-        `;
-
-        headerOptionsDiv.appendChild(registerBtn);
-        headerOptionsDiv.appendChild(loginBtn);
-    } else {
-        const perfilBtn = document.createElement("a");
-        perfilBtn.classList.add("btn", "btn-login");
-        perfilBtn.href = "pages/auth/login.html";
-        perfilBtn.innerHTML = `
-            <strong>TO DO</strong>
-        `;
-
-        headerOptionsDiv.appendChild(perfilBtn);
-    }
-
-    console.log("Detalles del header cargados");
-}
-
 //DISPLAY INFORMATION
 function displayUserOptions() {
     console.log("Desplegando opciones por usuario");
