@@ -8,7 +8,7 @@ import '../../css/components/header.css';
 
 // Atajo de desarrollador: mostrar header de usuario aunque no haya token
 // Pon esto en false cuando conectes todo al backend.
-const DEV_FAKE_USER = true;
+const DEV_FAKE_USER = false;
 
 export async function initHeader() {
   // 2. INYECCIÓN DEL HTML
