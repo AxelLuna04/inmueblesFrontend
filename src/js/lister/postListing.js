@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", innit);
 async function innit(){
     initHeader();
     initFooter();
+    requireAuth(VENDEDOR);
 
     loadEvents();
     inniCommonCharacInputs();
@@ -186,7 +187,7 @@ function loadEvents(){
     })
 
     cancelBtn.addEventListener("click", (e)=> {
-        if ( requireAuth(VENDEDOR)) window.location.href = "/pages/lister/dashboard.html";
+        window.location.href = "/pages/lister/dashboard.html";
     })
 }
 
@@ -517,9 +518,10 @@ async function doSearch() {
 async function onSubmitCrearPublicacion(e){
     e.preventDefault();
 
+    requireAuth(VENDEDOR);
     let valid = validateForm();
 
-    if (valid && requireAuth(VENDEDOR)) await postListing();
+    if (valid) await postListing();
 }
 
 async function postListing(){

@@ -9,11 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeader();
   initFooter();
 
+  requireAuth(VENDEDOR);
+
   const container = document.getElementById("propertiesContainer");
   const postListingBtn = document.getElementById("postListingBtn");
 
   postListingBtn.addEventListener("click", (e) => {
-    if (requireAuth(VENDEDOR)) window.location.href = "/pages/lister/postListing.html";
+    window.location.href = "/pages/lister/postListing.html";
   })
 
   let currentPage = 0;
