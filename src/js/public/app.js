@@ -2,10 +2,14 @@
 import { fetchPublicListings, mapPublicCardToFront } from "../../api/listingsService.js";
 import { initHeader } from "../shared/header.js";
 import { initFooter } from "../shared/footer.js";
+import { auth } from "../../utils/authManager.js";
+import { VENDEDOR } from "../../utils/constants.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initHeader();
   initFooter();
+
+  if (auth.role() == VENDEDOR) window.location.href = "/pages/lister/dashboard";
   
   const container = document.getElementById("propertiesContainer");
   const searchInput = document.getElementById("searchInput");
