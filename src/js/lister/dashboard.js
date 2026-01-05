@@ -1,5 +1,7 @@
 import { fetchMyListings, mapPublicCardToFront } from "../../api/listingsService.js";
+import { VENDEDOR } from "../../utils/constants.js";
 import { showNotif } from '../../utils/notifications.js';
+import { requireAuth } from "../../utils/routeGuard.js";
 import { initFooter } from "../shared/footer.js";
 import { initHeader } from "../shared/header.js";
 
@@ -8,6 +10,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initFooter();
 
   const container = document.getElementById("propertiesContainer");
+  const postListingBtn = document.getElementById("postListingBtn");
+
+  postListingBtn.addEventListener("click", (e) => {
+    if (requireAuth(VENDEDOR)) window.location.href = "/pages/lister/postListing.html";
+  })
 
   let currentPage = 0;
   let lastPage = false;

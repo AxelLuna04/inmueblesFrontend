@@ -18,26 +18,16 @@
 </head>
 
 <body>
-    <!--header class="main-header">
-        <div class="header-left">
-            <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
-            <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
-                <i class="fa-solid fa-building"></i> Inmuebles
-            </div>
-            
-            <h1 class="site-title">Tus publicaciones</h1>
-        </div>
-        
-        <div class="header-actions">
-            <a href="../lister/postListing.html" class="btn btn-register"><strong>Crear publicación</strong></a>
-        </div>
-    </header-->
     <div data-header></div>
 
     <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <!-- Contenido Principal -->
     <main class="main-content">
+        <div class="post-listing-section">
+            <button class="btn btn-login" type="button" id="postListingBtn">Crear una publicación</button>
+        </div>
+
         <div class="properties-grid" id="propertiesContainer">
             <!-- Las tarjetas se generan en JS -->
         </div>

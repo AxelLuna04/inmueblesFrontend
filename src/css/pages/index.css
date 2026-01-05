@@ -89,7 +89,11 @@
     transform: translateY(-1px);
 }
 
-
+/*Post listing section*/
+.post-listing-section {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
 
 /* --- GRID Y TARJETAS --- */
 .main-content {
