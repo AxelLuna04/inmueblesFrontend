@@ -419,7 +419,7 @@ function renderPhotos(){
 
         let src;
         if (item.kind === "existing") {
-            src = item.src;
+            src = item.scr;
             img.alt = "Foto existente";
             img.onerror = function() {
                 this.onerror = null;
