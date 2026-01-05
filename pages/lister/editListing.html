@@ -23,16 +23,7 @@
     <script type="module" src="../../src/js/lister/editListing.js"></script>
 </head>
 <body>
-    <header class="main-header">
-        <div class="header-left">
-            <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
-            <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
-                <i class="fa-solid fa-building"></i> Inmuebles
-            </div>
-            
-            <h1 class="site-title">Edita tu inmueble</h1>
-        </div>
-    </header>
+    <div data-header></div>
 
     <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
 
@@ -109,5 +100,7 @@
             </div>
         </form>
     </main>
+
+    <div data-footer></div>
 </body>
 </html>

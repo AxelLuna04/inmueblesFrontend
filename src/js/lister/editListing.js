@@ -19,6 +19,10 @@ import {
 } from '../../utils/notifications.js';
 
 import placeholderImg from '/src/assets/images/placeholder.jpg';
+import { initHeader } from '../../js/shared/header.js';
+import { initFooter } from '../../js/shared/footer.js';
+import { requireAuth } from '../../utils/routeGuard.js';
+import { VENDEDOR } from '../../utils/constants.js';
 
 //HELPERS
 const $ = (id) => document.getElementById(id);
@@ -90,6 +94,11 @@ document.addEventListener("DOMContentLoaded", innit);
 
 async function innit() {
     console.log("Inicializacndo página");
+
+    initFooter();
+    initHeader();
+
+    requireAuth(VENDEDOR);
 
     loadEvents();
     inniCommonCharacInputs();
