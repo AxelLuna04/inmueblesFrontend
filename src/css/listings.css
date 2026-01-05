@@ -67,6 +67,11 @@
     color: white;
 }
 
+.post-publication-main .btn-cancel {
+    background-color: #8e1919;
+    color: white;
+}
+
 /*Raddio buttons*/
 .radio-button {
     position: absolute;
@@ -111,6 +116,7 @@
     display: flex;
     justify-content: flex-end;
     width: 100%;
+    gap: 1rem;
 }
 
 .card-title {

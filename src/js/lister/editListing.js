@@ -85,6 +85,8 @@ const toiletsNumberDiv = $('toiletsNumberDiv');
 var toiletsNumberLabel = null;
 var toiletsNumberInput = null;
 
+const cancelBtn = $('cancelBtn');
+
 //OTHER ELEMENTS
 var marker = null;
 var map = null;
@@ -165,6 +167,10 @@ function loadEvents(){
 
     title.addEventListener("input", ()=> {
         setLongTitle();
+    })
+
+    cancelBtn.addEventListener("click", (e)=> {
+        window.location.href = `/pages/shared/listingDetail.htm?id=${state.id}`;
     })
 }
 
