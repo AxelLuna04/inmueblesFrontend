@@ -1,8 +1,22 @@
 import { fetchMyListings, mapPublicCardToFront } from "../../api/listingsService.js";
+import { VENDEDOR } from "../../utils/constants.js";
 import { showNotif } from '../../utils/notifications.js';
+import { requireAuth } from "../../utils/routeGuard.js";
+import { initFooter } from "../shared/footer.js";
+import { initHeader } from "../shared/header.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  initHeader({ title: "Tus publicaciones" });
+  initFooter();
+
+  requireAuth(VENDEDOR);
+
   const container = document.getElementById("propertiesContainer");
+  const postListingBtn = document.getElementById("postListingBtn");
+
+  postListingBtn.addEventListener("click", (e) => {
+    window.location.href = "/pages/lister/postListing.html";
+  })
 
   let currentPage = 0;
   let lastPage = false;
@@ -18,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = list
       .map(
         (p) => `
-        <article class="property-card ${p.estado=="PENDIENTE" ? "property-card-pending" : p.estado=="RECHAZADA" ? "property-card-refuted" : ""}" data-id="${p.id}">
+        <article class="property-card ${p.estado=="PENDIENTE" ? "property-card-pending" : p.estado=="RECHAZADA" ? "property-card-refuted" : p.estado=="VENDIDA" ? "property-card-accepted" : ""}" data-id="${p.id}" data-state="${p.estado}" >
           <div class="property-image-wrapper">
             <img src="${p.imagen || ""}"
                  alt="${p.titulo || "Inmueble"}"
@@ -68,6 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!card) return;
     const id = card.dataset.id;
     if (!id) return;
+    const state = card.dataset.state;
+    if (state != "APROBADA") return;
     window.location.href = `/pages/shared/listingDetail.html?id=${id}`;
   });
 

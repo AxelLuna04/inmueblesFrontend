@@ -22,21 +22,23 @@
 }
 
 .movement-creation {
-    background-color: #1CB01C;
+    background-color: #890678;
 }
 
 .movement-aprobation {
-    background-color: #406A94;
+    background-color: #DCB73C;
+    
+    
 }
 
 .movement-edition {
-    background-color: #A13CDC;
+    background-color: #e7743f;
 }
 
 .movement-rent {
-    background-color: #DCB73C;
+    background-color: #b01c21;
 }
 
 .movement-sold {
-    background-color: #b01c21;
+    background-color: #1CB01C;
 }

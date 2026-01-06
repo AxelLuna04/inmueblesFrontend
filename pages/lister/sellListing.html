@@ -24,16 +24,7 @@
 <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <body>
-    <header class="main-header">
-        <div class="header-left">
-            <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
-            <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
-                <i class="fa-solid fa-building"></i> Inmuebles
-            </div>
-            
-            <h1 class="site-title">Vender inmueble</h1>
-        </div>
-    </header>
+    <div data-header></div>
 
     <main class="main-sell">
         <div class="sell-container">
@@ -77,12 +68,18 @@
         </div>
     </main>
 
-    <footer class="sell-footer">
+    <div class="sell-footer">
         <div>
             <label>Selecciona una fecha de venta:</label>
             <input class="sell-date-input" type="date" id="soldDateInput" >
         </div>
-        <button id="soldListingBtn" class="btn btn-login">Vender inmueble</button>
-    </footer>
+        <div>
+            <button id="soldListingBtn" class="btn btn-login"><strong>Vender inmueble</strong></button>
+            <button class="btn btn-cancel" id="cancelBtn" type="button"><strong>Cancelar</strong></button>
+        </div>
+        
+    </div>
+
+    <div data-footer></div>
 </body>
 </html>

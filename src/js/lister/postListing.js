@@ -14,7 +14,11 @@ import {
     NOTIF_RED,
     NOTIF_ORANGE
 } from '../../utils/notifications.js';
-
+import { initFooter } from "../shared/footer.js";
+import { initHeader } from "../shared/header.js";
+import { requireAuth } from '../../utils/routeGuard.js';
+import { VENDEDOR } from '../../utils/constants.js';
+import { auth } from '../../utils/authManager.js';
 
 //HELPERS
 const $ = (id) => document.getElementById(id);
@@ -66,6 +70,8 @@ const toiletsNumberDiv = $('toiletsNumberDiv');
 var toiletsNumberLabel = null;
 var toiletsNumberInput = null;
 
+const cancelBtn = $('cancelBtn');
+
 //OTHER ELEMENTS
 var marker = null;
 var map = null;
@@ -74,6 +80,10 @@ document.addEventListener("DOMContentLoaded", innit);
 
 //INITIALIZATE PAGE
 async function innit(){
+    initHeader({title: "Publica tu inmueble"});
+    initFooter();
+    requireAuth(VENDEDOR);
+
     loadEvents();
     inniCommonCharacInputs();
 
@@ -174,6 +184,10 @@ function loadEvents(){
     title.addEventListener("input", ()=> {
         var length = intOrNull(title.value.length);
         counterTitle.textContent = `${length}/50`;
+    })
+
+    cancelBtn.addEventListener("click", (e)=> {
+        window.location.href = "/pages/lister/dashboard.html";
     })
 }
 
@@ -504,6 +518,7 @@ async function doSearch() {
 async function onSubmitCrearPublicacion(e){
     e.preventDefault();
 
+    requireAuth(VENDEDOR);
     let valid = validateForm();
 
     if (valid) await postListing();

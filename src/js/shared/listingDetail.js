@@ -10,6 +10,8 @@ import {
  } from '../../utils/notifications.js';
 
  import placeholderImg from '/src/assets/images/placeholder.jpg';
+import { initHeader } from './header.js';
+import { initFooter } from './footer.js';
 
 //HELPERS
 const $ = (id) => document.getElementById(id);
@@ -58,9 +60,11 @@ document.addEventListener("DOMContentLoaded", innit);
 
 async function innit() {
     console.log("Inicializando página");
+
+    initHeader({ title: "Detalles de la publicación"});
+    initFooter();
     
     await loadListingData();
-    loadHeaderDetails();
     displayListingData();
     displayUserOptions();
 
@@ -109,41 +113,6 @@ function insertListingData(data) {
     console.log("Datos del inmueble asignados en el estado");
 }
 
-function loadHeaderDetails(){
-    console.log("Cargando detalles del header");
-    console.log("ROL: " + state.rol);
-
-    if (state.rol != "CLIENTE" && state.rol != "VENDEDOR") {
-        const registerBtn = document.createElement("a");
-        registerBtn.classList.add("btn", "btn-register");
-        registerBtn.href = "pages/auth/signup.html";
-        registerBtn.innerHTML = `
-            <strong>Regístrate</strong>
-        `;
-
-        const loginBtn = document.createElement("a");
-        loginBtn.classList.add("btn", "btn-login");
-        loginBtn.href = "pages/auth/login.html";
-        loginBtn.innerHTML = `
-            <strong>Iniciar sesión</strong>
-        `;
-
-        headerOptionsDiv.appendChild(registerBtn);
-        headerOptionsDiv.appendChild(loginBtn);
-    } else {
-        const perfilBtn = document.createElement("a");
-        perfilBtn.classList.add("btn", "btn-login");
-        perfilBtn.href = "pages/auth/login.html";
-        perfilBtn.innerHTML = `
-            <strong>TO DO</strong>
-        `;
-
-        headerOptionsDiv.appendChild(perfilBtn);
-    }
-
-    console.log("Detalles del header cargados");
-}
-
 //DISPLAY INFORMATION
 function displayUserOptions() {
     console.log("Desplegando opciones por usuario");
@@ -156,12 +125,12 @@ function displayUserOptions() {
             editListingBtn.innerHTML = `
                 <Strong>Editar Publicación</Strong>       
             `;
-            const removeListingBtn = document.createElement("a");
+            /*const removeListingBtn = document.createElement("a");
             removeListingBtn.classList.add("btn", "btn-remove-listing");
             //TODO
             removeListingBtn.innerHTML = `
                 <Strong>Eliminar Publicación</Strong>          
-            `;
+            `;*/
             const sellListingBtn = document.createElement("a");
             sellListingBtn.classList.add("btn", "btn-register");
             sellListingBtn.href = `/pages/lister/sellListing.html?id=${state.id}`;
@@ -171,7 +140,6 @@ function displayUserOptions() {
             dataVarDiv.appendChild(editListingBtn);
             dataVarDiv.appendChild(removeListingBtn);
             dataVarDiv.appendChild(sellListingBtn);
-            displayRefusedMotive();
             break;
         case "ADMIN":
             const historialBtn = document.createElement("a");
@@ -192,26 +160,6 @@ function displayUserOptions() {
     }
 
     console.log("Opciones por usuario desplegadas");
-}
-
-function displayRefusedMotive() {
-    console.log("Desplegando la sección para ver el motivo de rechazo");
-
-    refusedMotiveDiv.classList.add("card", "card-rounded");
-    const refusedMotiveTitle = document.createElement("label");
-    refusedMotiveTitle.classList.add("text-title-section");
-    refusedMotiveTitle.innerHTML = "<strong>Motivo del rechazo:</strong>"
-    const motiveLabel = document.createElement("label");
-    motiveLabel.innerHTML = "Esta publicación no ha sido rechazada.";
-
-    if (stringOrNull(state.refusedMotive) !== null) {
-        motiveLabel.appendChild = state.refusedMotive;
-    }
-
-    refusedMotiveDiv.appendChild(refusedMotiveTitle);
-    refusedMotiveDiv.appendChild(motiveLabel);
-
-    console.log("Motivo del rechazo desplegado");
 }
 
 function displayListingData() {

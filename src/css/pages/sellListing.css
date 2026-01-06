@@ -137,3 +137,8 @@
     height: 2.8rem;
     padding: 0 0.625rem;
 }
+
+.btn-cancel {
+    background-color: #8e1919;
+    color: white;
+}

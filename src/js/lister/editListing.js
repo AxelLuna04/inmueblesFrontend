@@ -19,6 +19,10 @@ import {
 } from '../../utils/notifications.js';
 
 import placeholderImg from '/src/assets/images/placeholder.jpg';
+import { initHeader } from '../../js/shared/header.js';
+import { initFooter } from '../../js/shared/footer.js';
+import { requireAuth } from '../../utils/routeGuard.js';
+import { VENDEDOR } from '../../utils/constants.js';
 
 //HELPERS
 const $ = (id) => document.getElementById(id);
@@ -81,6 +85,8 @@ const toiletsNumberDiv = $('toiletsNumberDiv');
 var toiletsNumberLabel = null;
 var toiletsNumberInput = null;
 
+const cancelBtn = $('cancelBtn');
+
 //OTHER ELEMENTS
 var marker = null;
 var map = null;
@@ -90,6 +96,11 @@ document.addEventListener("DOMContentLoaded", innit);
 
 async function innit() {
     console.log("Inicializacndo página");
+
+    initFooter();
+    initHeader({ title: "Edita tu inmueble" });
+
+    requireAuth(VENDEDOR);
 
     loadEvents();
     inniCommonCharacInputs();
@@ -118,8 +129,9 @@ function loadEvents(){
         renderCharacteristics();
 
         displayGeneralCharacs();
+    });
 
-        searchBtn.addEventListener('click', doSearch);
+    searchBtn.addEventListener('click', doSearch);
 
         address.addEventListener('keydown', (ev) => {
             if (ev.key === "Enter") {
@@ -127,9 +139,6 @@ function loadEvents(){
                 doSearch();
             }
         });
-
-        console.log("Eventos cargados");
-    });
   
     photosInput.addEventListener("change", (e) => {
       const news = Array.from(e.target.files || []).filter(f => f.type.startsWith("image/"));
@@ -157,6 +166,12 @@ function loadEvents(){
     title.addEventListener("input", ()=> {
         setLongTitle();
     })
+
+    cancelBtn.addEventListener("click", (e)=> {
+        window.location.href = `/pages/shared/listingDetail.html?id=${state.id}`;
+    })
+
+    console.log("Eventos cargados");
 }
 
 function displayGeneralCharacs() {
@@ -404,7 +419,7 @@ function renderPhotos(){
 
         let src;
         if (item.kind === "existing") {
-            src = item.src;
+            src = item.scr;
             img.alt = "Foto existente";
             img.onerror = function() {
                 this.onerror = null;

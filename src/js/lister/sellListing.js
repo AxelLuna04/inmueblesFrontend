@@ -13,6 +13,11 @@ import {
 import placeholderImg from '/src/assets/images/placeholder.jpg';
 import { getParties, sellListingApi } from '../../api/sellListingService.js';
 
+import { initHeader } from '../../js/shared/header.js';
+import { initFooter } from '../../js/shared/footer.js';
+import { requireAuth } from '../../utils/routeGuard.js';
+import { VENDEDOR } from '../../utils/constants.js';
+
 //HELPERS
 const $ = (id) => document.getElementById(id);
 
@@ -44,11 +49,18 @@ const soldDateInput = $('soldDateInput');
 const soldListingBtn = $('soldListingBtn');
 const notification = $('notification');
 
+const cancelBtn = $('cancelBtn');
+
 //INNIT
 document.addEventListener("DOMContentLoaded", innit);
 
 async function innit() {
     console.log("Inicializando ventana");
+
+    initHeader({ title: "Vender inmueble" });
+    initFooter();
+
+    requireAuth(VENDEDOR);
 
     await loadListingData();
     await loadPartiesData();
@@ -174,6 +186,10 @@ function loadEvents() {
 
     soldListingBtn.addEventListener("click", (e) => {
         if (validateInputs()) sellListing();
+    })
+
+    cancelBtn.addEventListener("click", (e)=> {
+        window.location.href = `/pages/shared/listingDetail.html?id=${state.id}`;
     })
 
     console.log("Eventos cargados con éxito");

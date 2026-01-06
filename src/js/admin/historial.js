@@ -8,6 +8,9 @@ import {
     NOTIF_ORANGE
 } from "../../utils/notifications";
 
+import { initHeader } from '../../js/shared/header.js';
+import { initFooter } from '../../js/shared/footer.js';
+
 //HELPERS
 const $ = (id) => document.getElementById(id);
 
@@ -27,6 +30,9 @@ document.addEventListener("DOMContentLoaded", innit);
 
 async function innit() {
     console.log("Inicializando página")
+
+    initHeader({ title: "Historial de la publicación" });
+    initFooter();
 
     await loadListingData();
     listingTitleLabel.innerHTML = state.title;
