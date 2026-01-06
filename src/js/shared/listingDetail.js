@@ -138,7 +138,7 @@ function displayUserOptions() {
                 <Strong>Vender inmueble</Strong>          
             `;
             dataVarDiv.appendChild(editListingBtn);
-            dataVarDiv.appendChild(removeListingBtn);
+            //dataVarDiv.appendChild(removeListingBtn);
             dataVarDiv.appendChild(sellListingBtn);
             break;
         case "ADMIN":
