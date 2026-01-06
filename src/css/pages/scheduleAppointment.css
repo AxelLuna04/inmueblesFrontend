@@ -1,0 +1,248 @@
+/* scheduleAppointment.css */
+
+/* Layout Principal */
+body {
+    background-color: #E5E5E5; /* Un gris un poco más oscuro para contraste con el calendario blanco */
+    padding-bottom: 100px; /* Espacio para la barra inferior fija */
+}
+
+.schedule-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Navegación del Mes */
+.calendar-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.nav-btn {
+    background: white;
+    border: none;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    color: var(--color-primary-dark);
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-weight: bold;
+}
+
+.current-month-label {
+    background: white;
+    padding: 8px 40px;
+    border-radius: 8px;
+    font-family: var(--font-title);
+    font-weight: 800;
+    color: var(--color-primary-dark);
+    font-size: 1.5rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    text-transform: uppercase;
+    min-width: 250px;
+    text-align: center;
+}
+
+/* Wrapper del Calendario */
+.calendar-wrapper {
+    overflow: hidden; /* Para respetar el border-radius de la card */
+    border: 1px solid #ccc;
+}
+
+/* Encabezados de Días */
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: #164e85; /* Un azul un poco más oscuro que el primary-dark para contraste header */
+    color: white;
+    text-align: center;
+    font-family: var(--font-card);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.calendar-header div {
+    padding: 12px 0;
+    border-right: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Grid de Días */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: #fff;
+}
+
+/* Celdas Individuales */
+.calendar-day {
+    height: 100px; /* Altura fija para que parezca calendario de escritorio */
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+    position: relative; /* Para posicionar el número y el popover */
+    font-family: var(--font-card);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Estados de los días */
+.day-available {
+    background-color: #fff;
+}
+.day-available:hover {
+    background-color: #f0f8ff;
+}
+
+.day-busy {
+    background-color: #F89898; /* Rojo salmón similar a la imagen */
+    color: #5a1e1e;
+    cursor: not-allowed;
+}
+/* Días pasados del mes anterior o específicos */
+.day-busy-dark {
+    background-color: #C67D7D; 
+    color: #3e1212;
+    cursor: not-allowed;
+}
+
+.day-disabled {
+    background-color: #AFAFAF; /* Gris oscuro */
+    color: #555;
+    cursor: not-allowed;
+}
+
+/* Estado Seleccionado */
+.day-selected {
+    border: 3px solid var(--color-primary-dark) !important;
+    z-index: 10; /* Para que el borde quede por encima de los vecinos */
+    background-color: #fff;
+}
+
+/* Celdas vacías (padding antes del día 1) */
+.day-empty {
+    background-color: transparent;
+    border: none; /* Sin bordes para que se vea limpio */
+    cursor: default;
+    pointer-events: none; /* No clickeables */
+}
+
+/* Estado deshabilitado visual para el botón de "Mes Anterior" */
+.nav-btn:disabled {
+    background-color: #eee;
+    color: #bbb;
+    box-shadow: none;
+}
+
+/* POPOVER DE HORARIOS */
+.time-popover {
+    position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-20%, 10%); /* Ajuste para que flote cerca */
+    background: white;
+    border: 1px solid var(--color-primary-dark);
+    border-radius: 8px;
+    width: 180px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.popover-header {
+    background-color: var(--color-primary-dark);
+    color: white;
+    font-size: 0.9rem;
+    padding: 6px;
+    text-align: center;
+    font-family: var(--font-btn);
+}
+
+.popover-body {
+    max-height: 150px;
+    overflow-y: auto;
+    padding: 5px;
+}
+
+/* Scrollbar fina para el popover */
+.popover-body::-webkit-scrollbar {
+    width: 6px;
+}
+.popover-body::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.time-slot {
+    display: block;
+    width: 100%;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    font-size: 0.8rem;
+    font-family: var(--font-btn);
+    background: #E0E0E0;
+    border: none;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.time-slot:hover {
+    background: #d0d0d0;
+}
+
+.time-slot.selected {
+    background: #D3EAFF; /* Azul claro selección */
+    border: 1px solid var(--color-primary-dark);
+    font-weight: 600;
+}
+
+/* Barra Inferior Fija */
+.bottom-action-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--color-secondary-bg); /* El azul claro de la imagen */
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+    z-index: 900;
+}
+
+.selection-status {
+    color: white;
+    font-family: var(--font-title);
+    font-size: 1.5rem;
+    font-weight: 700;
+    
+    background-color: #3F8BD4;
+    border: none;
+    border-radius: 0.5rem; 
+    padding: 0.75rem 2.5rem;
+}
+
+/* Ajuste responsive básico */
+@media (max-width: 768px) {
+    .calendar-header, .calendar-grid {
+        font-size: 0.8rem;
+    }
+    .calendar-day {
+        height: 60px;
+    }
+    .bottom-action-bar {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+}

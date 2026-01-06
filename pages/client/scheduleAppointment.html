@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Cita - Inmuebles a tu Alcance</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito+Sans:wght@400;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="/src/css/styles.css">
+    <link rel="stylesheet" href="/src/css/pages/scheduleAppointment.css">
+    <script type="module" src="/src/js/client/scheduleAppointment.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <div data-header></div>
+
+    <main class="schedule-container">
+        <div class="calendar-nav">
+            <button class="nav-btn" id="prevMonth"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="current-month-label">OCTUBRE</div>
+            <button class="nav-btn" id="nextMonth"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+
+        <div class="calendar-wrapper card">
+            <div class="calendar-header">
+                <div>Lunes</div>
+                <div>Martes</div>
+                <div>Miércoles</div>
+                <div>Jueves</div>
+                <div>Viernes</div>
+                <div>Sábado</div>
+                <div>Domingo</div>
+            </div>
+
+            <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+    </main>
+
+    <div class="bottom-action-bar">
+        <div class="selection-status" id="selectionStatus">
+            Seleccione un horario
+        </div>
+        <button class="btn btn-primary-rect" id="btnConfirm">
+            Confirmar
+        </button>
+    </div>
+
+    <!-- Notificación global -->
+    <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
+
+</body>
+</html>

@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initFooter();
 
   // Access control (optional)
-  // if (auth.role() !== ADMIN) return goHomeByRole(auth.role());
+  if (auth.role() !== ADMIN) return goHomeByRole(auth.role());
 
   const gridEl = document.getElementById("propertiesContainer");
   const notificationEl = document.getElementById("notification");
