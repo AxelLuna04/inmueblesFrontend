@@ -12,6 +12,7 @@ import {
  import placeholderImg from '/src/assets/images/placeholder.jpg';
 import { initHeader } from './header.js';
 import { initFooter } from './footer.js';
+import { getListerData } from '../../api/contactService.js';
 
 //HELPERS
 const $ = (id) => document.getElementById(id);
@@ -34,7 +35,9 @@ const state = {
     characteristics: [],
     refusedMotive: "",
 
-    photosSmall: []
+    photosSmall: [],
+
+    listerData: null
 }
 
 //ELEMENTS
@@ -67,6 +70,7 @@ async function innit() {
     await loadListingData();
     displayListingData();
     displayUserOptions();
+    await verifiyPay();
 
     console.log("===PÁGINA INICIALIZADA EXITOSAMENTE===");
 }
@@ -160,6 +164,42 @@ function displayUserOptions() {
     }
 
     console.log("Opciones por usuario desplegadas");
+}
+
+async function verifiyPay() {
+    console.log("Verificando si el cliente ha realizado el pago");
+
+    try {
+        const data = await getListerData(state.id);
+        if (data != 403) {
+            console.log("El cliente si ha pagado");
+            state.listerData = data;
+            displayListerData();
+        }
+    } catch (err) {
+        if (err.name === "ErrorApi") return showNotif(err.message, NOTIF_RED, 5000);
+            console.error(`Error del front: ${err}`);
+    }
+    
+}
+
+function displayListerData() {
+    console.log("Desplegando datos del vendedor y opción para ir a agendar cita");
+
+    dataVarDiv.innerHTML = `
+        <label class="text-lister-data">Vendedor: ${state.listerData.nombreVendedor}</label>
+        <label class="text-lister-data">Correo: ${state.listerData.correoVendedor}</label>
+        <label class="text-lister-data">Número: ${state.listerData.telefonoVendedor}</label>
+    `;
+    const dataListerBtn = document.createElement("a");
+            dataListerBtn.classList.add("btn", "btn-register");
+            dataListerBtn.href = `/pages/client/scheduleAppointment.html?idListing=${state.id}?idLister=${state.listerData.idVendedor}`;
+            dataListerBtn.innerHTML = `
+                <Strong>Agendar cita</Strong>            
+            `;
+            dataVarDiv.appendChild(dataListerBtn);
+
+    console.log("Datos del vendedor y desplegados");
 }
 
 function displayListingData() {
