@@ -13,7 +13,7 @@ export async function requireAuth(rolesPermitidos = []) {
     await refreshIfNeeded();
 
     if (rolesPermitidos.length > 0 && !rolesPermitidos.includes(rol)) {
-        window.location.href = "/";
+        window.location.href = "/pages/error/notFound.html";
         return;
     }
 }

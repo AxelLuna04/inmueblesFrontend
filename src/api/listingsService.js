@@ -5,9 +5,7 @@ import { stringOrNull } from '../utils/helpers.js';
 const API_BASE = import.meta.env.VITE_API_BASE || "/api";
 
 const LISTINGS_URL = `${API_BASE}/v1/publicaciones`;
-// TO DO Más adelante: mis publicaciones y admin
 const MY_LISTINGS_URL    = `${API_BASE}/v1/mis-publicaciones`;
-const ADMIN_LISTINGS_URL = `${API_BASE}/v1/admin/publicaciones`;
 
 // --------------------------------------
 // Datos de prueba (simulan PublicacionCard)
@@ -95,7 +93,7 @@ export async function fetchPublicListings({ page = 0, size = 12, q = "" } = {}) 
   }
 }
 
-// Mapea PublicacionCard al formato que consume el front
+// Mapea PublicCard al formato que consume el front
 export function mapPublicCardToFront(card) {
   return {
     id: card.id,
@@ -133,12 +131,19 @@ export async function fetchMyListings({ page = 0, size = 12, q = "" } = {}) {
 // export async function fetchAdminListings(...) { ... }
 
 
-export async function fetchParaTi({ page = 0, size = 12 } = {}) {
+export async function fetchForYou({ page = 0, size = 12 } = {}) {
   const params = new URLSearchParams({ page, size });
-  const res = await fetch(`${PUBLICACIONES_BASE}/para-ti?${params.toString()}`);
-  if (!res.ok) throw new Error("Error al obtener recomendaciones");
-  return res.json();
+
+  try {
+    const res = await fetch(`${LISTINGS_URL}/para-ti?${params.toString()}`);
+    if (!res.ok) throw new Error("HTTP error");
+    return await res.json(); // Page<PublicacionCard>
+  } catch (err) {
+    console.warn("Fallo la API, usando datos de prueba locales...", err);
+    return buildSamplePage();
+  }
 }
+
 
 export async function postListingApi(data) {
   const res = await fetch(LISTINGS_URL, {

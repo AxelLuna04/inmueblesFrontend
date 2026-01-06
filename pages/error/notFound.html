@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inmuebles a tu Alcance</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- ICONOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="/src/css/styles.css">
+    <link rel="stylesheet" href="/src/css/pages/notFound.css">
+    <script type="module" src="/src/js/error/notFound.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <div data-header></div>
+
+    <!-- Contenido Principal -->
+    <main class="not-found-main">
+        <section class="not-found-card" role="main" aria-labelledby="nfTitle">
+            <div class="error-container">
+                <img src="/src/assets/icons/not-found-icon.png" alt="Página no encontrada" class="not-found-illustration">
+                <h1 id="nfTitle" class="not-found-title">404 - Página No Encontrada</h1>
+                <p class="not-found-text">Ups! Parece que la página que estás buscando no existe.</p>
+                <a class="btn btn-login not-found-btn" href="/">Volver al Inicio</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div data-footer></div>
+</body>
+</html>

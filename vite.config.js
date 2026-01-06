@@ -20,19 +20,21 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         login: resolve(__dirname, 'pages/auth/login.html'),
         signup: resolve(__dirname, 'pages/auth/signup.html'),
+        profile: resolve(__dirname, 'pages/shared/profile.html'),
         
         postListing: resolve(__dirname, 'pages/lister/postListing.html'),
         editListing: resolve(__dirname, 'pages/lister/editListing.html'),
 
         // Ajusta/añade según tus HTML reales:
         
-        // adminDashboard: resolve(__dirname, 'pages/admin/dashboard.html'),
         listerDashboard: resolve(__dirname, 'pages/lister/dashboard.html'),
-        profile: resolve(__dirname, 'pages/shared/profile.html'),
         listingDetails: resolve(__dirname, 'pages/shared/listingDetail.html'),
         pay: resolve(__dirname, 'pages/client/pay.html'),
 
-        historial: resolve(__dirname, 'pages/admin/history.html')
+        // adminDashboard: resolve(__dirname, 'pages/admin/dashboard.html'),
+        historial: resolve(__dirname, 'pages/admin/historial.html'),
+
+        error: resolve(__dirname, 'pages/error/notFound.html')
       }
     }
   }

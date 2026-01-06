@@ -1,0 +1,48 @@
+/* ===== Not Found Page ===== */
+
+.not-found-main{
+  min-height: calc(100vh - var(--header-h));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 16px;
+}
+
+.not-found-card{
+  width: min(920px, 95vw);
+  background: none;
+  border-radius: 20px;
+  padding: 90px 28px;
+  text-align: center;
+}
+
+.not-found-title{
+  font-family: var(--font-title);
+  color: var(--color-primary-dark);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin-bottom: 18px;
+}
+
+.not-found-illustration{
+  width: min(180px, 65vw);
+  height: auto;
+  display: block;
+  margin: 0 auto 18px;
+  object-fit: contain;
+  background: transparent;
+  border-radius: 0;
+}
+
+.not-found-text{
+  font-family: var(--font-card);
+  color: #555;
+  font-size: 1.05rem;
+  margin-bottom: 22px;
+}
+
+.not-found-btn{
+  display: inline-flex;
+  gap: 8px;
+  padding: 12px 22px;
+  text-decoration: none;
+}

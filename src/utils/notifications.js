@@ -1,3 +1,4 @@
+// src/utils/notifications.js
 export const NOTIF_GREEN = "green";
 export const NOTIF_RED = "red";
 export const NOTIF_ORANGE = "orange";
@@ -5,7 +6,6 @@ export const NOTIF_ORANGE = "orange";
 let notifTime;
 
 export function showNotif(notification, message, color, duration = 3000) {
-    let notifTime = null;
     
     if (!notification) return;
 
@@ -16,17 +16,13 @@ export function showNotif(notification, message, color, duration = 3000) {
     notification.classList.remove('notif-hides');
     void notification.offsetWidth;
 
+    notification.classList.remove('notif-good', 'notif-bad', 'notif-orange');
+
     if (color == NOTIF_RED) {
-        notification.classList.remove('notif-good');
-        notification.classList.remove('notif-orange');
         notification.classList.add('notif-bad');
     } else if (color == NOTIF_GREEN) {
-        notification.classList.remove('notif-bad');
-        notification.classList.remove('notif-orange');
         notification.classList.add('notif-good');
     } else if (color == NOTIF_ORANGE) {
-        notification.classList.remove('notif-good');
-        notification.classList.remove('notif-bad');
         notification.classList.add('notif-orange');
     }
 

@@ -1,11 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
+    <title>Inmuebles a tu Alcance</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <!-- ICONOS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="/src/css/styles.css">
+    <link rel="stylesheet" href="/src/css/pages/index.css">
+    <script type="module" src="/src/js/admin/dashboard.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <div data-header></div>
+
+    <nav class="search-bar-container">
+        <div class="search-input-wrapper">
+            <input type="text" id="searchInput" class="search-input" placeholder="Buscar Inmueble...">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        </div>
+
+        <div class="filters-container">
+            <div class="filter-box">
+                <span>Tipo Inmueble</span>
+                <i class="fa-solid fa-caret-down"></i>
+            </div>
+            <div class="filter-box">
+                <span>Tipo de Operación</span>
+                <i class="fa-solid fa-caret-down"></i>
+            </div>
+            <div class="filter-box">
+                <span>Rango de Precio</span>
+                <i class="fa-solid fa-caret-down"></i>
+            </div>
+            <div class="filter-box">
+                <span>Características</span>
+                <i class="fa-solid fa-caret-down"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="main-content">
+        <div class="properties-grid" id="propertiesContainer">
+            <!-- Las tarjetas se generan en JS -->
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div data-footer></div>
 </body>
 </html>

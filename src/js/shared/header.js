@@ -6,8 +6,8 @@ import headerHtml from "../../../pages/shared/header.html?raw";
 import "../../css/components/header.css";
 
 // Atajo dev
-const DEV_FAKE_USER = true;
-const DEV_ROLE = "VENDEDOR"; // "CLIENTE" | "VENDEDOR" | "ADMIN"
+const DEV_FAKE_USER = false;
+const DEV_ROLE = ""; // "CLIENTE" | "VENDEDOR" | "ADMIN"
 
 export async function initHeader(options = {}) {
   const { title = "" } = options;

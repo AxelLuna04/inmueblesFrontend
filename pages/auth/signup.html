@@ -36,6 +36,9 @@
         </div>
     </header>
 
+    <!-- Notificación global -->
+    <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
+
     <!-- Contenido Principal -->
     <main class="register-main">
         <div class="white-main-card">
@@ -44,7 +47,7 @@
                 
                 <!-- SECCIÓN SUPERIOR: 2 COLUMNAS -->
                 <div class="top-section-grid">
-                    
+                                    
                     <!-- COLUMNA IZQUIERDA: DATOS PERSONALES -->
                     <div class="personal-data-col">
                         <h2 class="section-subtitle title-blue">Datos Personales</h2>
@@ -73,7 +76,14 @@
                         <!-- Fecha de Nacimiento -->
                         <div class="form-group blue-box">
                             <label for="fechaNacimiento">Fecha de Nacimiento</label>
-                            <input type="date" id="fechaNacimiento" class="form-input" required min="1900-01-01" max="2007-01-01">
+                            <input
+                                type="date"
+                                id="fechaNacimiento"
+                                class="form-input"
+                                required
+                                min="1900-01-01"
+                                max="2008-01-01"
+                            >
                         </div>
 
                         <!-- Contraseña -->
@@ -81,7 +91,7 @@
                             <label for="contrasenia">Contraseña</label>
                             <div class="input-wrapper">
                                 <input type="password" id="contrasenia" class="form-input" required>
-                                <i class="fa-solid fa-eye input-icon toggle-password"  id="togglePassword"></i>
+                                <i class="fa-solid fa-eye input-icon toggle-password" id="togglePassword"></i>
                             </div>
                         </div>
                         
@@ -105,7 +115,7 @@
                         </div>
                     </div>
 
-                    <!-- COLUMNA DERECHA: FOTO DE PERFIL -->
+                    <!-- COLUMNA DERECHA: FOTO DE PERFIL + DATOS DE CONTACTO -->
                     <div class="profile-photo-col">
 
                         <h2 class="section-subtitle title-blue">Foto de Perfil</h2>
@@ -116,15 +126,33 @@
 
                             <input type="file" id="fotoPerfil" accept=".jpg, .jpeg, .png, .webp" hidden>
 
-                            <!-- botón editar foto (le añadimos id para manejarlo en JS) -->
-                            <button type="button" id="btnEditPhoto" class="btn btn-register"
-                                    onclick="document.getElementById('fotoPerfil').click()">
+                            <button
+                                type="button"
+                                id="btnEditPhoto"
+                                class="btn btn-register"
+                                onclick="document.getElementById('fotoPerfil').click()"
+                            >
                                 Editar Foto
                             </button>
 
-                            <!-- OJO: aquí pon 10MB para coincidir con backend -->
                             <small class="upload-hint">Formatos JPG, PNG o WEBP. Máx 10MB</small>
                             <p id="fileError" class="error-text"></p>
+                        </div>
+
+                        <!-- DATOS DE CONTACTO DEBAJO DE LA FOTO -->
+                        <h2 class="section-subtitle title-blue contact-title">Datos de Contacto</h2>
+                        <div class="contact-grid contact-grid--signup-side">
+                            <!-- Teléfono -->
+                            <div class="form-group blue-box">
+                                <label for="telefono">Número de Teléfono</label>
+                                <input type="text" id="telefono" class="form-input" required>
+                            </div>
+
+                            <!-- Correo -->
+                            <div class="form-group blue-box">
+                                <label for="correo">Correo Electrónico</label>
+                                <input type="email" id="correo" class="form-input" required>
+                            </div>
                         </div>
                     </div>
                 </div>
