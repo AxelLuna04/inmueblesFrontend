@@ -82,8 +82,41 @@ export async function saveAgendaRequest(idVendedor, agendaPayload) {
 }
 
 
-export async function verifyEmailRequest(correo, codigoVerificacion) {
-  const response = await fetch(`${API_BASE}/v1/auth/verify`, {
+export async function verifyEmailRequest(token) {
+  const url = `${API_BASE}/v1/auth/verify?token=${encodeURIComponent(token)}`;
 
+  const response = await fetch(url, {
+    method: "GET",
+    headers: { Accept: "application/json" },
   });
+
+  if (!response.ok) {
+    // backend suele mandar ResponseStatusException con JSON tipo {message: "..."}
+    let msg = "No se pudo verificar el correo.";
+    try {
+      const body = await response.json();
+      msg = body.message || body.mensaje || msg;
+    } catch {}
+    throw new Error(msg);
+  }
+}
+
+export async function resendVerificationRequest(correo) {
+  const params = new URLSearchParams({ correo });
+
+  const res = await fetch(`${API_BASE}/v1/auth/resend-verification?${params.toString()}`, {
+    method: "POST",
+  });
+
+  if (!res.ok) {
+    // el backend normalmente devuelve {mensaje: "..."} o error con message
+    let msg = "No se pudo reenviar el correo.";
+    try {
+      const body = await res.json();
+      msg = body.mensaje || body.message || msg;
+    } catch {}
+    throw new Error(msg);
+  }
+
+  return res.json(); // { mensaje: "..." }
 }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificación de Cuenta | Inmuebles a tu Alcance</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="/src/css/styles.css">
+    <link rel="stylesheet" href="/src/css/pages/notFound.css">
+    
+    <script type="module" src="/src/js/auth/verifyEmail.js"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-left">
+            <a href="/" class="brand-link" title="Volver al inicio">
+                <!-- TO DO -->
+                <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
+                <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
+                    <i class="fa-solid fa-building"></i> Inmuebles
+                </div>
+            </a>
+            <h1 class="site-title">Verifica tu Correo</h1>
+        </div>
+        <div class="header-actions">
+            <div id="guestHeaderActions" class="header-actions-guest">
+            <a href="/pages/auth/login.html" class="btn btn-login"><strong>Iniciar Sesión</strong></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Notificación global -->
+    <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <main class="not-found-main">
+        <section class="not-found-card" role="main" aria-labelledby="verifyTitle">
+            <div class="error-container">
+                <img src="/src/assets/icons/email-sent-icon.png" alt="Correo enviado" class="not-found-illustration">
+                
+                <h1 id="verifyTitle" class="not-found-title">¡Tu cuenta está casi lista!</h1>
+                
+                <p class="not-found-text">
+                    Un enlace de verificación ha sido enviado a tu correo.<br>
+                    Después de dar clic al enlace tu cuenta será verificada y podrás cerrar esta ventana.
+                </p>
+
+                <p class="not-found-text" style="margin-top: 24px; margin-bottom: 8px; font-size: 0.95rem;">
+                    ¿No recibiste un enlace de verificación?
+                </p>
+                <br>
+                <button class="btn btn-login not-found-btn" id="resendBtn">
+                    <i class="fa-regular fa-paper-plane"></i> Reenviar Correo
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <div data-footer></div>
+</body>
+</html>

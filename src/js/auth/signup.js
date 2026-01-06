@@ -10,7 +10,7 @@ import {
   showNotif,
   NOTIF_RED,
   NOTIF_ORANGE,
-  NOTIF_GREEN,
+  NOTIF_GREEN
 } from "../../utils/notifications.js";
 
 const MAX_BYTES = 10 * 1024 * 1024; // 10MB como el backend
@@ -298,18 +298,20 @@ document.addEventListener("DOMContentLoaded", () => {
         await saveAgendaRequest(registroRes.id, agendaPayload);
       }
 
+      const registroPayload = buildRegistroPayload();
+      sessionStorage.setItem("pendingVerifyEmail", registroPayload.correo);
+
       const successMsg = "Registro exitoso. Revisa tu correo para verificar tu cuenta antes de iniciar sesión.";
       if (notificationEl) {
         showNotif(notificationEl, successMsg, NOTIF_GREEN, 4500);
         setTimeout(() => {
-            window.location.href = "/";
+            window.location.href = "/pages/auth/verifyEmail.html";
         }, 4700);
       } else {
         // fallback si no existe #notification
         alert(successMsg);
-        window.location.href = "/";
+        window.location.href = "/pages/auth/verifyEmail.html";
       }
-
     } catch (err) {
       // UI + console en el formato que quieres
       handleCatch(err, "Error al registrarse.");

@@ -20,10 +20,14 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         login: resolve(__dirname, 'pages/auth/login.html'),
         signup: resolve(__dirname, 'pages/auth/signup.html'),
+        verifyEmail: resolve(__dirname, 'pages/auth/verifyEmail.html'),
         profile: resolve(__dirname, 'pages/shared/profile.html'),
+
+        appointments: resolve(__dirname, 'pages/client/scheduleApppointment.html'),
         
         postListing: resolve(__dirname, 'pages/lister/postListing.html'),
         editListing: resolve(__dirname, 'pages/lister/editListing.html'),
+        sellListing: resolve(__dirname, 'pages/lister/sellListing.html'),
 
         // Ajusta/añade según tus HTML reales:
         
@@ -31,7 +35,7 @@ export default defineConfig({
         listingDetails: resolve(__dirname, 'pages/shared/listingDetail.html'),
         pay: resolve(__dirname, 'pages/client/pay.html'),
 
-        // adminDashboard: resolve(__dirname, 'pages/admin/dashboard.html'),
+        adminDashboard: resolve(__dirname, 'pages/admin/dashboard.html'),
         historial: resolve(__dirname, 'pages/admin/historial.html'),
 
         error: resolve(__dirname, 'pages/error/notFound.html')

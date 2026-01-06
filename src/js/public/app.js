@@ -2,14 +2,23 @@
 import { fetchPublicListings, mapPublicCardToFront } from "../../api/listingsService.js";
 import { initHeader } from "../shared/header.js";
 import { initFooter } from "../shared/footer.js";
-import { auth } from "../../utils/authManager.js";
+import { auth, goHomeByRole } from "../../utils/authManager.js";
 import { VENDEDOR } from "../../utils/constants.js";
+
+import {
+  showNotif,
+  NOTIF_RED,
+  NOTIF_ORANGE
+} from "../../utils/notifications.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initHeader({ title: "Bienvenid@ a Inmuebles a tu Alcance" });
   initFooter();
 
-  if (auth.role() == VENDEDOR) window.location.href = "/pages/lister/dashboard";
+  //goHomeByRole(auth.role());
+  //if (auth.role() == VENDEDOR) window.location.href = "/pages/lister/dashboard";
+  //PROBAR REDIRECCION CON ESTE METODO
+  if (auth.role() === VENDEDOR) return goHomeByRole(auth.role());
   
   const container = document.getElementById("propertiesContainer");
   const searchInput = document.getElementById("searchInput");
@@ -20,6 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const minPriceInput = document.getElementById("minPriceInput");
   const maxPriceInput = document.getElementById("maxPriceInput");
 
+  const notification = document.getElementById("notification");
+
   let currentSearch = "";
   let currentPage = 0;
   let lastPage = false;
@@ -28,8 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderProperties(list) {
     if (!list.length) {
+      showNotif(notification, "No se encontraron inmuebles con los filtros actuales.", NOTIF_ORANGE, 4000);
       container.innerHTML =
-        '<p style="grid-column: 1/-1; text-align: center;">No se encontraron inmuebles con los filtros actuales.</p>';
+        '<p class="main-content-message" style="grid-column: 1/-1; text-align: center;">No se encontraron inmuebles con los filtros actuales.</p>';
       return;
     }
 
@@ -71,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (reset) {
         currentPage = 0;
         lastPage = false;
-        container.innerHTML = "<p>Cargando inmuebles...</p>";
+        container.innerHTML = '<p class="main-content-message">Cargando inmuebles...</p>';
       }
       if (lastPage) return;
 
@@ -91,8 +103,9 @@ document.addEventListener("DOMContentLoaded", () => {
       currentPage = pageData.number + 1;
     } catch (err) {
       console.error(err);
+      showNotif(notification, "Ocurrió un error al cargar las publicaciones.", NOTIF_RED, 5000);
       container.innerHTML =
-        '<p style="grid-column: 1/-1; text-align: center;">Ocurrió un error al cargar las publicaciones.</p>';
+        '<p class="main-content-message" style="grid-column: 1/-1; text-align: center;">Ocurrió un error al cargar las publicaciones.</p>';
     }
   }
 

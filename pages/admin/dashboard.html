@@ -21,37 +21,43 @@
     <!-- Header -->
     <div data-header></div>
 
+    <!-- Notificación global -->
+    <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- Buscador + filtros (reusa el estilo del index) -->
     <nav class="search-bar-container">
         <div class="search-input-wrapper">
-            <input type="text" id="searchInput" class="search-input" placeholder="Buscar Inmueble...">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar publicación..." />
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
         </div>
 
         <div class="filters-container">
-            <div class="filter-box">
-                <span>Tipo Inmueble</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
-            <div class="filter-box">
-                <span>Tipo de Operación</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
-            <div class="filter-box">
-                <span>Rango de Precio</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
-            <div class="filter-box">
-                <span>Características</span>
-                <i class="fa-solid fa-caret-down"></i>
-            </div>
+        <select class="filter-box" id="estadoSelect">
+            <option value="">Estado (todos)</option>
+            <option value="PENDIENTE">Pendiente</option>
+            <option value="APROBADA">Aprobada</option>
+            <option value="RECHAZADA">Rechazada</option>
+        </select>
+
+        <!-- tipo es Integer en backend; aquí mando vacío o número -->
+        <select class="filter-box" id="tipoSelect">
+            <option value="">Tipo (todos)</option>
+            <option value="1">Casa</option>
+            <option value="2">Departamento</option>
+            <option value="3">Cuarto</option>
+            <option value="4">Oficina</option>
+            <option value="5">Terreno</option>
+        </select>
         </div>
     </nav>
 
-    <!-- Contenido Principal -->
+    <!-- Header -->
     <main class="main-content">
-        <div class="properties-grid" id="propertiesContainer">
-            <!-- Las tarjetas se generan en JS -->
-        </div>
+        <div class="properties-grid" id="propertiesContainer"></div>
+
+        <!-- Sentinel para infinite scroll -->
+        <div id="infiniteSentinel" aria-hidden="true"></div>
+        <p id="infiniteStatus" class="main-content-message" style="margin: 40px 0;"></p>
     </main>
 
     <!-- Footer -->

@@ -21,8 +21,8 @@ import { fetchAgenda, saveAgenda } from "../../api/agendaService.js";
 import { fetchOcupaciones } from "../../api/catalogueService.js";
 
 // MODO DEV
-const DEV_BYPASS_AUTH = true; // <-- Pónlo en false antes de subir a prod
-const DEV_SHOW_ALL_SECTIONS = true;
+const DEV_BYPASS_AUTH = false; // <-- Pónlo en false antes de subir a prod
+const DEV_SHOW_ALL_SECTIONS = false;
 
 let originalProfile = null;   // Perfil mapeado al front
 let pendingPhotoFile = null;  // Archivo de foto pendiente

@@ -96,6 +96,19 @@ export async function fetchPublicListings({ page = 0, size = 12, q = "", listing
   }
 }
 
+export async function fetchForYou({ page = 0, size = 12 } = {}) {
+  const params = new URLSearchParams({ page, size });
+
+  try {
+    const res = await fetch(`${LISTINGS_URL}/para-ti?${params.toString()}`);
+    if (!res.ok) throw new Error("HTTP error");
+    return await res.json(); // Page<PublicacionCard>
+  } catch (err) {
+    console.warn("Fallo la API, usando datos de prueba locales...", err);
+    return buildSamplePage();
+  }
+}
+
 // Mapea PublicCard al formato que consume el front
 export function mapPublicCardToFront(card) {
   return {
@@ -128,21 +141,6 @@ export async function fetchMyListings({ page = 0, size = 12, q = "" } = {}) {
   } catch (err) {
     console.warn("Fallo la API, usando datos de prueba locales...", err);
     // En una app real podrías condicionar esto por entorno
-    return buildSamplePage();
-  }
-}
-// export async function fetchAdminListings(...) { ... }
-
-
-export async function fetchForYou({ page = 0, size = 12 } = {}) {
-  const params = new URLSearchParams({ page, size });
-
-  try {
-    const res = await fetch(`${LISTINGS_URL}/para-ti?${params.toString()}`);
-    if (!res.ok) throw new Error("HTTP error");
-    return await res.json(); // Page<PublicacionCard>
-  } catch (err) {
-    console.warn("Fallo la API, usando datos de prueba locales...", err);
     return buildSamplePage();
   }
 }
