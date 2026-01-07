@@ -34,6 +34,7 @@ export function mapProfileDataToFront(data) {
     presupuesto: data.presupuesto,
     ubicacionInteres: data.ubicacionInteres,
     miembrosFamilia: data.numeroMiembrosFamilia,
+    fechaNacimiento: data.fechaNacimiento,
     ocupacion: data.idOcupacion,
     telefono: data.telefono,
     idFotoPerfil: data.idFotoPerfil,
