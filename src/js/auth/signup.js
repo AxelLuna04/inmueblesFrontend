@@ -135,16 +135,45 @@ document.addEventListener("DOMContentLoaded", () => {
   // 2) Toggle tipo usuario
   const tipoUsuario = document.getElementById("tipoUsuario");
   const agendaSection = document.getElementById("agendaSection");
+  const phoneContainer = document.getElementById("phoneContainer");
+  const telefonoInput = document.getElementById("telefono");
 
-  tipoUsuario?.addEventListener("change", (e) => {
-    if (e.target.value === "VENDEDOR") {
+  // Función para actualizar la UI según el rol
+  const updateRoleUI = () => {
+    const isVendedor = tipoUsuario.value === "VENDEDOR";
+
+    if (isVendedor) {
+      // MOSTRAR Agenda
       agendaSection.classList.remove("hidden");
       agendaSection.style.opacity = "0";
       setTimeout(() => (agendaSection.style.opacity = "1"), 50);
+
+      // MOSTRAR Teléfono y hacerlo OBLIGATORIO
+      if (phoneContainer) {
+        phoneContainer.classList.remove("hidden");
+        if (telefonoInput) telefonoInput.required = true;
+      }
+
     } else {
+      // OCULTAR Agenda
       agendaSection.classList.add("hidden");
+
+      // OCULTAR Teléfono, quitar OBLIGATORIO y LIMPIAR valor
+      if (phoneContainer) {
+        phoneContainer.classList.add("hidden");
+        if (telefonoInput) {
+          telefonoInput.required = false;
+          telefonoInput.value = ""; // Limpiamos para no enviar basura
+        }
+      }
     }
-  });
+  };
+
+  // Escuchar cambios
+  tipoUsuario?.addEventListener("change", updateRoleUI);
+
+  // Ejecutar al inicio (para que arranque en estado correcto según el HTML por defecto)
+  updateRoleUI();
 
   // 3) Botones de días
   const dayBtns = document.querySelectorAll(".day-btn");
@@ -261,7 +290,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!payload.correo) throw new ValidationError("Escribe tu correo.");
       if (!payload.contrasenia) throw new ValidationError("Escribe una contraseña.");
 
-      // Tel opcional, pero si lo ponen, que sea válido (México: 10 dígitos)
+      // Validación específica para VENDEDOR
+      if (payload.tipoUsuario === "VENDEDOR" && !payload.telefono) {
+          throw new ValidationError("El teléfono es obligatorio para vendedores.");
+      }
+
+      // Validación de longitud (la que ya tenías), que sea válido (México: 10 dígitos)
       if (payload.telefono && payload.telefono.length !== 10) {
         throw new ValidationError("El teléfono debe tener 10 dígitos.");
       }
@@ -351,8 +385,13 @@ function buildRegistroPayload() {
   const correo = (correoEl?.value ?? "").trim();
   const contrasenia = passEl?.value ?? "";
   const fechaNac = fechaNacimientoEl?.value || null;
-  const telefono = (telefonoEl?.value ?? "").trim() || null;
+  let telefono = (telefonoEl?.value ?? "").trim() || null;
   const nombreCompleto = `${nombre} ${apellidos}`.trim();
+
+  // NUEVA VALIDACIÓN: Si es CLIENTE, forzamos null (por seguridad)
+  if (tipoUsuario === "CLIENTE") {
+    telefono = null;
+  }
 
   return {
     tipoUsuario,

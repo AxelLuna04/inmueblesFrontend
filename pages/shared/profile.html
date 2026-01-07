@@ -33,6 +33,9 @@
         </div>
     </header>
 
+    <!-- Notificación global -->
+    <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
+
     <!-- Contenido Principal -->
     <main class="profile-main">
         <div class="white-main-card">
@@ -92,18 +95,18 @@
                 <!-- SECCIÓN INTERMEDIA: DATOS DE CONTACTO -->
                 <h2 class="section-subtitle title-blue contact-title">Datos de Contacto</h2>
                 <div class="contact-grid">
-                    <!-- Teléfono -->
-                    <div class="form-group blue-box">
-                        <label for="telefono">Número de Teléfono</label>
-                        <span id="telefonoLabel" class="label-info label-info--editable">+52 555 555 5555</span>
-                        <input type="text" id="telefono" class="form-input profile-edit-field">
-                    </div>
-
                     <!-- Correo -->
                     <div class="form-group blue-box">
                         <label for="correo">Correo Electrónico</label>
                         <span id="correoLabel" class="label-info label-info--editable">correo@ejemplo.com</span>
                         <input type="email" id="correo" class="form-input profile-edit-field">
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div class="form-group blue-box">
+                        <label for="telefono">Número de Teléfono</label>
+                        <span id="telefonoLabel" class="label-info label-info--editable">+52 555 555 5555</span>
+                        <input type="text" id="telefono" class="form-input profile-edit-field">
                     </div>
                 </div>
 
@@ -195,6 +198,35 @@
             </div>
         </div>
 
+        <!-- NUEVA SECCIÓN: CITAS AGENDADAS (SOLO VENDEDOR EN PRODUCCIÓN) -->
+        <div class="white-main-card appointments-card" id="appointmentsCard" style="display:none;">
+            <button type="button" class="appointments-header" id="appointmentsHeader">
+                <h2 class="section-subtitle title-blue">Citas Agendadas Pendientes</h2>
+                <i class="fa-solid fa-chevron-down appointments-chevron"></i>
+            </button>
+            <div class="appointments-body" id="appointmentsBody">
+                <p id="appointmentsLoading" style="display:none; color:#666; margin-bottom:10px;">
+                    <i class="fa-solid fa-spinner fa-spin"></i> Cargando agenda...
+                </p>
+
+                <div class="table-scroll-container">
+                    <table class="data-table" id="appointmentsTable">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px; text-align: center;">Estado</th> 
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Propiedad</th>
+                                <th>Cliente</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
         <!-- NUEVA SECCIÓN: PREFERENCIAS (SOLO CLIENTE EN PRODUCCIÓN) -->
         <div class="white-main-card preferences-card" id="preferencesCard">
             <!-- Header clickable -->
@@ -273,6 +305,31 @@
             </div>
         </div>
 
+        <!-- NUEVA SECCIÓN: CONTACTOS DE VENDEDORES (SOLO CLIENTE EN PRODUCCIÓN) -->
+        <div class="white-main-card contacts-card" id="contactsCard" style="display:none;">
+            <button type="button" class="contacts-header" id="contactsHeader">
+                <h2 class="section-subtitle title-blue">Contactos Vendedores</h2>
+                <i class="fa-solid fa-chevron-down contacts-chevron"></i>
+            </button>
+
+            <div class="contacts-body" id="contactsBody">
+                <p id="contactsLoading" style="display:none; color:#666; margin-bottom:10px;">Cargando contactos...</p>
+                
+                <div class="table-scroll-container">
+                    <table class="data-table" id="contactsTable">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Correo</th>
+                                <th>Teléfono</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
         <!-- CAMBIO DE CONTRASEÑA (ACORDEÓN) -->
         <div class="white-main-card password-card">

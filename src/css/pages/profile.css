@@ -81,11 +81,6 @@
   color: #8a1f1f;
 }
 
-.btn-danger {
-  background-color: #E3452F;
-  color: #fff;
-}
-
 /* Sección de datos de contacto horizontal */
 .contact-title {
   margin-top: 1.5rem;
@@ -175,7 +170,7 @@
 
 /* Flecha girada cuando está abierto (esto ya lo tienes) */
 .agenda-card.agenda-open .agenda-chevron {
-  transform: rotate(180deg);
+  transform: rotate(-180deg);
 }
 
 
@@ -276,7 +271,7 @@
 
 /* Flecha girada al abrir */
 .preferences-card.preferences-open .preferences-chevron {
-  transform: rotate(180deg);
+  transform: rotate(-180deg);
 }
 
 /* Grid 2x2 */
@@ -377,7 +372,7 @@
 
 /* Flecha girada cuando está abierto */
 .password-card.password-open .password-chevron {
-  transform: rotate(180deg);
+  transform: rotate(-180deg);
 }
 
 /* Botones alineados a la derecha */
@@ -388,7 +383,140 @@
   gap: 0.5rem;
 }
 
+/* ===========================
+   ESTILOS PARA TABLAS DE DATOS
+   =========================== */
 
+/* Contenedor que permite el scroll vertical */
+.table-scroll-container {
+    width: 100%;
+    max-height: 250px; /* Altura máxima antes de hacer scroll */
+    overflow-y: auto;  /* Scroll vertical automático */
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background: #fff;
+    margin-bottom: 1rem;
+}
+
+/* Tabla base */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.data-table th {
+    background-color: #f0f7ff; /* Azul muy clarito */
+    color: var(--color-primary-dark);
+    position: sticky;
+    top: 0; /* Header fijo al hacer scroll */
+    z-index: 1;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #ddeeff;
+}
+
+.data-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+}
+
+.data-table tr:hover {
+    background-color: #fafafa;
+}
+
+
+/* ===========================
+   NUEVOS ACORDEONES (REUTILIZACIÓN)
+   =========================== */
+
+/* --- CONTACTOS --- */
+.contacts-card { padding-top: 0; }
+.contacts-header {
+    width: 100%;
+    padding: 2.5rem 1.25rem 0.9rem;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    color: var(--color-primary-dark);
+}
+.contacts-header .section-subtitle { margin: 0; border-bottom: none; }
+.contacts-chevron { font-size: 1.4rem; transition: transform 0.2s ease; }
+.contacts-body {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 1.25rem;
+    transition: max-height 0.25s ease, opacity 0.2s ease, padding-top 0.2s ease;
+}
+.contacts-card.contacts-open .contacts-body {
+    max-height: 600px; /* Ajusta si la tabla es muy alta */
+    opacity: 1;
+    padding-top: 0.75rem;
+    padding-bottom: 1rem;
+}
+.contacts-card.contacts-open .contacts-chevron { transform: rotate(-180deg); }
+
+/* --- CITAS (Appointments) --- */
+.appointments-card { padding-top: 0; }
+.appointments-header {
+    width: 100%;
+    padding: 2.5rem 1.25rem 0.9rem;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    color: var(--color-primary-dark);
+}
+.appointments-header .section-subtitle { margin: 0; border-bottom: none; }
+.appointments-chevron { font-size: 1.4rem; transition: transform 0.2s ease; }
+.appointments-body {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    padding: 0 1.25rem;
+    transition: max-height 0.25s ease, opacity 0.2s ease, padding-top 0.2s ease;
+}
+.appointments-card.appointments-open .appointments-body {
+    max-height: 600px;
+    opacity: 1;
+    padding-top: 0.75rem;
+    padding-bottom: 1rem;
+}
+.appointments-card.appointments-open .appointments-chevron { transform: rotate(-180deg); }
+
+/* Badges de estado para citas */
+.status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+/* "Hoy !!": Negritas blancas, fondo rojo oscuro (no saturado) */
+.status-today {
+    background-color: #a71d2a; /* Rojo oscuro elegante */
+    color: #ffffff;
+    font-weight: 800; /* Extra bold */
+    box-shadow: 0 2px 4px rgba(167, 29, 42, 0.3);
+}
+
+/* "Mañana": Letras ligeramente amarillas (oscuras para contraste) y fondo amarillo suave */
+.status-tomorrow {
+    background-color: #fff8e1; /* Fondo amarillo muy suave */
+    color: #bfa004;            /* Amarillo/Ocre oscuro para leerse bien */
+    border: 1px solid #ffeeba; /* Borde sutil opcional */
+    font-weight: 600;
+}
 
 
 /* Responsive: en móvil, la parte de agenda se apila */

@@ -12,7 +12,7 @@ export async function fetchAgenda() {
     },
   });
 
-  if (res.status === 401 || res.status === 403) {
+  if (res.status === 401 || res.status === 403) { 
     throw new Error("No autorizado para ver la agenda.");
   }
 
@@ -116,4 +116,36 @@ export async function scheduleAppointment(idPublicacion, fechaStr, horaStr) {
   }
 
   return res.json(); // Retorna AgendarCitaResponse
+}
+
+// NUEVA FUNCIÓN: Obtener citas pendientes (Vendedor)
+export async function fetchPendingAppointments() {
+  // 1. Obtener token igual que en saveAgenda
+  const token = localStorage.getItem("accessToken");
+  if (!token) throw new Error("No hay sesión activa");
+
+  // 2. Usar ese token en el header
+  const res = await fetch(`${API_BASE}/v1/agenda/mis-citas`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json"
+    }
+  });
+
+  if (!res.ok) {
+    const resJson = await res.json().catch(() => ({}));
+    const message = resJson.error || "Error al obtener las citas.";
+    
+    if (res.status === 500) {
+        // Asumiendo que usas ErrorApi, si no, lanza un Error normal
+        throw new Error("Error interno del servidor."); 
+    }
+    
+    if (res.status === 404) return [];
+    
+    throw new Error(message);
+  }
+
+  return await res.json();
 }
