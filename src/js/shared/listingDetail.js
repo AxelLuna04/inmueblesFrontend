@@ -3,7 +3,7 @@ import {
     floatOrNull,
     intOrNull
 } from '../../utils/helpers.js';
-import { getListingData } from '../../api/listingsService.js';
+import { getListingData, getMyListingDetail } from '../../api/listingsService.js';
 import {
     showNotif,
     NOTIF_RED
@@ -76,17 +76,37 @@ async function loadListingData() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
 
-    if (id) {
-        try {
-            const data = await getListingData(id);
-            insertListingData(data);
-        } catch(err) {
-            if (err.name === "ErrorApi") return showNotif(err.message, NOTIF_RED, 5000);
-            console.error(`Error del front: ${err}`);
-            showNotif(notification, "No se pudo cargar la publicación, inténtelo de nuevo más tarde.", NOTIF_RED, 5000);
+    if (!id) {
+        return showNotif(notification, "La id del inmueble no es válida.", NOTIF_RED, 5000);
+    }
+
+    try {
+        let data;
+
+        // LÓGICA HÍBRIDA:
+        if (state.rol === "VENDEDOR") {
+            // Intenta cargarla como "MI publicación" (permite ver PENDIENTE/RECHAZADA)
+            try {
+                data = await getMyListingDetail(id);
+            } catch (err) {
+                console.warn("No es mi publicación, intentando ruta pública...");
+                // Si falla (ej. soy vendedor viendo la casa de OTRO), intento la pública
+                data = await getListingData(id);
+            }
+        } else {
+            // Si soy Cliente o Admin (en modo vista normal), uso la pública
+            data = await getListingData(id);
         }
-    } else {
-        showNotif(notification, "La id del inmueble no es válida.", NOTIF_RED, 5000);
+        
+        insertListingData(data); // Tu función actual funciona perfecto con este data
+
+    } catch(err) {
+        // Corrección del showNotif que vimos antes
+        if (err.name === "ErrorApi") {
+             return showNotif(notification, err.message, NOTIF_RED, 5000);
+        }
+        console.error(`Error del front: ${err}`);
+        showNotif(notification, "No se pudo cargar la publicación.", NOTIF_RED, 5000);
     }
 }
 
@@ -165,7 +185,7 @@ function displayListerData() {
     `;
     const dataListerBtn = document.createElement("a");
             dataListerBtn.classList.add("btn", "btn-register");
-            dataListerBtn.href = `/pages/client/scheduleAppointment.html?idListing=${state.id}?idLister=${state.listerData.idVendedor}`;
+            dataListerBtn.href = `/pages/client/scheduleAppointment.html?idListing=${state.id}&idLister=${state.listerData.idVendedor}`;
             dataListerBtn.innerHTML = `
                 <Strong>Agendar cita</Strong>            
             `;

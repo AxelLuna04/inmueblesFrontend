@@ -117,17 +117,24 @@ document.addEventListener("DOMContentLoaded", () => {
         gridEl.innerHTML = `<p class="main-content-message">Cargando publicaciones...</p>`;
       }
 
-      const status = statusSelectEl?.value || "";
-      const typeRaw = typeSelectEl?.value || "";
-      const type = typeRaw === "" ? undefined : Number(typeRaw);
+      // 1. ESTADO
+      // Si el value es "" (Todos), lo convertimos a undefined para que NO se envíe el parámetro en la URL
+      const statusRaw = statusSelectEl?.value; 
+      const status = (statusRaw === "" || statusRaw === "0") ? undefined : statusRaw;
+
+      // 2. TIPO
+      // Si el value es "" (Todos), lo convertimos a undefined.
+      // Si tiene valor, lo convertimos a Number. Evitamos enviar 0.
+      const typeRaw = typeSelectEl?.value;
+      const type = (typeRaw === "" || typeRaw === "0") ? undefined : Number(typeRaw);
 
       const pageData = await fetchAdminListings({
         page,
         size: 12,
-        estado: status || undefined,
-        tipo: type,
+        estado: status, // Si es undefined, la URL será limpia de este param
+        tipo: type,     // Si es undefined, la URL será limpia de este param
         q: query || undefined
-      });
+    });
 
       const mappedItems = (pageData?.content || []).map(mapModerationCardToFront);
 

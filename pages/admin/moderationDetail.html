@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderación de Inmueble</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Jaldi">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="/src/css/pages/listings.css">
+    <link rel="stylesheet" href="/src/css/pages/moderationDetail.css">
+    <link rel="stylesheet" href="/src/css/styles.css">
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" ></script>
+    <script type="module" src="/src/js/admin/moderationDetail.js"></script>
+</head>
+<body>
+    <div data-header></div>
+
+    <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <nav class="data-var">
+        <h1 id="pageTitle">Cargando título...</h1>
+        <div class="data-second-floor">
+            <h2 id="price">...</h2>
+            <div id="statusChipContainer">
+                </div>
+        </div>  
+    </nav>
+
+    <main class="post-publication-main" style="padding-bottom: 100px;"> <div class="card card-rounded"> <label class="text-title-section"><strong>Fotos</strong></label>
+            <div id="photoBigDiv" class="card-photo-big"></div>
+            <div id="photosSmallDiv" class="card-photos-small"></div>
+        </div>
+
+        <div class="section-grid"> <div class="card card-rounded"> <label class="text-title-section"><strong>Dirección</strong></label>
+                <label id="addressLabel"></label>
+                <div id="map"></div>
+            </div>
+
+            <div class="card card-rounded"> <label class="text-title-section"><strong>Descripción</strong></label>
+                <label id="descriptionLabel" style="display:block; margin-bottom:1rem;"></label>
+                
+                <label class="text-title-section"><strong>Características Generales</strong></label>
+                <div id="generalCharacsDiv"></div>
+                
+                <hr style="margin: 10px 0; border: 0; border-top: 1px solid #eee;">
+
+                <label class="text-title-section"><strong>Características Específicas</strong></label>
+                <div id="specificCharacsDiv" class="card-characs-specific"></div>
+            </div>
+        </div>
+    </main>
+
+    <div id="adminPopupMenu" class="admin-popup-menu hidden">
+        <h3><i class="fa-solid fa-user-shield"></i> Datos Administrativos</h3>
+        <ul id="adminExtraDataList">
+            </ul>
+    </div>
+
+    <button id="adminFabBtn" class="admin-fab" title="Ver datos ocultos">
+        <i class="fa-solid fa-clipboard-check"></i>
+    </button>
+
+    <div class="bottom-action-bar">
+        <button id="btnCancel" class="btn btn-cancel" style="border: 1px solid #ccc;">
+            Cancelar
+        </button>
+
+        <div class="action-buttons-group">
+            <button id="btnReject" class="btn btn-reject">
+                <i class="fa-solid fa-xmark"></i> &nbsp;&nbsp;Rechazar
+            </button>
+            <button id="btnApprove" class="btn btn-approve">
+                <i class="fa-solid fa-check"></i> &nbsp;&nbsp;Aprobar
+            </button>
+        </div>
+    </div>
+</body>
+</html>

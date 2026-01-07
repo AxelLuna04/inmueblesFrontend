@@ -1,0 +1,181 @@
+/* src/css/pages/moderationDetail.css */
+
+/* --- Barra Inferior Fija --- */
+.bottom-action-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--color-secondary-bg); /* Azul claro */
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+    z-index: 900;
+}
+
+.action-buttons-group {
+    display: flex;
+    gap: 15px;
+}
+
+/* --- Botón Flotante (FAB) --- */
+.admin-fab {
+    position: fixed;
+    bottom: 90px; /* Encima de la barra inferior (70px aprox + margen) */
+    right: 40px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--color-primary-dark);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 950;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.admin-fab:hover {
+    transform: scale(1.1);
+    background-color: var(--color-primary-light);
+}
+
+.admin-fab:active {
+    transform: scale(0.95);
+}
+
+/* --- Menú Pop-up --- */
+.admin-popup-menu {
+    position: fixed;
+    bottom: 160px; /* Encima del FAB */
+    right: 40px;
+    width: 300px;
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 950;
+    border: 1px solid #e0e0e0;
+    
+    /* Animación de entrada */
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease;
+}
+
+.admin-popup-menu.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    /* Usamos visibility para que no bloquee clicks cuando está invisible */
+    visibility: hidden; 
+}
+
+/* Contenido del menú */
+.admin-popup-menu h3 {
+    font-size: 1.1rem;
+    color: var(--color-primary-dark);
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--color-secondary-bg);
+    padding-bottom: 8px;
+}
+
+.admin-popup-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.admin-popup-menu li {
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    color: #333;
+    line-height: 1.4;
+}
+
+.admin-popup-menu li strong {
+    color: var(--color-primary-dark);
+    display: block;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+/* --- MEJORA DE CHIPS DE ESTADO --- */
+/* Esto soluciona que parezca "texto plano con fondo" */
+.status-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.35rem 1rem;
+    border-radius: 50px; /* Borde totalmente redondo */
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-left: 1rem; /* Separación del precio */
+    vertical-align: middle;
+}
+
+/* Variantes de color específicas */
+.status-pending {
+    background-color: #ffc107;
+    color: #333; /* Texto oscuro para contraste */
+}
+.status-approved {
+    background-color: var(--color-green); /* Usamos tu variable */
+    color: white;
+}
+.status-rejected {
+    background-color: var(--color-red); /* Usamos tu variable */
+    color: white;
+}
+
+/* --- ESTADOS DE CARGA Y VISIBILIDAD --- */
+
+/* Clase para ocultar la barra si no es necesaria */
+.bar-hidden {
+    display: none !important;
+}
+
+/* Clase para cuando los botones están cargando */
+.btn-loading {
+    opacity: 0.7;
+    pointer-events: none; /* Evita clics */
+    cursor: wait;
+}
+
+/* Responsive básico para la barra */
+@media (max-width: 600px) {
+    .bottom-action-bar {
+        padding: 10px 15px;
+        flex-direction: column;
+        gap: 10px;
+        height: auto;
+    }
+    .action-buttons-group {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .btn {
+        width: 100%;
+    }
+    .post-publication-main {
+        padding-bottom: 160px; /* Más espacio en móvil */
+    }
+    .admin-fab {
+        right: 20px;
+        bottom: 140px; /* Ajustar según altura barra móvil */
+    }
+    .admin-popup-menu {
+        right: 20px;
+        bottom: 210px;
+        width: calc(100% - 40px);
+    }
+}

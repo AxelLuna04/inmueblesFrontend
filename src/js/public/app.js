@@ -4,12 +4,7 @@ import { initHeader } from "../shared/header.js";
 import { initFooter } from "../shared/footer.js";
 import { auth, goHomeByRole } from "../../utils/authManager.js";
 import { VENDEDOR } from "../../utils/constants.js";
-
-import {
-  showNotif,
-  NOTIF_RED,
-  NOTIF_ORANGE
-} from "../../utils/notifications.js";
+import { showNotif, NOTIF_RED, NOTIF_ORANGE } from "../../utils/notifications.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initHeader({ title: "Bienvenid@ a Inmuebles a tu Alcance" });
@@ -20,34 +15,32 @@ document.addEventListener("DOMContentLoaded", () => {
   //PROBAR REDIRECCION CON ESTE METODO
   if (auth.role() === VENDEDOR) return goHomeByRole(auth.role());
   
+  // Elementos DOM
   const container = document.getElementById("propertiesContainer");
   const searchInput = document.getElementById("searchInput");
   const searchIcon = document.querySelector(".search-icon");
+
+  const operationTypeSelect = document.getElementById("operationTypeSelect");
   
   const listingTypeSelect = document.getElementById("listingTypeSelect");
-  const operationTypeSelect = document.getElementById("operationTypeSelect");
   const minPriceInput = document.getElementById("minPriceInput");
   const maxPriceInput = document.getElementById("maxPriceInput");
 
   const notification = document.getElementById("notification");
+  
+  // Nuevos elementos para scroll infinito
+  const sentinelEl = document.getElementById("infiniteSentinel");
+  const statusTextEl = document.getElementById("infiniteStatus");
 
+  // Estado
   let currentSearch = "";
   let currentPage = 0;
-  let lastPage = false;
-  let properties = [];
+  let isLastPage = false;
+  let isLoading = false;
 
-
-  function renderProperties(list) {
-    if (!list.length) {
-      showNotif(notification, "No se encontraron inmuebles con los filtros actuales.", NOTIF_ORANGE, 4000);
-      container.innerHTML =
-        '<p class="main-content-message" style="grid-column: 1/-1; text-align: center;">No se encontraron inmuebles con los filtros actuales.</p>';
-      return;
-    }
-
-    container.innerHTML = list
-      .map(
-        (p) => `
+  // Genera el HTML de una sola tarjeta
+  function renderCardHtml(p) {
+    return `
         <article class="property-card" data-id="${p.id}">
           <div class="property-image-wrapper">
             <img src="${p.imagen || ""}"
@@ -73,56 +66,94 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
           </div>
         </article>
-      `
-      )
-      .join("");
+      `;
   }
 
-  async function loadPage(reset = false) {
+  function renderEmptyState() {
+    showNotif(notification, "No se encontraron inmuebles con los filtros actuales.", NOTIF_ORANGE, 4000);
+    container.innerHTML =
+      '<p class="main-content-message" style="grid-column: 1/-1; text-align: center;">No se encontraron inmuebles con los filtros actuales.</p>';
+  }
+
+  // Lógica principal de carga
+  async function loadNextPage({ reset = false } = {}) {
+    if (isLoading) return;
+    if (!reset && isLastPage) return;
+
     try {
+      isLoading = true;
+      if (statusTextEl) statusTextEl.textContent = "Cargando más inmuebles...";
+
       if (reset) {
         currentPage = 0;
-        lastPage = false;
-        container.innerHTML = '<p class="main-content-message">Cargando inmuebles...</p>';
+        isLastPage = false;
+        container.innerHTML = ""; // Limpiar contenedor
       }
-      if (lastPage) return;
 
-      const pageData = await fetchPublicListings({
+      // Preparamos filtros
+      const filters = {
         page: currentPage,
         size: 12,
         q: currentSearch || "",
-        listingType: listingTypeSelect.value || 0,
-        minPrice: minPriceInput.value || 0,
-        maxPrice: maxPriceInput.value || 0
-      });
+        listingType: listingTypeSelect?.value || 0,
+        minPrice: minPriceInput?.value || 0,
+        maxPrice: maxPriceInput?.value || 0
+      };
 
-      properties = pageData.content.map(mapPublicCardToFront);
-      renderProperties(properties);
+      // Llamada a API
+      const pageData = await fetchPublicListings(filters);
+      const properties = pageData.content.map(mapPublicCardToFront);
 
-      lastPage = pageData.last;
+      if (reset && properties.length === 0) {
+        isLastPage = true;
+        if (statusTextEl) statusTextEl.textContent = "";
+        renderEmptyState();
+        return;
+      }
+
+      // Insertamos tarjetas al final sin borrar las anteriores
+      container.insertAdjacentHTML("beforeend", properties.map(renderCardHtml).join(""));
+
+      isLastPage = pageData.last;
       currentPage = pageData.number + 1;
+
+      if (statusTextEl) {
+        statusTextEl.textContent = isLastPage ? "Has llegado al final de los resultados." : "";
+      }
+
     } catch (err) {
       console.error(err);
       showNotif(notification, "Ocurrió un error al cargar las publicaciones.", NOTIF_RED, 5000);
-      container.innerHTML =
-        '<p class="main-content-message" style="grid-column: 1/-1; text-align: center;">Ocurrió un error al cargar las publicaciones.</p>';
+      if (statusTextEl) statusTextEl.textContent = "Error al cargar.";
+      if (reset) {
+        container.innerHTML = '<p class="main-content-message" style="grid-column: 1/-1; text-align: center;">Error de conexión.</p>';
+      }
+    } finally {
+      isLoading = false;
     }
   }
 
-  async function handleSearch() {
+  // Manejo de Búsqueda
+  function handleSearch() {
     currentSearch = searchInput.value.trim();
-    await loadPage(true);
+    reconnectObserver(); // Reiniciar observador por si estaba desconectado
+    loadNextPage({ reset: true });
   }
 
+  // Event Listeners
   searchInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      handleSearch();
-    }
+    if (event.key === "Enter") handleSearch();
   });
 
   if (searchIcon) {
     searchIcon.addEventListener("click", handleSearch);
   }
+
+  // Si quieres búsqueda automática al cambiar filtros:
+  listingTypeSelect.addEventListener("change", handleSearch);
+  minPriceInput.addEventListener("change", handleSearch);
+  maxPriceInput.addEventListener("change", handleSearch);
+
 
   // Click en tarjeta → detalle
   container.addEventListener("click", (e) => {
@@ -133,5 +164,33 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = `/pages/shared/listingDetail.html?id=${id}`;
   });
 
-  loadPage(true);
+  // --- INFINITE SCROLL OBSERVER ---
+  let observer = null;
+
+  function createObserver() {
+    if (!sentinelEl) return null;
+    
+    const obs = new IntersectionObserver((entries) => {
+        // Si el centinela entra en pantalla, cargamos la siguiente página
+        if (entries[0].isIntersecting) {
+            loadNextPage({ reset: false });
+        }
+    }, {
+        root: null, // viewport
+        rootMargin: "400px", // Cargar 400px antes de llegar al fondo
+        threshold: 0.1
+    });
+
+    obs.observe(sentinelEl);
+    return obs;
+  }
+
+  function reconnectObserver() {
+    if (observer) observer.disconnect();
+    observer = createObserver();
+  }
+
+  // Inicialización
+  reconnectObserver();
+  loadNextPage({ reset: true });
 });

@@ -145,6 +145,24 @@ export async function fetchMyListings({ page = 0, size = 12, q = "" } = {}) {
   }
 }
 
+export async function getMyListingDetail(id) {
+  const res = await fetch(`${MY_LISTINGS_URL}/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + localStorage.getItem("accessToken"), // IMPORTANTE: Token
+    }
+  });
+
+  if (!res.ok) {
+    const resJson = await res.json().catch(() => ({}));
+    // Si da 403 o 404, lanzamos el error para atraparlo en el front
+    throw new ErrorApi(resJson.error || resJson.message || "No se pudo cargar tu publicación.");
+  }
+
+  return await res.json();
+}
+
 
 export async function postListingApi(data) {
   const res = await fetch(LISTINGS_URL, {

@@ -37,6 +37,7 @@ export default defineConfig({
         pay: resolve(__dirname, 'pages/client/pay.html'),
 
         adminDashboard: resolve(__dirname, 'pages/admin/dashboard.html'),
+        moderationDetail: resolve(__dirname, 'pages/admin/moderationDetail.html'),
         historial: resolve(__dirname, 'pages/admin/historial.html'),
 
         error: resolve(__dirname, 'pages/error/notFound.html')

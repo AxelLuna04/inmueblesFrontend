@@ -144,34 +144,37 @@ export async function initHeader(options = {}) {
     return;
   }
 
-  // ---------- 9) Intentar cargar perfil ----------
+  // Detectamos el rol ANTES de llamar a la API
+  const currentRole = normalizeRole(sessionBasic.rol);
+  const isAdmin = currentRole === "ADMIN";
+
+  // ---------- 9) Intentar cargar perfil (SOLO SI NO ES ADMIN) ----------
   let profile = null;
-  try {
-    profile = await fetchMyProfile();
-  } catch {
-    // si falla, seguimos con token
+  
+  // Evitamos el error 403 saltándonos la llamada si es Admin
+  if (!isAdmin) {
+      try {
+        profile = await fetchMyProfile();
+      } catch (err) {
+        console.warn("No se pudo cargar el perfil del usuario", err);
+        // si falla, seguimos con token y datos básicos
+      }
   }
 
-  const displayName  = profile?.nombreCompleto || sessionBasic.email || "Mi cuenta";
+  // Si es admin, profile será null, así que usará el email del token
+  const displayName  = profile?.nombreCompleto || sessionBasic.email || "Usuario";
   const displayPhoto = profile?.rutaFoto || null;
 
   if (nameLabel) nameLabel.textContent = displayName;
-  setAvatar(displayName, displayPhoto);
+  
+  // Si es admin, forzamos que no tenga foto (usará inicial)
+  setAvatar(displayName, isAdmin ? null : displayPhoto);
 
   showUser();
 
-  // ---------- 10) Rol y opciones ----------
-
-  // rol viene como payload.rol o localStorage rol (tu authManager)
-  const rol = normalizeRole(
-    sessionBasic.rol ||
-    profile?.tipoUsuario ||
-    (typeof auth.role === "function" ? auth.role() : null)
-  );
-
-  setBrandTarget(rol);
-
-  const isAdmin = rol === "ADMIN";
+  // ---------- 10) Configurar UI según Rol ----------
+  
+  setBrandTarget(currentRole);
 
   // ADMIN: NO perfil, SÍ pending + history
   if (menuItemProfile) {

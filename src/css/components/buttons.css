@@ -25,6 +25,11 @@
     color: var(--color-primary-dark);
 }
 
+.btn-cancel {
+    background-color: var(--color-white);
+    color: var(--color-red);
+}
+
 .btn-login {
     background-color: var(--color-primary-light);
     color: var(--color-white);
@@ -49,4 +54,34 @@
 .btn-danger {
   background-color: #E3452F;
   color: #fff;
+}
+
+.btn-approve {
+    background-color: var(--color-green);
+    color: var(--color-white);
+    border: none;
+    border-radius: 0.5rem; 
+    padding: 0.75rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.btn-approve:hover {
+    background-color: #158f15;
+    color: white;
+}
+
+.btn-reject {
+    background-color: #E3452F;
+    color: var(--color-white);
+    border: none;
+    border-radius: 0.5rem; 
+    padding: 0.75rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.btn-reject:hover {
+    background-color: var(--color-red);
+    color: white;
 }

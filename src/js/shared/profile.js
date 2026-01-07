@@ -1,6 +1,6 @@
 // src/js/shared/profile.js
-import { auth } from "../../utils/authManager.js";
-import { requireAuth } from "../../utils/routeGuard.js";
+import { auth, goHomeByRole } from "../../utils/authManager.js";
+import { CLIENTE, VENDEDOR } from "../../utils/constants.js";
 import {
   fetchMyProfile,
   mapProfileDataToFront,
@@ -92,7 +92,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     notificationEl = document.getElementById("notification");
 
     if (!DEV_BYPASS_AUTH) {
-        await requireAuth(["CLIENTE", "VENDEDOR"]);
+        const role = auth.role();
+        if (role !== CLIENTE && role !== VENDEDOR) {
+            return goHomeByRole(role);
+        }
     }
 
     setEditing(false);
@@ -281,7 +284,12 @@ function applyOcupacionFromProfile(p) {
   const idStr = String(id);
   select.value = idStr;
   const found = ocupacionesCatalog.find((o) => String(o.id) === idStr);
-  label.textContent = found ? found.nombre : `ID ${idStr}`;
+  if (found) {
+      label.textContent = found.nombre;
+      label.classList.remove("text-muted"); 
+  } else {
+      label.textContent = "—"; 
+  }
 }
 
 function applyStaticFieldsByRole() {
@@ -541,8 +549,11 @@ function fillPreferencesFromProfile(p) {
 
   const ocupacionLabel = document.getElementById("ocupacionLabel");
   const ocupacionInput = document.getElementById("idOcupacion");
-  if (ocupacionLabel) ocupacionLabel.textContent = p.ocupacion != null ? p.ocupacion.toString() : "—";
+  //if (ocupacionLabel) ocupacionLabel.textContent = p.ocupacion != null ? p.ocupacion.toString() : "—";
   if (ocupacionInput) ocupacionInput.value = p.ocupacion != null ? p.ocupacion : "";
+  if (ocupacionesLoaded) {
+      applyOcupacionFromProfile(p);
+  }
 }
 
 function applyRoleVisibility() {
