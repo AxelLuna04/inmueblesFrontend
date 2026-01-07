@@ -62,8 +62,6 @@ const notification = $('notification');
 document.addEventListener("DOMContentLoaded", innit);
 
 async function innit() {
-    console.log("Inicializando página");
-
     initHeader({ title: "Detalles de la publicación"});
     initFooter();
     
@@ -71,14 +69,10 @@ async function innit() {
     displayListingData();
     displayUserOptions();
     await verifiyPay();
-
-    console.log("===PÁGINA INICIALIZADA EXITOSAMENTE===");
 }
 
 //LOAD DATA
 async function loadListingData() {
-    console.log("Cargando datos del inmueble");
-
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
 
@@ -94,13 +88,9 @@ async function loadListingData() {
     } else {
         showNotif(notification, "La id del inmueble no es válida.", NOTIF_RED, 5000);
     }
-
-    console.log("Datos del inmueble cargados");
 }
 
 function insertListingData(data) {
-    console.log("Asignando los datos del inmueble en el estado");
-
     state.id = intOrNull(data.id) || 0;
     state.title = stringOrNull(data.titulo) || "Publicación";
     state.description = stringOrNull(data.descripcion) || "Descrición del inmueble";
@@ -113,14 +103,10 @@ function insertListingData(data) {
     state.address = data.direccion;
     state.photos = data.fotos;
     state.characteristics = data.caracteristicas;
-
-    console.log("Datos del inmueble asignados en el estado");
 }
 
 //DISPLAY INFORMATION
 function displayUserOptions() {
-    console.log("Desplegando opciones por usuario");
-
     switch(state.rol) {
         case "VENDEDOR":
             const editListingBtn = document.createElement("a");
@@ -129,12 +115,6 @@ function displayUserOptions() {
             editListingBtn.innerHTML = `
                 <Strong>Editar Publicación</Strong>       
             `;
-            /*const removeListingBtn = document.createElement("a");
-            removeListingBtn.classList.add("btn", "btn-remove-listing");
-            //TODO
-            removeListingBtn.innerHTML = `
-                <Strong>Eliminar Publicación</Strong>          
-            `;*/
             const sellListingBtn = document.createElement("a");
             sellListingBtn.classList.add("btn", "btn-register");
             sellListingBtn.href = `/pages/lister/sellListing.html?id=${state.id}`;
@@ -142,7 +122,6 @@ function displayUserOptions() {
                 <Strong>Vender inmueble</Strong>          
             `;
             dataVarDiv.appendChild(editListingBtn);
-            //dataVarDiv.appendChild(removeListingBtn);
             dataVarDiv.appendChild(sellListingBtn);
             break;
         case "ADMIN":
@@ -162,13 +141,9 @@ function displayUserOptions() {
             dataVarDiv.appendChild(dataListerBtn);
             break;
     }
-
-    console.log("Opciones por usuario desplegadas");
 }
 
 async function verifiyPay() {
-    console.log("Verificando si el cliente ha realizado el pago");
-
     try {
         const data = await getListerData(state.id);
         if (data != 403) {
@@ -180,12 +155,9 @@ async function verifiyPay() {
         if (err.name === "ErrorApi") return showNotif(err.message, NOTIF_RED, 5000);
             console.error(`Error del front: ${err}`);
     }
-    
 }
 
 function displayListerData() {
-    console.log("Desplegando datos del vendedor y opción para ir a agendar cita");
-
     dataVarDiv.innerHTML = `
         <label class="text-lister-data">Vendedor: ${state.listerData.nombreVendedor}</label>
         <label class="text-lister-data">Correo: ${state.listerData.correoVendedor}</label>
@@ -198,13 +170,9 @@ function displayListerData() {
                 <Strong>Agendar cita</Strong>            
             `;
             dataVarDiv.appendChild(dataListerBtn);
-
-    console.log("Datos del vendedor y desplegados");
 }
 
 function displayListingData() {
-    console.log("Desplegando datos del inmueble");
-
     pageTitle.innerHTML = stringOrNull(state.title);
     price.innerHTML = "$" + stringOrNull(state.price) + " MXN";
     displayPhotos();
@@ -213,13 +181,9 @@ function displayListingData() {
     descriptionLabel.innerHTML = state.description;
     displayGeneralCharacs();
     displaySpecificCharacs();
-
-    console.log("Datos del inmueble desplegados");
 }
 
 function displayPhotos() {
-    console.log("Desplegando fotografías");
-
     photoBigDiv.innerHTML = `
         <img src="${state.photos[0] || ""}"
              alt="Fotografía del inmueble"
@@ -252,13 +216,9 @@ function displayPhotos() {
         photosSmallDiv.appendChild(photoSmall);
         state.photosSmall.push(photoSmall);
     });
-
-    console.log("Fotografías desplegadas");
 }
 
 function innitMap() {
-    console.log ("Inicializando mapa");
-
     map = L.map('map', { zoomControl: true }).setView([state.address.lat, state.address.lng], 15); // La Facu, claro que sí
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -268,25 +228,17 @@ function innitMap() {
     setTimeout(() => map.invalidateSize(), 0);
 
     setMarker(state.address.lat, state.address.lng, "")
-
-    console.log("Mapa inicializado");
 }
 
 function setMarker(lat, lon, popupText = null) {
-    console.log ("Colocando el marcador");
-
     if (!marker) marker = L.marker([lat, lon]).addTo(map);
     else marker.setLatLng([lat, lon]);
 
     if (popupText) marker.bindPopup(popupText).openPopup();
     map.setView([lat, lon], 17);
-
-    console.log("Marcador colocado");
 }
 
 function displayGeneralCharacs() {
-    console.log("Desplegando características generales");
-
     if (state.bedrooms) {
         const bedroomsLabel = document.createElement("label");
         bedroomsLabel.classList.add("text-charac-general");
@@ -311,19 +263,13 @@ function displayGeneralCharacs() {
         `;
         generalCharacsDiv.appendChild(toiletsLabel);
     }
-
-    console.log("Características generales desplegadas");
 }
 
 function displaySpecificCharacs() {
-    console.log("Desplegando características específicas");
-
     state.characteristics.forEach(c => {
         const characLabel = document.createElement("label");
         characLabel.classList.add("text-charac-specific");
         characLabel.innerHTML = `${c}`;
         specificCharacsDiv.appendChild(characLabel);
     })
-
-    console.log("Características específicas desplegadas");
 }
