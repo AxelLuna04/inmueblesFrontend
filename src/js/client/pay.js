@@ -60,8 +60,6 @@ const zipcodeInput = document.createElement("input");
 document.addEventListener("DOMContentLoaded", innit);
 
 async function innit() {
-    console.log("Inicializando la página")
-
     requireAuth(CLIENTE);
 
     initHeader({ title: "Datos del vendedor" });
@@ -73,13 +71,9 @@ async function innit() {
     await loadPayMethods();
     innitCardMethod();
     loadEvents();
-
-    console.log("===PÁGINA INICIALIZADA EXITOSAMENTE===")
 }
 
 async function loadPayMethods() {
-    console.log("Cargando métodos de pago")
-
     try {
         state.payMethods = await getPayMethods();
         displayPayMethods();
@@ -88,26 +82,18 @@ async function loadPayMethods() {
         console.error(`Error del front: ${err}`);
         showNotif(notification, "No se pudieron cargar los métodos de pago.", NOTIF_RED, 5000);
     }
-
-    console.log("Métodos de pago cargados")
 }
 
 function displayPayMethods() {
-    console.log("Desplegando métodos de pago");
-
     state.payMethods.forEach((m) => {
         const payMethodOption = document.createElement("option");
         payMethodOption.value = m.id;
         payMethodOption.innerHTML = m.nombre;
         payMethodSelect.appendChild(payMethodOption);
     })
-
-    console.log("Métodos de pago desplegados");
 }
 
 function loadEvents() {
-    console.log("Cargando eventos");
-
     payMethodSelect.addEventListener("change", (e) => {
         switch(intOrNull(payMethodSelect.value)) {
             case 1:
@@ -120,13 +106,9 @@ function loadEvents() {
     })
 
     payForm.addEventListener("submit", postPay);
-
-    console.log("Eventos cargados");
 }
 
 function innitCardMethod() {
-    console.log("Inicializando el método de pago por tarjeta")
-
     cardNumberLabel.classList.add("pay-input-label");
     cardNumberLabel.innerHTML = "Número de tarjeta:";
     cardNumberInput.classList.add("pay-input");
@@ -195,8 +177,6 @@ function innitCardMethod() {
     zipcodeLabel.innerHTML = "Código postal:";
     zipcodeInput.classList.add("pay-input");
     zipcodeInput.type = "number";
-
-    console.log("Método de tarjeta inicializado")
 }
 
 function displayCardMethod() {

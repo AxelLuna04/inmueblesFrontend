@@ -55,8 +55,6 @@ const cancelBtn = $('cancelBtn');
 document.addEventListener("DOMContentLoaded", innit);
 
 async function innit() {
-    console.log("Inicializando ventana");
-
     initHeader({ title: "Vender inmueble" });
     initFooter();
 
@@ -67,14 +65,10 @@ async function innit() {
     displayListingData();
     displayPartiesData();
     loadEvents();
-
-    console.log("===VENTANA INICIALIZADA EXITOSAMENTE===");
 }
 
 //LOAD DATA
 async function loadListingData() {
-    console.log("Cargando datos del inmueble");
-
     const params = new URLSearchParams(window.location.search);
     state.id = params.get("id");
 
@@ -90,25 +84,17 @@ async function loadListingData() {
     } else {
         showNotif(notification, "La id del inmueble no es válida.", NOTIF_RED, 5000);
     }
-
-    console.log("Datos del inmueble cargados");
 }
 
 function insertListingData(data) {
-    console.log("Asignando los datos del inmueble en el estado");
-
     state.id = intOrNull(data.id) || 0;
     state.title = stringOrNull(data.titulo) || "Publicación";
     state.price = floatOrNull(data.precio).toLocaleString("es-MX") || 0;
     state.thumbnail = stringOrNull(data.fotos[0]);
     state.address = data.direccion.formattedAddress;
-
-    console.log("Datos del inmueble asignados en el estado");
 }
 
 async function loadPartiesData() {
-    console.log("Cargando datos de los interesados");
-
     if (state.id) {
         try {
             const data = await getParties(state.id);
@@ -121,24 +107,16 @@ async function loadPartiesData() {
     } else {
         showNotif(notification, "La id del inmueble no es válida.", NOTIF_RED, 5000);
     }
-
-    console.log("Datos de los interesados cargados")
 }
 
 async function displayListingData() {
-    console.log("Desplegando información del imueble");
-
     listingThumbnailImg.src = state.thumbnail;
     titleLabel.innerHTML = `<strong>${state.title}</strong>`;
     priceLabel.innerHTML = `<strong>MXN ${state.price}</strong>`;
     addressLabel.innerHTML = state.address;
-
-    console.log("Información del inmueble desplegada");
 }
 
 async function displayPartiesData() {
-    console.log("Desplegando información de los interesados");
-
     for (const p of state.parties) {
         const party = document.createElement("div");
         party.className = "sell-interested-row"
@@ -146,7 +124,6 @@ async function displayPartiesData() {
             <input type="radio" name="parties" data-client-id="${p.idCliente || 0}">
             <label class="sell-interested-text">${p.nombreCompleto || "Nombre completo"}</label>
             <label class="sell-interested-text">${p.correo || "Correo electrónico"}</label>
-            <label class="sell-interested-text">${p.telefono || "Sin número"}</label>
         `;
         const radioBtn = party.querySelector("input");
         radioBtn.addEventListener("change", () => {
@@ -154,13 +131,9 @@ async function displayPartiesData() {
         });
         interestedContainer.appendChild(party);
     }
-
-    console.log("Información de los interesados desplegada");
 }
 
 function loadEvents() {
-    console.log("Cargando eventos");
-
     fileInput.addEventListener("change", (e) => {
         const allowedTypes = [
             "application/pdf",
@@ -191,8 +164,6 @@ function loadEvents() {
     cancelBtn.addEventListener("click", (e)=> {
         window.location.href = `/pages/shared/listingDetail.html?id=${state.id}`;
     })
-
-    console.log("Eventos cargados con éxito");
 }
 
 function renderFiles() {
