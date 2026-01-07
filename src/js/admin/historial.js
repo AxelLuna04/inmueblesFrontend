@@ -29,8 +29,6 @@ const movementsContainerDiv = $('movementsContainerDiv');
 document.addEventListener("DOMContentLoaded", innit);
 
 async function innit() {
-    console.log("Inicializando página")
-
     initHeader({ title: "Historial de la publicación" });
     initFooter();
 
@@ -38,14 +36,10 @@ async function innit() {
     listingTitleLabel.innerHTML = state.title;
     await loadHistorial();
     displayHistorial();
-
-    console.log("===PÁGINA INICIALIZADA EXITOSAMENTE===")
 }
 
 //LOAD DATA
 async function loadListingData() {
-    console.log("Cargando datos del inmueble");
-
     const params = new URLSearchParams(window.location.search);
     state.id = params.get("id");
 
@@ -61,8 +55,6 @@ async function loadListingData() {
     } else {
         showNotif(notification, "La id del inmueble no es válida.", NOTIF_RED, 5000);
     }
-
-    console.log("Datos del inmueble cargados")
 }
 
 async function loadHistorial() {
@@ -77,8 +69,6 @@ async function loadHistorial() {
 
 //HISTORIAL
 function displayHistorial() {
-    console.log("Desplegando historial");
-
     const movementList = [];
     state.movements.forEach((m) => {
         const movement = document.createElement("div");
@@ -156,6 +146,4 @@ function displayHistorial() {
     for (var i = movementList.length - 1; i >= 0; i--) {
         movementsContainerDiv.appendChild(movementList[i]);
     }
-
-    console.log("Historial desplegado");
 }
