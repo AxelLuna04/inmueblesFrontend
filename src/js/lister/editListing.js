@@ -95,8 +95,6 @@ var map = null;
 document.addEventListener("DOMContentLoaded", innit);
 
 async function innit() {
-    console.log("Inicializacndo página");
-
     initFooter();
     initHeader({ title: "Edita tu inmueble" });
 
@@ -112,13 +110,9 @@ async function innit() {
     
     await loadData();
     displayListingData();
-
-    console.log("===Página cargada exitosamente===");
 }
 
 function loadEvents(){
-    console.log("Cargando eventos");
-
     propertyType.addEventListener("change", async () => {
         if (!propertyType.value) return;
         state.idType = intOrNull(propertyType.value);
@@ -170,8 +164,6 @@ function loadEvents(){
     cancelBtn.addEventListener("click", (e)=> {
         window.location.href = `/pages/shared/listingDetail.html?id=${state.id}`;
     })
-
-    console.log("Eventos cargados");
 }
 
 function displayGeneralCharacs() {
@@ -228,8 +220,6 @@ function setLongTitle() {
 
 //BEDROOMS AND BATHROOMS
 function inniCommonCharacInputs() {
-    console.log("Inicializar características generales");
-
     bedroomsNumberLabel = document.createElement("label");
     bedroomsNumberLabel.innerHTML = 'Número de habitaciones';
     bedroomsNumberInput = document.createElement("input");
@@ -262,8 +252,6 @@ function inniCommonCharacInputs() {
     toiletsNumberInput.addEventListener("input", ()=> {
         state.toilets = intOrNull(toiletsNumberInput.value);
     })
-
-    console.log("Características generales inicializadas");
 }
 
 function addBedroomsInput() {
@@ -316,8 +304,6 @@ function removeToiletsInput() {
 
 //TYPES AND CHARACTERISTICS
 async function loadTypes(){
-    console.log("Cargar tipos de inmueble");
-
     try {
         const res = await getPropertyTypes();
         state.types = await res.json();
@@ -328,8 +314,6 @@ async function loadTypes(){
     } catch(err) {
         showNotif(notification, err.message, NOTIF_RED);
     }
-
-    console.log("Tipos de inmueble cargados");
 }
 
 async function loadCharacteristics(idType){
@@ -477,8 +461,6 @@ function renderPhotos(){
 
 //MAP
 function innitMap() {
-    console.log("Inicializando mapa");
-
     map = L.map('map', { zoomControl: true }).setView([19.541796353862402, -96.92721517586615], 12); // La Facu, claro que sí
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
@@ -510,8 +492,6 @@ function innitMap() {
             showNotif(notification, "No se pudo obtener la dirección en el puntero.", NOTIF_RED, 5000);
         }
     });
-
-    console.log("Mapa inicializado");
 }
 
 async function geocode(text) {
@@ -596,8 +576,6 @@ async function doSearch() {
 } 
 
 async function loadData() {
-    console.log("Cargando datos del inmueble");
-
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id");
 
@@ -613,13 +591,9 @@ async function loadData() {
     } else {
         showNotif(notification, "La id del inmueble no es válida.", NOTIF_RED, 5000);
     }
-
-    console.log("Datos del inmueble cargados");
 }
 
 function insertListingData(data) {
-    console.log("Asignando los datos del inmueble en el estado");
-
     state.id = intOrNull(data.id) || 0;
     state.title = stringOrNull(data.titulo) || "Publicación";
     state.description = stringOrNull(data.descripcion) || "Descrición del inmueble";
@@ -638,14 +612,10 @@ function insertListingData(data) {
             if(ci === c.caracteristica) state.selectedCharacs.add(c.id);
         })
     })
-
-    console.log("Datos del inmueble asignados en el estado");
 }
 
 //DISPLAY INFORMATION
 function displayListingData() {
-    console.log("Desplegando datos del inmueble");
-
     title.value = state.title;
     operationType.value = state.operationType;
     price.value = state.price;
@@ -674,8 +644,6 @@ function displayListingData() {
     setMarker(state.address.lat, state.address.lng, address.value);
     setLongDescription();
     setLongTitle();
-
-    console.log("Datos del inmueble desplegados");
 }
 
 //PATCH
