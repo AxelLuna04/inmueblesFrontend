@@ -146,7 +146,6 @@ async function displayPartiesData() {
             <input type="radio" name="parties" data-client-id="${p.idCliente || 0}">
             <label class="sell-interested-text">${p.nombreCompleto || "Nombre completo"}</label>
             <label class="sell-interested-text">${p.correo || "Correo electrónico"}</label>
-            <label class="sell-interested-text">${p.telefono || "Sin número"}</label>
         `;
         const radioBtn = party.querySelector("input");
         radioBtn.addEventListener("change", () => {
