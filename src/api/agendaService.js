@@ -53,12 +53,8 @@ export async function saveAgenda(config) {
 }
 
 
-// NUEVO: Obtener disponibilidad pública (Vista del Comprador)
-// src/api/agendaService.js
-
-// 1. Obtener Calendario (GET /calendario)
+// Obtener Calendario (GET /calendario)
 export async function getCalendar(idPublicacion, anio, mes) {
-  // endpoint: /api/v1/publicaciones/{id}/agenda/calendario?anio=X&mes=Y
   const url = `${API_BASE}/v1/publicaciones/${idPublicacion}/agenda/calendario?anio=${anio}&mes=${mes}`;
   
   const res = await fetch(url, {
@@ -70,9 +66,8 @@ export async function getCalendar(idPublicacion, anio, mes) {
   return res.json(); // Retorna CalendarioAgendaResponse
 }
 
-// 2. Obtener Horas Disponibles (GET /horas-disponibles)
+// Obtener Horas Disponibles (GET /horas-disponibles)
 export async function getAvailableHours(idPublicacion, fechaStr) {
-  // endpoint: /api/v1/publicaciones/{id}/agenda/horas-disponibles?fecha=YYYY-MM-DD
   const url = `${API_BASE}/v1/publicaciones/${idPublicacion}/agenda/horas-disponibles?fecha=${fechaStr}`;
 
   const res = await fetch(url, {
@@ -84,14 +79,12 @@ export async function getAvailableHours(idPublicacion, fechaStr) {
   return res.json(); // Retorna HorasDisponiblesResponse (lista de LocalTime)
 }
 
-// 3. Agendar Cita (POST /)
+// Agendar Cita (POST /)
 export async function scheduleAppointment(idPublicacion, fechaStr, horaStr) {
   const token = localStorage.getItem("accessToken");
   if (!token) throw new Error("Debes iniciar sesión para agendar");
 
   const url = `${API_BASE}/v1/publicaciones/${idPublicacion}/agenda`;
-  
-  // Body debe coincidir con AgendarCitaRequest: { fecha: "YYYY-MM-DD", hora: "HH:mm" }
   const body = {
     fecha: fechaStr,
     hora: horaStr
@@ -118,13 +111,10 @@ export async function scheduleAppointment(idPublicacion, fechaStr, horaStr) {
   return res.json(); // Retorna AgendarCitaResponse
 }
 
-// NUEVA FUNCIÓN: Obtener citas pendientes (Vendedor)
 export async function fetchPendingAppointments() {
-  // 1. Obtener token igual que en saveAgenda
   const token = localStorage.getItem("accessToken");
   if (!token) throw new Error("No hay sesión activa");
 
-  // 2. Usar ese token en el header
   const res = await fetch(`${API_BASE}/v1/agenda/mis-citas`, {
     method: "GET",
     headers: {
@@ -138,7 +128,6 @@ export async function fetchPendingAppointments() {
     const message = resJson.error || "Error al obtener las citas.";
     
     if (res.status === 500) {
-        // Asumiendo que usas ErrorApi, si no, lanza un Error normal
         throw new Error("Error interno del servidor."); 
     }
     

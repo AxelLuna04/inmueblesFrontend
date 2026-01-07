@@ -10,12 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeader({ title: "Bienvenid@ a Inmuebles a tu Alcance" });
   initFooter();
 
-  //goHomeByRole(auth.role());
-  //if (auth.role() == VENDEDOR) window.location.href = "/pages/lister/dashboard";
-  //PROBAR REDIRECCION CON ESTE METODO
   if (auth.role() === VENDEDOR) return goHomeByRole(auth.role());
   
-  // Elementos DOM
   const container = document.getElementById("propertiesContainer");
   const searchInput = document.getElementById("searchInput");
   const searchIcon = document.querySelector(".search-icon");
@@ -28,17 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const notification = document.getElementById("notification");
   
-  // Nuevos elementos para scroll infinito
   const sentinelEl = document.getElementById("infiniteSentinel");
   const statusTextEl = document.getElementById("infiniteStatus");
 
-  // Estado
   let currentSearch = "";
   let currentPage = 0;
   let isLastPage = false;
   let isLoading = false;
 
-  // Genera el HTML de una sola tarjeta
   function renderCardHtml(p) {
     return `
         <article class="property-card" data-id="${p.id}">
@@ -75,7 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
       '<p class="main-content-message" style="grid-column: 1/-1; text-align: center;">No se encontraron inmuebles con los filtros actuales.</p>';
   }
 
-  // Lógica principal de carga
   async function loadNextPage({ reset = false } = {}) {
     if (isLoading) return;
     if (!reset && isLastPage) return;
@@ -87,10 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (reset) {
         currentPage = 0;
         isLastPage = false;
-        container.innerHTML = ""; // Limpiar contenedor
+        container.innerHTML = "";
       }
 
-      // Preparamos filtros
       const filters = {
         page: currentPage,
         size: 12,
@@ -100,7 +91,6 @@ document.addEventListener("DOMContentLoaded", () => {
         maxPrice: maxPriceInput?.value || 0
       };
 
-      // Llamada a API
       const pageData = await fetchPublicListings(filters);
       const properties = pageData.content.map(mapPublicCardToFront);
 
@@ -111,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      // Insertamos tarjetas al final sin borrar las anteriores
       container.insertAdjacentHTML("beforeend", properties.map(renderCardHtml).join(""));
 
       isLastPage = pageData.last;
@@ -133,14 +122,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Manejo de Búsqueda
   function handleSearch() {
     currentSearch = searchInput.value.trim();
-    reconnectObserver(); // Reiniciar observador por si estaba desconectado
+    reconnectObserver();
     loadNextPage({ reset: true });
   }
 
-  // Event Listeners
   searchInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") handleSearch();
   });
@@ -149,13 +136,11 @@ document.addEventListener("DOMContentLoaded", () => {
     searchIcon.addEventListener("click", handleSearch);
   }
 
-  // Si quieres búsqueda automática al cambiar filtros:
   listingTypeSelect.addEventListener("change", handleSearch);
   minPriceInput.addEventListener("change", handleSearch);
   maxPriceInput.addEventListener("change", handleSearch);
 
 
-  // Click en tarjeta → detalle
   container.addEventListener("click", (e) => {
     const card = e.target.closest(".property-card");
     if (!card) return;
@@ -171,13 +156,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!sentinelEl) return null;
     
     const obs = new IntersectionObserver((entries) => {
-        // Si el centinela entra en pantalla, cargamos la siguiente página
         if (entries[0].isIntersecting) {
             loadNextPage({ reset: false });
         }
     }, {
-        root: null, // viewport
-        rootMargin: "400px", // Cargar 400px antes de llegar al fondo
+        root: null,
+        rootMargin: "400px",
         threshold: 0.1
     });
 
@@ -190,7 +174,6 @@ document.addEventListener("DOMContentLoaded", () => {
     observer = createObserver();
   }
 
-  // Inicialización
   reconnectObserver();
   loadNextPage({ reset: true });
 });

@@ -4,18 +4,15 @@ import { getCalendar, getAvailableHours, scheduleAppointment } from "../../api/a
 import { auth, goHomeByRole } from "../../utils/authManager.js";
 import { CLIENTE } from "../../utils/constants.js";
 
-// --- ESTADO GLOBAL ---
 let currentDate = new Date();
 let displayDate = new Date();
 let currentSelection = { dateStr: null, timeStr: null }; 
 let propertyId = null; 
 let sellerId = null;
 
-// Mapa de datos (Key: YYYY-MM-DD)
 let monthDataMap = new Map();
 const MONTH_NAMES = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-// Elementos DOM
 const calendarGrid = document.getElementById("calendarGrid");
 const monthLabel = document.querySelector(".current-month-label");
 const btnPrev = document.getElementById("prevMonth");
@@ -24,37 +21,28 @@ const statusLabel = document.getElementById("selectionStatus");
 const btnConfirm = document.getElementById("btnConfirm");
 const notification = document.getElementById("notification");
 
-// --- 1. INICIALIZACIÓN (DOMContentLoaded) ---
 document.addEventListener("DOMContentLoaded", async () => {
     initHeader({ title: "Agendar Cita" });
     if (auth.role() !== CLIENTE) return goHomeByRole(auth.role());
     
-    // Resetear UI al inicio
     resetSelectionUI();
 
-    // Obtener parámetros limpios
     const params = new URLSearchParams(window.location.search);
     propertyId = params.get("idListing");
     sellerId = params.get("idLister");
 
-    // Validación crítica
     if (!propertyId) {
         showNotif(notification, "Error: Enlace incorrecto (Falta ID).", NOTIF_RED);
         disableInteraction();
     } else {
-        // Cargar datos
         await loadCalendarData();
     }
 
-    // Listeners
     btnPrev.addEventListener("click", () => changeMonth(-1));
     btnNext.addEventListener("click", () => changeMonth(1));
     
-    // AQUÍ OCURRÍA EL ERROR ANTES: handleConfirm ahora está definido abajo
     btnConfirm.addEventListener("click", handleConfirm);
 });
-
-// --- 2. FUNCIONES DE LÓGICA DE DATOS ---
 
 async function loadCalendarData() {
     const year = displayDate.getFullYear();
@@ -63,17 +51,14 @@ async function loadCalendarData() {
     try {
         if (!propertyId) return;
 
-        // Limpiamos ID por si acaso viniera sucio, aunque el fix del botón debería bastar
         const cleanId = propertyId.split('?')[0]; 
 
         console.log(`Pidiendo calendario para ID: ${cleanId}, Año: ${year}, Mes: ${month}`);
         
         const response = await getCalendar(cleanId, year, month);
         
-        // Verificación de seguridad: ¿Es realmente un calendario?
         if (!response.dias) {
             console.warn("La respuesta no parece un calendario:", response);
-            // Si devuelve la info de la casa por error, el mapa se queda vacío y se ve todo gris.
         }
 
         monthDataMap.clear();
@@ -99,27 +84,23 @@ function renderCalendar() {
     
     monthLabel.textContent = `${MONTH_NAMES[month]} ${year}`;
 
-    // Botón Atrás
     const isCurrentMonth = month === currentDate.getMonth() && year === currentDate.getFullYear();
     btnPrev.disabled = isCurrentMonth;
     btnPrev.style.opacity = isCurrentMonth ? "0.3" : "1";
     btnPrev.style.cursor = isCurrentMonth ? "default" : "pointer";
 
-    // Cálculos de días
     const firstDayObj = new Date(year, month, 1);
     let startDayIndex = firstDayObj.getDay(); 
     startDayIndex = (startDayIndex === 0) ? 6 : startDayIndex - 1; 
 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    // Relleno vacío inicial
     for (let i = 0; i < startDayIndex; i++) {
         const padding = document.createElement("div");
         padding.classList.add("calendar-day", "day-empty");
         calendarGrid.appendChild(padding);
     }
 
-    // Días reales
     for (let day = 1; day <= daysInMonth; day++) {
         const cell = document.createElement("div");
         cell.classList.add("calendar-day");
@@ -131,12 +112,10 @@ function renderCalendar() {
         const cellDate = new Date(year, month, day);
         const todayZero = new Date(currentDate); todayZero.setHours(0,0,0,0);
         
-        // Prioridad 1: Pasado
         if (cellDate < todayZero) {
             cell.classList.add("day-disabled");
             cell.style.opacity = "0.5";
-        } 
-        // Prioridad 2: Info del Backend
+        }
         else if (dayInfo) {
             if (!dayInfo.habilitado) {
                 cell.classList.add("day-disabled");
@@ -147,17 +126,14 @@ function renderCalendar() {
             } else {
                 cell.classList.add("day-available"); 
                 cell.title = "Ver horarios";
-                // IMPORTANTE: handleDayClick debe existir al ejecutarse esta línea
                 cell.addEventListener("click", () => handleDayClick(cell, dateKey));
             }
         } 
-        // Prioridad 3: Fallback (Si no hay datos, asumimos disponible para probar)
         else {
              cell.classList.add("day-available");
              cell.addEventListener("click", () => handleDayClick(cell, dateKey));
         }
 
-        // Mantener selección visual tras renderizar
         if (currentSelection.dateStr === dateKey) {
             cell.classList.add("day-selected");
         }
@@ -165,8 +141,6 @@ function renderCalendar() {
         calendarGrid.appendChild(cell);
     }
 }
-
-// --- 3. FUNCIONES DE INTERACCIÓN (DEFINIDAS FUERA) ---
 
 async function changeMonth(step) {
     displayDate.setMonth(displayDate.getMonth() + step);
@@ -177,9 +151,7 @@ async function changeMonth(step) {
     }
 }
 
-// Esta función daba ReferenceError antes porque estaba oculta o mal escrita
 async function handleDayClick(cellElement, dateKey) {
-    // Limpieza UI
     const prev = document.querySelector(".day-selected");
     if (prev) prev.classList.remove("day-selected");
     document.querySelectorAll(".time-popover").forEach(el => el.remove());
@@ -189,7 +161,6 @@ async function handleDayClick(cellElement, dateKey) {
     const popover = createPopoverSkeleton(cellElement);
     
     try {
-        // Limpiamos el ID por seguridad
         const cleanId = propertyId.split('?')[0];
         const response = await getAvailableHours(cleanId, dateKey);
         
@@ -200,7 +171,6 @@ async function handleDayClick(cellElement, dateKey) {
     }
 }
 
-// Función del botón confirmar
 async function handleConfirm() {
     if (!propertyId) {
         showNotif(notification, "Error: Inmueble no identificado.", NOTIF_RED);
@@ -231,8 +201,6 @@ async function handleConfirm() {
     }
 }
 
-// --- 4. UTILERÍAS ---
-
 function resetSelectionUI() {
     btnConfirm.disabled = true;
     btnConfirm.style.opacity = "0.5";
@@ -243,7 +211,6 @@ function resetSelectionUI() {
 
 function disableInteraction() {
     resetSelectionUI();
-    // Podrías agregar más bloqueos aquí si quieres
 }
 
 function createPopoverSkeleton(parentCell) {
@@ -274,8 +241,6 @@ function fillPopoverWithHours(popover, hoursList, dateKey) {
         const btn = document.createElement("button");
         btn.classList.add("time-slot");
         btn.textContent = formatTimePretty(timeStr);
-        // --- NUEVO: Verificar si esta hora ya estaba seleccionada ---
-        // Comparamos si la fecha abierta es la misma guardada Y si la hora coincide
         if (currentSelection.dateStr === dateKey && currentSelection.timeStr === timeStr) {
             btn.classList.add("selected");
         }
@@ -289,33 +254,22 @@ function fillPopoverWithHours(popover, hoursList, dateKey) {
 }
 
 function selectTime(btn, rawTime, dateKey) {
-    // Visual update dentro del popover (aunque se va a cerrar rápido, es buena práctica)
     document.querySelectorAll(".time-slot").forEach(s => s.classList.remove("selected"));
     btn.classList.add("selected");
     
-    // Guardar estado global
     currentSelection.dateStr = dateKey;
     currentSelection.timeStr = rawTime;
     
-    // Habilitar botón de confirmar
     btnConfirm.disabled = false;
     btnConfirm.style.opacity = "1";
     btnConfirm.style.cursor = "pointer";
     
-    // Actualizar texto footer
     updateBottomBar();
 
-    // --- NUEVO: Cerrar el Pop-up ---
-    // Buscamos el popover más cercano al botón clickeado y lo eliminamos
     const popover = btn.closest(".time-popover");
     if (popover) {
         popover.remove();
     }
-    
-    // NOTA: No necesitamos hacer nada extra para el calendario.
-    // Como 'handleDayClick' ya agregó la clase .day-selected al día,
-    // y aquí NO la estamos quitando, el día se quedará marcado en azul
-    // aunque el popover desaparezca. ¡Justo lo que querías!
 }
 
 function updateBottomBar() {

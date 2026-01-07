@@ -25,12 +25,11 @@ import {
 import { fetchOcupaciones } from "../../api/catalogueService.js";
 import { fetchUnlockedContacts } from "../../api/contactService.js";
 
-// === 1. IMPORTAR NOTIFICACIONES ===
 import {
   showNotif,
   NOTIF_RED,
   NOTIF_ORANGE,
-  NOTIF_GREEN // Asumimos que existe. Si no, usa una clase CSS personalizada o null
+  NOTIF_GREEN
 } from "../../utils/notifications.js";
 
 // MODO DEV
@@ -48,10 +47,8 @@ let ocupacionesLoaded  = false;
 let contactsLoaded = false; 
 let appointmentsLoaded = false; 
 
-// === 2. VARIABLE GLOBAL DE NOTIFICACIÓN ===
 let notificationEl = null; 
 
-// Reglas de contraseña
 const PASSWORD_RULES = [
   { id: "rule-length", regex: /.{8,}/ },
   { id: "rule-upper",  regex: /[A-Z]/ },
@@ -87,8 +84,6 @@ function isPasswordStrong(value) {
 //  INICIO DE PÁGINA
 // =========================
 document.addEventListener("DOMContentLoaded", async () => {
-    
-    // === 3. INICIALIZAR ELEMENTO DE NOTIFICACIÓN ===
     notificationEl = document.getElementById("notification");
 
     if (!DEV_BYPASS_AUTH) {
@@ -119,7 +114,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       })
       .catch((err) => {
         console.error("Error cargando perfil:", err);
-        // Usamos uiError en lugar de showMainError
         uiError("No se pudo cargar tu perfil. Intenta más tarde.");
         applyRoleVisibility();
       });
@@ -130,35 +124,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 //  HELPERS UI (Notificaciones)
 // =========================
 
-// Función auxiliar para errores (Rojo)
 function uiError(msg, duration = 5000) {
-    // Mantenemos el console.error para debug si lo deseas, o confiamos en el catch
     if (notificationEl) return showNotif(notificationEl, msg, NOTIF_RED, duration);
-    // Fallback por si no cargó el DOM (raro)
     alert(msg); 
 }
 
-// Función auxiliar para advertencias (Naranja)
 function uiWarn(msg, duration = 4000) {
     if (notificationEl) return showNotif(notificationEl, msg, NOTIF_ORANGE, duration);
 }
 
-// Función auxiliar para éxito (Verde)
 function uiSuccess(msg, duration = 3500) {
-    // Si NOTIF_GREEN no está definido en tu utils, usa una string hardcodeada o null
     if (notificationEl) return showNotif(notificationEl, msg, NOTIF_GREEN, duration);
 }
 
-// Limpiar errores visuales
 function clearMainError() {
-    // Limpiamos el texto rojo estático si existiera
     const p = document.getElementById("mainError");
     if (p) {
         p.textContent = "";
         p.hidden = true;
     }
-    // Opcional: Ocultar notificación actual si quisieras
-    // if (notificationEl) notificationEl.classList.remove("notif-shows");
 }
 
 
@@ -179,8 +163,6 @@ async function loadProfile() {
 }
 
 function fillProfileUI(p) {
-  // ... (código existente sin cambios)
-  // Tipo usuario
   const tipoSpan = document.querySelector(
     '[for="tipoUsuario"].label-info, span[for="tipoUsuario"], .label-info-tipo'
   );
@@ -188,39 +170,32 @@ function fillProfileUI(p) {
     tipoSpan.textContent = p.tipoUsuario === "VENDEDOR" ? "Vendedor" : "Cliente";
   }
 
-  // Nombre
   const nombreLabel = document.getElementById("nombreLabel");
   const nombreInput = document.getElementById("nombreCompleto");
   if (nombreLabel) nombreLabel.textContent = p.nombreCompleto || "—";
   if (nombreInput) nombreInput.value = p.nombreCompleto || "";
 
-  // Fecha
   const fechaLabel = document.getElementById("fechaNacimientoLabel");
   const fechaInput = document.getElementById("fechaNacimiento");
   const fechaValor = p.fechaNacimiento || "";
 
-  // 1. Si existe el input, lo actualizamos (aunque esté hidden)
   if (fechaInput) {
     fechaInput.value = fechaValor;
   }
 
-  // 2. Si existe el label, lo actualizamos (INDEPENDIENTE del input)
   if (fechaLabel) {
     if (fechaValor) {
-        // O simplemente mostrar lo que manda el back:
         fechaLabel.textContent = fechaValor; 
     } else {
         fechaLabel.textContent = "—";
     }
   }
 
-  // Teléfono
   const telLabel = document.getElementById("telefonoLabel");
   const telInput = document.getElementById("telefono");
   if (telLabel) telLabel.textContent = p.telefono || "—";
   if (telInput) telInput.value = p.telefono || "";
 
-  // Correo
   const correoLabel = document.getElementById("correoLabel");
   const correoInput = document.getElementById("correo");
   if (correoLabel) correoLabel.textContent = p.correo || "—";
@@ -229,7 +204,6 @@ function fillProfileUI(p) {
     correoInput.disabled = true;
   }
 
-  // Foto
   const preview   = document.getElementById("photoPreview");
   const fileError = document.getElementById("fileError");
   if (preview) {
@@ -250,8 +224,6 @@ function fillProfileUI(p) {
   fillPreferencesFromProfile(p);
 }
 
-// ... (ensureOcupacionesLoaded, fillOcupacionSelect, applyOcupacionFromProfile, applyStaticFieldsByRole se mantienen igual) ...
-
 async function ensureOcupacionesLoaded() {
   if (ocupacionesLoaded) return;
   try {
@@ -261,8 +233,6 @@ async function ensureOcupacionesLoaded() {
     if (originalProfile) applyOcupacionFromProfile(originalProfile);
   } catch (err) {
     console.error("Error cargando ocupaciones:", err);
-    // No lanzamos uiError aquí para no spammear al usuario al cargar la página,
-    // solo log en consola es suficiente para algo secundario.
   }
 }
 
@@ -401,7 +371,6 @@ function wireEditProfile() {
     });
   }
 
-  // Submit → Guardar cambios
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     clearMainError();
@@ -434,18 +403,15 @@ function wireEditProfile() {
       }
 
       setEditing(false);
-      // REEMPLAZO DE ALERT POR NOTIFICACIÓN
       uiSuccess("Perfil actualizado correctamente.");
     } catch (err) {
       console.error(err);
-      // REEMPLAZO DE SHOWMAINERROR POR NOTIFICACIÓN
       uiError(err.message || "Error al guardar los cambios.");
     }
   });
 }
 
 function setEditing(isEditing) {
-  // ... (código existente setEditing se mantiene igual)
   const form      = document.getElementById("registerForm");
   const btnEdit   = document.getElementById("btnEditProfile");
   const btnSave   = document.getElementById("btnSaveProfile");
@@ -477,13 +443,10 @@ function setEditing(isEditing) {
   if (lbPhotoWarning) lbPhotoWarning.style.display = isEditing ? "inline-flex" : "none";
 }
 
-// ... (buildProfilePatchBody, fillPreferencesFromProfile, applyRoleVisibility se mantienen igual) ...
-
 function buildProfilePatchBody(original) {
   const body = {};
   const nombreInput   = document.getElementById("nombreCompleto");
   const telefonoInput = document.getElementById("telefono");
-  // Preferencias
   const ocupSelect       = document.getElementById("idOcupacion");
   const presupuestoInput = document.getElementById("presupuesto");
   const ubicacionInput   = document.getElementById("ubicacionInteres");
@@ -524,13 +487,10 @@ function buildProfilePatchBody(original) {
 
     if (newOcupIdStr) {
       const newOcupId = Number(newOcupIdStr);
-      // Validar si cambió respecto al original
       if (newOcupId !== (original.ocupacion ?? original.idOcupacion ?? null)) {
         body.idOcupacion = newOcupId;
       }
     } else if (original.ocupacion || original.idOcupacion) {
-      // El usuario tenía ocupación y seleccionó la opción vacía
-      // ENVIAMOS -1 PARA QUE EL BACKEND SEPA QUE DEBE BORRARLA
       body.idOcupacion = -1; 
     }
   }
@@ -556,7 +516,6 @@ function fillPreferencesFromProfile(p) {
 
   const ocupacionLabel = document.getElementById("ocupacionLabel");
   const ocupacionInput = document.getElementById("idOcupacion");
-  //if (ocupacionLabel) ocupacionLabel.textContent = p.ocupacion != null ? p.ocupacion.toString() : "—";
   if (ocupacionInput) ocupacionInput.value = p.ocupacion != null ? p.ocupacion : "";
   if (ocupacionesLoaded) {
       applyOcupacionFromProfile(p);
@@ -604,8 +563,6 @@ function wireDeleteAccount() {
   if (!btnDelete) return;
 
   btnDelete.addEventListener("click", async () => {
-    // Aquí puedes usar window.confirm o un modal más elaborado,
-    // por ahora el confirm es aceptable ya que es crítico.
     const confirmDelete = window.confirm(
       "Esta acción eliminará tu cuenta permanentemente. ¿Seguro que deseas continuar?"
     );
@@ -616,7 +573,6 @@ function wireDeleteAccount() {
 
     try {
       await deleteMyAccount(pwd);
-      // REEMPLAZO DE ALERT
       uiSuccess("Cuenta eliminada. Cerrando sesión...", 2000);
       
       setTimeout(() => {
@@ -626,7 +582,6 @@ function wireDeleteAccount() {
 
     } catch (err) {
       console.error(err);
-      // REEMPLAZO DE ALERT
       uiError(err.message || "No se pudo eliminar la cuenta.");
     }
   });
@@ -657,7 +612,6 @@ function wireAgendaAccordion() {
           fillAgendaUIFromResponse(data);
         } catch (err) {
           console.error(err);
-          // REEMPLAZO DE SHOWMAINERROR
           uiWarn("No se pudo cargar la agenda.");
         }
       }
@@ -667,7 +621,6 @@ function wireAgendaAccordion() {
   });
 }
 
-// ... (wirePreferencesAccordion empieza aquí) ...
 function wirePreferencesAccordion() {
   const card    = document.getElementById("preferencesCard");
   const header  = document.getElementById("preferencesHeader");
@@ -700,7 +653,6 @@ function wirePreferencesAccordion() {
     });
   }
 
-  // Guardar Preferencias
   if (btnSave) {
     btnSave.addEventListener("click", async (e) => {
       e.stopPropagation();
@@ -724,7 +676,6 @@ function wirePreferencesAccordion() {
         originalProfile = mapProfileDataToFront(updatedRaw);
         fillPreferencesFromProfile(originalProfile);
         setPreferencesEditing(false);
-        // REEMPLAZO DE ALERT
         uiSuccess("Preferencias actualizadas correctamente.");
       } catch (err) {
         console.error(err);
@@ -735,7 +686,6 @@ function wirePreferencesAccordion() {
 }
 
 function setPreferencesEditing(isEditing) {
-  // ... (igual que antes)
   const card      = document.getElementById("preferencesCard");
   const btnEdit   = document.getElementById("btnEditPreferences");
   const btnSave   = document.getElementById("btnSavePreferences");
@@ -760,7 +710,6 @@ function setPreferencesEditing(isEditing) {
 }
 
 function buildPreferencesPatchBody(original) {
-    // ... (igual que antes)
     const body = {};
     if (!original || original.tipoUsuario !== "CLIENTE") return body;
     const presupuestoInput = document.getElementById("presupuesto");
@@ -797,8 +746,6 @@ function buildPreferencesPatchBody(original) {
     return body;
 }
 
-
-// ... (wireContactsAccordion, loadContactsTable, wireAppointmentsAccordion, loadAppointmentsTable, getAppointmentStatusBadge, formatDate, formatTime se mantienen igual) ...
 
 function wireContactsAccordion() {
   const card   = document.getElementById("contactsCard");
@@ -955,9 +902,7 @@ function wirePasswordAccordion() {
 
   if (btnCancel) {
     btnCancel.addEventListener("click", (e) => {
-      e.stopPropagation(); // Evita burbujeo
-      // No necesitamos preventDefault aquí porque suele ser type="button", 
-      // pero si fuera submit, también se requeriría.
+      e.stopPropagation();
       
       if (currentPwd) currentPwd.value = "";
       if (newPwd)     newPwd.value = "";
@@ -970,11 +915,10 @@ function wirePasswordAccordion() {
     });
   }
 
-  // === AQUÍ ESTÁ LA CORRECCIÓN ===
   if (btnSave) {
     btnSave.addEventListener("click", async (e) => {
       e.stopPropagation(); 
-      e.preventDefault(); // <--- ¡IMPORTANTE! Evita que el formulario recargue la página
+      e.preventDefault();
       
       clearMainError();
 
@@ -982,7 +926,6 @@ function wirePasswordAccordion() {
       const nueva  = newPwd ? newPwd.value.trim() : "";
       const conf   = confirmPwd ? confirmPwd.value.trim() : "";
 
-      // Validaciones con feedback visual
       if (!actual || !nueva || !conf) {
         uiWarn("Por favor, completa todos los campos de contraseña.");
         return;
@@ -1099,7 +1042,6 @@ function initAgendaOnProfile() {
         originalAgenda = updated;
         fillAgendaUIFromResponse(updated);
         setAgendaEditing(false);
-        // REEMPLAZO DE ALERT
         uiSuccess("Agenda actualizada correctamente.");
       } catch (err) {
         console.error(err);
@@ -1110,15 +1052,11 @@ function initAgendaOnProfile() {
   setAgendaEditing(false);
 }
 
-// src/js/shared/profile.js
-
 function fillAgendaUIFromResponse(data) {
   if (!data) return;
 
-  // Marcar botones de día
   applyDaysToButtons(data);
 
-  // Convertir horas LocalTime -> label
   const selInicio = document.getElementById("horaInicio");
   const selFin    = document.getElementById("horaFin");
   const selDur    = document.getElementById("duracionVisita");
@@ -1126,28 +1064,19 @@ function fillAgendaUIFromResponse(data) {
   const inicioLabel = localTimeToLabel(data.horarioAtencionInicio);
   const finLabel    = localTimeToLabel(data.horarioAtencionFin);
 
-  // 1. Asignar Hora Inicio y FORZAR actualización de opciones de Hora Fin
   if (selInicio && inicioLabel) {
       selInicio.value = inicioLabel;
-      // IMPORTANTE: Disparamos el evento manualmente para que agendaUtils 
-      // detecte el cambio y rellene las opciones del select 'horaFin'.
       selInicio.dispatchEvent(new Event("change"));
   }
 
-  // 2. Asignar Hora Fin (Ahora sí existen las opciones)
   if (selFin && finLabel) {
       selFin.value = finLabel;
   }
 
-  // 3. Duración
   if (selDur && data.duracionVisita != null) {
-      // Convertir a string por si viene como número
-      selDur.value = String(data.duracionVisita); 
-      // Validar si la duración es válida para el rango (opcional, pero buena práctica)
-      // checkDuracion(selInicio, selFin, selDur); 
+      selDur.value = String(data.duracionVisita);
   }
 
-  // Resumenes estáticos
   const diasLabel     = document.getElementById("agendaDiasLabel");
   const horarioLabel  = document.getElementById("agendaHorarioLabel");
   const duracionLabel = document.getElementById("agendaDuracionLabel");

@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initHeader({ title: "Publicaciones Pendientes de Revisión" });
   initFooter();
 
-  // Access control (optional)
   if (auth.role() !== ADMIN) return goHomeByRole(auth.role());
 
   const gridEl = document.getElementById("propertiesContainer");
@@ -44,7 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return "";
   }
 
-  // Extra class for the STATE chip
   function getStateChipClass(state) {
     const s = String(state || "").toUpperCase();
     if (s.includes("PEND")) return "chip--pending";
@@ -117,22 +115,17 @@ document.addEventListener("DOMContentLoaded", () => {
         gridEl.innerHTML = `<p class="main-content-message">Cargando publicaciones...</p>`;
       }
 
-      // 1. ESTADO
-      // Si el value es "" (Todos), lo convertimos a undefined para que NO se envíe el parámetro en la URL
       const statusRaw = statusSelectEl?.value; 
       const status = (statusRaw === "" || statusRaw === "0") ? undefined : statusRaw;
 
-      // 2. TIPO
-      // Si el value es "" (Todos), lo convertimos a undefined.
-      // Si tiene valor, lo convertimos a Number. Evitamos enviar 0.
       const typeRaw = typeSelectEl?.value;
       const type = (typeRaw === "" || typeRaw === "0") ? undefined : Number(typeRaw);
 
       const pageData = await fetchAdminListings({
         page,
         size: 12,
-        estado: status, // Si es undefined, la URL será limpia de este param
-        tipo: type,     // Si es undefined, la URL será limpia de este param
+        estado: status,
+        tipo: type,
         q: query || undefined
     });
 
@@ -173,7 +166,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadNextPage({ reset: true });
   }
 
-  // Events
   searchInputEl?.addEventListener("keydown", (e) => {
     if (e.key === "Enter") runSearch();
   });
@@ -189,7 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
     loadNextPage({ reset: true });
   });
 
-  // Card click -> detail page
   gridEl.addEventListener("click", (e) => {
     const cardEl = e.target.closest(".property-card");
     if (!cardEl) return;
@@ -222,7 +213,6 @@ document.addEventListener("DOMContentLoaded", () => {
     observer = createObserver();
   }
 
-  // Init
   reconnectObserver();
   loadNextPage({ reset: true });
 });

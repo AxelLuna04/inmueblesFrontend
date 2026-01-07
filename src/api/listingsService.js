@@ -8,7 +8,7 @@ const LISTINGS_URL = `${API_BASE}/v1/publicaciones`;
 const MY_LISTINGS_URL    = `${API_BASE}/v1/mis-publicaciones`;
 
 // --------------------------------------
-// Datos de prueba (simulan PublicacionCard)
+// Datos de prueba
 // --------------------------------------
 const SAMPLE_PUBLIC_LISTINGS = [
   {
@@ -91,7 +91,6 @@ export async function fetchPublicListings({ page = 0, size = 12, q = "", listing
     return await res.json(); // Page<PublicacionCard>
   } catch (err) {
     console.warn("Fallo la API, usando datos de prueba locales...", err);
-    // En una app real podrías condicionar esto por entorno
     return buildSamplePage();
   }
 }
@@ -140,7 +139,6 @@ export async function fetchMyListings({ page = 0, size = 12, q = "" } = {}) {
     return await res.json();
   } catch (err) {
     console.warn("Fallo la API, usando datos de prueba locales...", err);
-    // En una app real podrías condicionar esto por entorno
     return buildSamplePage();
   }
 }
@@ -150,13 +148,12 @@ export async function getMyListingDetail(id) {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("accessToken"), // IMPORTANTE: Token
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
     }
   });
 
   if (!res.ok) {
     const resJson = await res.json().catch(() => ({}));
-    // Si da 403 o 404, lanzamos el error para atraparlo en el front
     throw new ErrorApi(resJson.error || resJson.message || "No se pudo cargar tu publicación.");
   }
 

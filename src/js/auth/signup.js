@@ -13,10 +13,9 @@ import {
   NOTIF_GREEN
 } from "../../utils/notifications.js";
 
-const MAX_BYTES = 10 * 1024 * 1024; // 10MB como el backend
+const MAX_BYTES = 10 * 1024 * 1024;
 const ALLOWED_MIMES = ["image/jpeg", "image/png", "image/webp"];
 
-// --- Errores controlados para validaciones del front ---
 class ValidationError extends Error {
   constructor(message) {
     super(message);
@@ -24,13 +23,11 @@ class ValidationError extends Error {
   }
 }
 
-let notificationEl = null; // se asigna en DOMContentLoaded
+let notificationEl = null;
 
 function clearUIMessage() {
-  // Limpia mainError
   showMainError("");
 
-  // Limpia notificación global si existe
   if (notificationEl) {
     notificationEl.textContent = "";
     notificationEl.classList.remove("notif-shows");
@@ -48,23 +45,19 @@ function uiError(msg, duration = 5000) {
   showMainError(msg);
 }
 
-// Mantén el error real en consola, pero UI con mensaje controlado
 function handleCatch(err, fallbackMsg = "Ocurrió un error al registrar la cuenta.") {
-  // Validaciones del front (corregibles)
   if (err?.name === "ValidationError") {
     console.warn(err);
     uiWarn(err.message || "Revisa los datos del formulario.");
     return;
   }
 
-  // Errores de API controlados por tu service (mensaje del backend)
   if (err?.name === "ErrorApi") {
-    console.error(err); // aquí queda el mensaje real + stack
+    console.error(err);
     uiError(err.message || fallbackMsg);
     return;
   }
 
-  // Cualquier otra cosa
   console.error(err);
   uiError(fallbackMsg);
 }
@@ -80,7 +73,7 @@ function validateImage(file) {
     return "Formato de imagen no permitido. Usa JPG, PNG o WEBP.";
   }
 
-  return null; // OK
+  return null;
 }
 
 function getFotoFileOrThrow() {
@@ -91,7 +84,6 @@ function getFotoFileOrThrow() {
   const error = validateImage(file);
   if (error) {
     if (fileError) fileError.textContent = error;
-    // error corregible => ValidationError (warning en UI)
     throw new ValidationError(error);
   }
 
@@ -102,7 +94,6 @@ function getFotoFileOrThrow() {
 document.addEventListener("DOMContentLoaded", () => {
   enablePasswordToggle("#togglePassword", "#contrasenia");
 
-  // Si existe, usamos notifs; si no, seguimos con mainError
   notificationEl = document.getElementById("notification");
 
   const selTelefono = document.getElementById("telefono");
@@ -126,62 +117,51 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 1) Agenda selectors
   const selInicio = document.getElementById("horaInicio");
   const selFin = document.getElementById("horaFin");
   const selDuracion = document.getElementById("duracionVisita");
   initAgendaTimeSelectors(selInicio, selFin, selDuracion);
 
-  // 2) Toggle tipo usuario
   const tipoUsuario = document.getElementById("tipoUsuario");
   const agendaSection = document.getElementById("agendaSection");
   const phoneContainer = document.getElementById("phoneContainer");
   const telefonoInput = document.getElementById("telefono");
 
-  // Función para actualizar la UI según el rol
   const updateRoleUI = () => {
     const isVendedor = tipoUsuario.value === "VENDEDOR";
 
     if (isVendedor) {
-      // MOSTRAR Agenda
       agendaSection.classList.remove("hidden");
       agendaSection.style.opacity = "0";
       setTimeout(() => (agendaSection.style.opacity = "1"), 50);
 
-      // MOSTRAR Teléfono y hacerlo OBLIGATORIO
       if (phoneContainer) {
         phoneContainer.classList.remove("hidden");
         if (telefonoInput) telefonoInput.required = true;
       }
 
     } else {
-      // OCULTAR Agenda
       agendaSection.classList.add("hidden");
 
-      // OCULTAR Teléfono, quitar OBLIGATORIO y LIMPIAR valor
       if (phoneContainer) {
         phoneContainer.classList.add("hidden");
         if (telefonoInput) {
           telefonoInput.required = false;
-          telefonoInput.value = ""; // Limpiamos para no enviar basura
+          telefonoInput.value = "";
         }
       }
     }
   };
 
-  // Escuchar cambios
   tipoUsuario?.addEventListener("change", updateRoleUI);
 
-  // Ejecutar al inicio (para que arranque en estado correcto según el HTML por defecto)
   updateRoleUI();
 
-  // 3) Botones de días
   const dayBtns = document.querySelectorAll(".day-btn");
   dayBtns.forEach((btn) => {
     btn.addEventListener("click", () => btn.classList.toggle("active"));
   });
 
-  // 4) Reglas password
   const pass1 = document.getElementById("contrasenia");
   const rules = {
     length: { regex: /.{8,}/, el: document.getElementById("rule-length") },
@@ -205,7 +185,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 5) Preview foto
   const fotoInput = document.getElementById("fotoPerfil");
   const preview = document.getElementById("photoPreview");
   const fileError = document.getElementById("fileError");
@@ -224,7 +203,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (fileError) fileError.textContent = error;
       fotoInput.value = "";
       if (preview) preview.innerHTML = "";
-      // opcional: warning global también
       uiWarn(error);
       return;
     }
@@ -238,7 +216,6 @@ document.addEventListener("DOMContentLoaded", () => {
     reader.readAsDataURL(file);
   });
 
-  // Match pass
   const pass2 = document.getElementById("confirmarContrasenia");
   const matchIcon = document.getElementById("matchIcon");
 
@@ -280,7 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setLoading(submitBtn, true);
 
     try {
-      // 0) Validaciones rápidas (warnings)
       const payload = buildRegistroPayload();
 
       if (!payload.tipoUsuario) throw new ValidationError("Selecciona un tipo de usuario.");
@@ -290,12 +266,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!payload.correo) throw new ValidationError("Escribe tu correo.");
       if (!payload.contrasenia) throw new ValidationError("Escribe una contraseña.");
 
-      // Validación específica para VENDEDOR
       if (payload.tipoUsuario === "VENDEDOR" && !payload.telefono) {
           throw new ValidationError("El teléfono es obligatorio para vendedores.");
       }
 
-      // Validación de longitud (la que ya tenías), que sea válido (México: 10 dígitos)
       if (payload.telefono && payload.telefono.length !== 10) {
         throw new ValidationError("El teléfono debe tener 10 dígitos.");
       }
@@ -304,13 +278,10 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new ValidationError("Las contraseñas no coinciden.");
       }
 
-      // 1) Foto
       const fotoFile = getFotoFileOrThrow();
 
-      // 2) Registrar
       const registroRes = await registerRequest(payload, fotoFile);
 
-      // 3) Agenda si es VENDEDOR
       if (registroRes.tipoUsuario === "VENDEDOR") {
         const agendaPayload = buildAgendaPayloadFromForm();
         const algunDia =
@@ -342,12 +313,10 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "/pages/auth/verifyEmail.html";
         }, 4700);
       } else {
-        // fallback si no existe #notification
         alert(successMsg);
         window.location.href = "/pages/auth/verifyEmail.html";
       }
     } catch (err) {
-      // UI + console en el formato que quieres
       handleCatch(err, "Error al registrarse.");
     } finally {
       setLoading(submitBtn, false);
@@ -355,7 +324,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// --------- Helpers genéricos ---------
 function setLoading(btn, isLoading) {
   if (!btn) return;
   btn.disabled = isLoading;
@@ -369,7 +337,6 @@ function showMainError(msg) {
   p.hidden = !msg;
 }
 
-// Construye el RegistroRequest
 function buildRegistroPayload() {
   const tipoUsuarioEl = document.getElementById("tipoUsuario");
   const nombreEl = document.getElementById("nombre");
@@ -388,7 +355,6 @@ function buildRegistroPayload() {
   let telefono = (telefonoEl?.value ?? "").trim() || null;
   const nombreCompleto = `${nombre} ${apellidos}`.trim();
 
-  // NUEVA VALIDACIÓN: Si es CLIENTE, forzamos null (por seguridad)
   if (tipoUsuario === "CLIENTE") {
     telefono = null;
   }

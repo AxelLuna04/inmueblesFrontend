@@ -30,7 +30,6 @@ export const auth = {
 function decodeJWT(token) {
   try {
     const payload = token.split(".")[1];
-    // Base64URL -> Base64
     const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
     const padded = base64.padEnd(base64.length + (4 - (base64.length % 4)) % 4, "=");
     return JSON.parse(atob(padded));
@@ -39,7 +38,6 @@ function decodeJWT(token) {
   }
 }
 
-// 👇 NUEVO: helper para que el header obtenga info de usuario
 export function getSessionInfoFromToken() {
   const token = auth.token();
   if (!token) return null;
@@ -61,10 +59,6 @@ function isAccessExpired() {
 
   const now = Math.floor(Date.now() / 1000);
   return payload.exp < now;
-
-  //Margen para evitar problemas de sincronización de reloj
-  //const SKEW = 30; // segundos
-  //return payload.exp < now + SKEW;
 }
 
 export async function doRefresh() {
@@ -93,7 +87,6 @@ export async function refreshIfNeeded() {
   }
 }
 
-//TO DO: RUTAS HTML (PÁGINAS)
 export function goHomeByRole(rol) {
   switch (rol) {
     /*case "ADMIN":    

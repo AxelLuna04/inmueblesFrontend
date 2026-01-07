@@ -41,11 +41,6 @@ export function mapProfileDataToFront(data) {
   };
 }
 
-/**
- * PATCH /api/v1/me
- * El backend decide si aplica UpdatePerfilClienteRequest o UpdatePerfilVendedorRequest
- * según el rol. Aquí solo mandamos un JSON parcial con los campos que cambiaron.
- */
 export async function patchMyProfile(patchBody) {
   const res = await fetch(`${API_BASE}/v1/me`, {
     method: "PATCH",
@@ -68,10 +63,6 @@ export async function patchMyProfile(patchBody) {
   return res.json(); // PerfilResponse
 }
 
-/**
- * PUT /api/v1/me/foto
- * Cambiar foto de perfil (Multipart)
- */
 export async function uploadProfilePhoto(file) {
   const formData = new FormData();
   formData.append("foto", file);
@@ -80,7 +71,6 @@ export async function uploadProfilePhoto(file) {
     method: "PUT",
     headers: {
       ...getAuthHeader(),
-      // NO pongas Content-Type, fetch lo pone solo con boundary
     },
     body: formData,
   });
@@ -94,13 +84,9 @@ export async function uploadProfilePhoto(file) {
     throw new Error(body.message || "Error al cambiar la foto de perfil.");
   }
 
-  return res.json(); // PerfilResponse actualizado
+  return res.json(); // PerfilResponse
 }
 
-/**
- * DELETE /api/v1/me
- * El body es DeleteAccountRequest { contraseniaActual }
- */
 export async function deleteMyAccount(contraseniaActual) {
   const res = await fetch(`${API_BASE}/v1/me`, {
     method: "DELETE",
@@ -120,7 +106,6 @@ export async function deleteMyAccount(contraseniaActual) {
     throw new Error(body.message || "Error al eliminar la cuenta.");
   }
 
-  // solo devuelve { mensaje: "Cuenta eliminada" }
   return res.json();
 }
 
@@ -134,7 +119,7 @@ export async function changeMyPassword({ actual, nueva }) {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ actual, nueva }), // nombres exactos: getActual(), getNueva()
+    body: JSON.stringify({ actual, nueva }),
   });
 
   if (!res.ok) {
@@ -144,7 +129,6 @@ export async function changeMyPassword({ actual, nueva }) {
       if (body.mensaje) msg = body.mensaje;
       if (body.message) msg = body.message;
     } catch {
-      // ignoramos, usamos mensaje genérico
     }
     throw new Error(msg);
   }

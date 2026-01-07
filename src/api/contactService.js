@@ -27,7 +27,6 @@ export async function getListerData(id) {
     return await res.json();
 }
 
-// NUEVO MÉTODO
 export async function fetchUnlockedContacts() {
     const res = await fetch(MIS_CONTACTOS_URL, {
         method: "GET",
@@ -44,7 +43,6 @@ export async function fetchUnlockedContacts() {
             console.error(`Error del servidor - (${res.status}): ${message}`);
             throw new ErrorApi("Error interno del servidor.");
         }
-        // Retornamos array vacío si es 404, o lanzamos error si es otro
         if (res.status === 404) return [];
         
         throw new ErrorApi(message);

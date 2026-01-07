@@ -28,16 +28,9 @@ export async function getPayMethods() {
     if (!res.ok) throw new ErrorApi("No se pudieron cargar los métodos de pago.");
     return await res.json();
 }
-
-/**
- * Devuelve un catálogo de ocupaciones.
- * Cuando tengas la ruta real en backend, ajusta la URL y descomenta el fetch.
- */
 export async function fetchOcupaciones() {
   const token = localStorage.getItem("accessToken");
   
-  // Si no hay token, podemos decidir si lanzar error o permitirlo.
-  // Generalmente los catálogos son públicos, pero si tu backend pide auth, la enviamos.
   const headers = {
       "Accept": "application/json",
   };
@@ -46,14 +39,12 @@ export async function fetchOcupaciones() {
       headers["Authorization"] = `Bearer ${token}`;
   }
 
-  // RUTA CORREGIDA: Quitamos '/catalogos' porque tu backend lo tiene directo en /api/v1/ocupaciones
   const res = await fetch(`${API_BASE}/ocupaciones`, {
     method: "GET",
     headers: headers,
   });
 
   if (!res.ok) {
-    // Manejo robusto de errores
     throw new ErrorApi("Error al cargar catálogo de ocupaciones.");
   }
 

@@ -5,20 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Cuenta - Inmuebles a tu Alcance</title>
     
-    <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <!-- Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Estilos Globales -->
     <link rel="stylesheet" href="/src/css/styles.css">
     <link rel="stylesheet" href="/src/css/pages/signup.css">
     <script type="module" src="/src/js/auth/signup.js"></script>
     
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon.png">
 </head>
 <body>
@@ -26,7 +22,6 @@
     <header class="main-header">
         <div class="header-left">
             <a href="/" class="brand-link" title="Volver al inicio">
-                <!-- TO DO -->
                 <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
                 <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
                     <i class="fa-solid fa-building"></i> Inmuebles
@@ -39,20 +34,18 @@
     <!-- Notificación global -->
     <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
 
-    <!-- Contenido Principal -->
     <main class="register-main">
         <div class="white-main-card">
             
             <form id="registerForm" class="register-form">
                 
-                <!-- SECCIÓN SUPERIOR: 2 COLUMNAS -->
+                <!-- SECCIÓN SUPERIOR -->
                 <div class="top-section-grid">
                                     
-                    <!-- COLUMNA IZQUIERDA: DATOS PERSONALES -->
+                    <!-- COLUMNA IZQUIERDA - DATOS PERSONALES -->
                     <div class="personal-data-col">
                         <h2 class="section-subtitle title-blue">Datos Personales</h2>
                         
-                        <!-- Tipo de Usuario -->
                         <div class="form-group blue-box">
                             <label for="tipoUsuario">Tipo de Usuario</label>
                             <select id="tipoUsuario" class="form-input" required>
@@ -61,19 +54,16 @@
                             </select>
                         </div>
 
-                        <!-- Nombre -->
                         <div class="form-group blue-box">
                             <label for="nombre">Nombre(s)</label>
                             <input type="text" id="nombre" class="form-input" required>
                         </div>
 
-                        <!-- Apellidos -->
                         <div class="form-group blue-box">
                             <label for="apellidos">Apellidos</label>
                             <input type="text" id="apellidos" class="form-input" required>
                         </div>
 
-                        <!-- Fecha de Nacimiento -->
                         <div class="form-group blue-box">
                             <label for="fechaNacimiento">Fecha de Nacimiento</label>
                             <input
@@ -86,7 +76,6 @@
                             >
                         </div>
 
-                        <!-- Contraseña -->
                         <div class="form-group blue-box">
                             <label for="contrasenia">Contraseña</label>
                             <div class="input-wrapper">
@@ -105,7 +94,6 @@
                             </ul>
                         </div>
 
-                        <!-- Confirmar Contraseña -->
                         <div class="form-group blue-box">
                             <label for="confirmarContrasenia">Confirmar Contraseña</label>
                             <div class="input-wrapper">
@@ -115,7 +103,7 @@
                         </div>
                     </div>
 
-                    <!-- COLUMNA DERECHA: FOTO DE PERFIL + DATOS DE CONTACTO -->
+                    <!-- COLUMNA DERECHA - FOTO DE PERFIL + DATOS DE CONTACTO -->
                     <div class="profile-photo-col">
 
                         <h2 class="section-subtitle title-blue">Foto de Perfil</h2>
@@ -142,13 +130,11 @@
                         <!-- DATOS DE CONTACTO DEBAJO DE LA FOTO -->
                         <h2 class="section-subtitle title-blue contact-title">Datos de Contacto</h2>
                         <div class="contact-grid contact-grid--signup-side">
-                            <!-- Correo -->
                             <div class="form-group blue-box">
                                 <label for="correo">Correo Electrónico</label>
                                 <input type="email" id="correo" class="form-input" required>
                             </div>
 
-                            <!-- Teléfono -->
                             <div id="phoneContainer" class="form-group blue-box">
                                 <label for="telefono">Número de Teléfono</label>
                                 <input type="text" id="telefono" class="form-input" required> 
@@ -164,7 +150,6 @@
                     <div class="agenda-grid">
                         
                         <!-- 1. Disponibilidad -->
-                        <!-- Agregada clase blue-box -->
                         <div class="agenda-item item-days form-group blue-box">
                             <label>Disponibilidad <span class="info-text">(Seleccione días disponibles)</span></label>
                             <div class="days-container">
@@ -185,11 +170,9 @@
                             <div class="hours-inputs">
                                 <select id="horaInicio" class="form-input">
                                     <option value="" disabled selected>Hora Inicio</option>
-                                    <!-- JS llena esto -->
                                 </select>
                                 <select id="horaFin" class="form-input">
                                     <option value="" disabled selected>Hora Máxima</option>
-                                    <!-- JS llena esto -->
                                 </select>
                             </div>
                         </div>
@@ -210,7 +193,6 @@
                     </div>
                 </div>
 
-                <!-- Botón de Envío -->
                 <div class="form-actions-register">
                     <button type="submit" class="btn btn-primary-rect">Crear Cuenta</button>
                 </div>

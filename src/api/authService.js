@@ -23,7 +23,6 @@ export async function loginRequest(correo, contrasenia) {
 
 export async function registerRequest(datos, fotoFile) {
   const formData = new FormData();
-  // datos es un objeto que cumple RegistroRequest
   const jsonBlob = new Blob([JSON.stringify(datos)], {
     type: "application/json",
   });
@@ -78,7 +77,7 @@ export async function saveAgendaRequest(idVendedor, agendaPayload) {
     }
   }
 
-  return response.json(); // ConfigurarAgendaResponse (o lo que devuelva)
+  return response.json(); // ConfigurarAgendaResponse
 }
 
 
@@ -91,7 +90,6 @@ export async function verifyEmailRequest(token) {
   });
 
   if (!response.ok) {
-    // backend suele mandar ResponseStatusException con JSON tipo {message: "..."}
     let msg = "No se pudo verificar el correo.";
     try {
       const body = await response.json();
@@ -109,7 +107,6 @@ export async function resendVerificationRequest(correo) {
   });
 
   if (!res.ok) {
-    // el backend normalmente devuelve {mensaje: "..."} o error con message
     let msg = "No se pudo reenviar el correo.";
     try {
       const body = await res.json();

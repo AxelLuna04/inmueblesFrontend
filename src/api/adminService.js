@@ -7,9 +7,6 @@ const API_BASE = import.meta.env.VITE_API_BASE || "/api";
 const ADMIN_LISTINGS_URL = `${API_BASE}/v1/admin/publicaciones`;
 
 //DATOS DE PRUEBA
-// ------------------------------
-// Datos de prueba (reusar / borrar en prod)
-// ------------------------------
 const SAMPLE_PUBLIC_LISTINGS = [
   {
     id: 1,
@@ -61,7 +58,7 @@ const SAMPLE_PUBLIC_LISTINGS = [
   }
 ];
 
-// (Opcional) Expande variedad de tipos usando los mismos samples como base
+// Variedad de tipos usando los mismos samples como base
 const SAMPLE_TEMPLATES = [
   { ...SAMPLE_PUBLIC_LISTINGS[0], tipoInmueble: "Casa" },
   { ...SAMPLE_PUBLIC_LISTINGS[1], tipoInmueble: "Departamento" },
@@ -84,7 +81,7 @@ function tipoIdToNombre(tipoId) {
 
 function buildSampleAdminCards(total = 24) {
   const out = [];
-  const baseDate = new Date("2026-01-01T10:00:00"); // fijo para estabilidad visual
+  const baseDate = new Date("2026-01-01T10:00:00");
 
   for (let i = 0; i < total; i++) {
     const tpl = SAMPLE_TEMPLATES[i % SAMPLE_TEMPLATES.length];
@@ -188,14 +185,6 @@ function buildSampleDetalle(id) {
 
 
 
-
-
-
-
-
-
-
-
 //DIVISION API
 
 async function safeJson(res) {
@@ -234,13 +223,11 @@ export async function fetchAdminListings({ page = 0, size = 12, estado, tipo, q 
     return await res.json(); // Page<ModeracionCard>
   } catch (err) {
     console.warn("Fallo la API admin, usando datos de prueba locales...", err);
-    // TODO (PROD): borrar este fallback cuando el backend esté estable en producción.
     const filtered = applySampleFilters({ estado, tipo, q });
     return buildSamplePage({ content: filtered, page, size });
   }
 }
 
-// DETAIL: GET /{id}
 export async function fetchModerationDetail(id) {
   try {
     const res = await fetch(`${ADMIN_LISTINGS_URL}/${id}`, {
@@ -251,12 +238,10 @@ export async function fetchModerationDetail(id) {
     return await res.json(); // ModeracionDetalle
   } catch (err) {
     console.warn("Fallo detalle admin, usando detalle de prueba...", err);
-    // TODO (PROD): borrar este fallback cuando el backend esté estable en producción.
     return buildSampleDetalle(id);
   }
 }
 
-// APPROVE: PATCH /{id}/aprobar
 export async function approveModeration(id) {
   try {
     const res = await fetch(`${ADMIN_LISTINGS_URL}/${id}/aprobar`, {
@@ -267,12 +252,10 @@ export async function approveModeration(id) {
     return await res.json(); // ModeracionResponse
   } catch (err) {
     console.warn("Fallo aprobar admin, usando respuesta de prueba...", err);
-    // TODO (PROD): borrar este fallback cuando el backend esté estable en producción.
     return { id, estado: "APROBADA", message: "Aprobada (mock)" };
   }
 }
 
-// REJECT: PATCH /{id}/rechazar  body: { motivo }
 export async function rejectModeration(id, motivo) {
   try {
     const res = await fetch(`${ADMIN_LISTINGS_URL}/${id}/rechazar`, {
@@ -284,11 +267,9 @@ export async function rejectModeration(id, motivo) {
     return await res.json(); // ModeracionResponse
   } catch (err) {
     console.warn("Fallo rechazar admin, usando respuesta de prueba...", err);
-    // TODO (PROD): borrar este fallback cuando el backend esté estable en producción.
     return { id, estado: "RECHAZADA", motivo, message: "Rechazada (mock)" };
   }
 }
-
 
 // Mapea ModeracionCard al formato que consume el front
 export function mapModerationCardToFront(card) {

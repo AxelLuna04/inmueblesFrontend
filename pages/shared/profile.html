@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <!-- ICONOS -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <link rel="stylesheet" href="/src/css/styles.css">
@@ -18,12 +18,9 @@
     <script type="module" src="/src/js/shared/profile.js"></script>
 </head>
 <body>
-
-    <!-- Header -->
     <header class="main-header">
         <div class="header-left">
             <a href="/" class="brand-link" title="Volver al inicio">
-                <!-- TO DO -->
                 <img src="/logo.jpg" alt="Logo Inmuebles" class="logo" onerror="this.style.display='none'; document.getElementById('logo-placeholder').style.display='flex'">
                 <div id="logo-placeholder" class="logo-placeholder" style="display:none;">
                     <i class="fa-solid fa-building"></i> Inmuebles
@@ -36,40 +33,36 @@
     <!-- Notificación global -->
     <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
 
-    <!-- Contenido Principal -->
     <main class="profile-main">
         <div class="white-main-card">
             
             <form id="registerForm" class="register-form">
                 
-                <!-- SECCIÓN SUPERIOR: 2 COLUMNAS -->
+                <!-- SECCIÓN SUPERIOR -->
                 <div class="top-section-grid">
                     
-                    <!-- COLUMNA IZQUIERDA: DATOS PERSONALES -->
+                    <!-- COLUMNA IZQUIERDA - DATOS PERSONALES -->
                     <div class="personal-data-col">
                         <h2 class="section-subtitle title-blue">Datos Personales</h2>
                         
-                        <!-- Tipo de Usuario -->
                         <div class="form-group blue-box">
                             <label for="tipoUsuario">Tipo de Usuario</label>
                             <span for="tipoUsuario" class="label-info">Tipo Usuario</span>
                         </div>
 
-                        <!-- Nombre Completo -->
                         <div class="form-group blue-box">
                             <label for="nombreCompleto">Nombre Completo</label>
                             <span id="nombreLabel" class="label-info label-info--editable">No hay nombre</span>
                             <input type="text" id="nombreCompleto" class="form-input profile-edit-field">
                         </div>
 
-                        <!-- Fecha de Nacimiento -->
                         <div class="form-group blue-box">
                             <label for="fechaNacimiento">Fecha de Nacimiento</label>
                             <span id="fechaNacimientoLabel" class="label-info">dd/MM/aaaa</span>
                         </div>
                     </div>
 
-                    <!-- COLUMNA DERECHA: FOTO DE PERFIL -->
+                    <!-- COLUMNA DERECHA - FOTO DE PERFIL -->
                     <div class="profile-photo-col">
 
                         <h2 class="section-subtitle title-blue">Foto de Perfil</h2>
@@ -80,29 +73,26 @@
 
                             <input type="file" id="fotoPerfil" accept=".jpg, .jpeg, .png, .webp" hidden>
 
-                            <!-- botón editar foto (le añadimos id para manejarlo en JS) -->
                             <button type="button" id="btnEditPhoto" class="btn btn-register">
                                 Editar Foto
                             </button>
 
-                            <!-- OJO: aquí pon 10MB para coincidir con backend -->
+                            <!-- 10MB para coincidir con backend -->
                             <small class="upload-hint" id="lbPhotoWarning">Formatos JPG, PNG o WEBP. Máx 10MB</small>
                             <p id="fileError" class="error-text"></p>
                         </div>
                     </div>
                 </div>
 
-                <!-- SECCIÓN INTERMEDIA: DATOS DE CONTACTO -->
+                <!-- SECCIÓN INTERMEDIA - DATOS DE CONTACTO -->
                 <h2 class="section-subtitle title-blue contact-title">Datos de Contacto</h2>
                 <div class="contact-grid">
-                    <!-- Correo -->
                     <div class="form-group blue-box">
                         <label for="correo">Correo Electrónico</label>
                         <span id="correoLabel" class="label-info label-info--editable">correo@ejemplo.com</span>
                         <input type="email" id="correo" class="form-input profile-edit-field">
                     </div>
 
-                    <!-- Teléfono -->
                     <div class="form-group blue-box">
                         <label for="telefono">Número de Teléfono</label>
                         <span id="telefonoLabel" class="label-info label-info--editable">+52 555 555 5555</span>
@@ -110,7 +100,6 @@
                     </div>
                 </div>
 
-                <!-- Botón de Envío -->
                 <div class="form-actions-register">
                     <button type="button" id="btnEditProfile" class="btn btn-primary-rect">
                         Editar Perfil
@@ -128,15 +117,13 @@
             </form>
         </div>
         
-        <!-- SECCIÓN INFERIOR: CONFIGURAR AGENDA (ACORDEÓN) -->
+        <!-- ACORDEÓN CONFIGURAR AGENDA -->
         <div class="white-main-card agenda-card" id="agendaCard">
-            <!-- Cabecera clickable -->
             <button type="button" id="agendaAccordionHeader" class="agenda-header">
                 <h2 class="section-subtitle title-blue">Configurar Agenda</h2>
                 <i class="fa-solid fa-chevron-down agenda-chevron"></i>
             </button>
 
-            <!-- Cuerpo colapsable -->
             <div id="agendaAccordionBody" class="agenda-body">
                 <div id="agendaSection" class="agenda-section">
                     <div class="agenda-grid">
@@ -198,7 +185,7 @@
             </div>
         </div>
 
-        <!-- NUEVA SECCIÓN: CITAS AGENDADAS (SOLO VENDEDOR EN PRODUCCIÓN) -->
+        <!-- CITAS AGENDADAS -->
         <div class="white-main-card appointments-card" id="appointmentsCard" style="display:none;">
             <button type="button" class="appointments-header" id="appointmentsHeader">
                 <h2 class="section-subtitle title-blue">Citas Agendadas Pendientes</h2>
@@ -227,18 +214,15 @@
             </div>
         </div>
 
-        <!-- NUEVA SECCIÓN: PREFERENCIAS (SOLO CLIENTE EN PRODUCCIÓN) -->
+        <!-- PREFERENCIAS -->
         <div class="white-main-card preferences-card" id="preferencesCard">
-            <!-- Header clickable -->
             <button type="button" class="preferences-header" id="preferencesHeader">
                 <h2 class="section-subtitle title-blue">Preferencias</h2>
                 <i class="fa-solid fa-chevron-down preferences-chevron"></i>
             </button>
 
-            <!-- Cuerpo colapsable -->
             <div class="preferences-body" id="preferencesBody">
                 <div class="preferences-grid">
-                    <!-- Presupuesto -->
                     <div class="form-group blue-box">
                         <label for="presupuesto">Presupuesto</label>
                         <span id="presupuestoLabel" class="label-info preferences-label">—</span>
@@ -251,7 +235,6 @@
                         >
                     </div>
 
-                    <!-- Ubicación de interés -->
                     <div class="form-group blue-box">
                         <label for="ubicacionInteres">Ubicación de interés</label>
                         <span id="ubicacionLabel" class="label-info preferences-label">—</span>
@@ -262,7 +245,6 @@
                         >
                     </div>
 
-                    <!-- Número de miembros de familia -->
                     <div class="form-group blue-box">
                         <label for="numeroMiembrosFamilia">Número de miembros de familia</label>
                         <span id="miembrosLabel" class="label-info preferences-label">—</span>
@@ -273,7 +255,6 @@
                         >
                     </div>
 
-                    <!-- Ocupación -->
                     <div class="form-group blue-box">
                         <label for="idOcupacion">Ocupación</label>
                         <span id="ocupacionLabel" class="label-info preferences-label">—</span>
@@ -282,7 +263,6 @@
                             class="form-input preferences-edit-field"
                         >
                             <option value="">Selecciona una ocupación</option>
-                            <!-- Opciones se llenan por JS -->
                         </select>
                     </div>
                 </div>
@@ -305,7 +285,7 @@
             </div>
         </div>
 
-        <!-- NUEVA SECCIÓN: CONTACTOS DE VENDEDORES (SOLO CLIENTE EN PRODUCCIÓN) -->
+        <!-- CONTACTOS DE VENDEDORES -->
         <div class="white-main-card contacts-card" id="contactsCard" style="display:none;">
             <button type="button" class="contacts-header" id="contactsHeader">
                 <h2 class="section-subtitle title-blue">Contactos Vendedores</h2>
@@ -331,19 +311,16 @@
             </div>
         </div>
 
-        <!-- CAMBIO DE CONTRASEÑA (ACORDEÓN) -->
+        <!-- ACORDEÓN CAMBIO DE CONTRASEÑA -->
         <div class="white-main-card password-card">
-            <!-- Header clickable -->
             <button type="button" class="password-header">
                 <h2 class="section-subtitle title-blue">Cambiar contraseña</h2>
                 <i class="fa-solid fa-chevron-down password-chevron"></i>
             </button>
 
-            <!-- Cuerpo colapsable -->
             <div class="password-body">
                 <form id="passwordForm" class="password-form">
 
-                <!-- Contraseña actual -->
                 <div class="form-group blue-box">
                     <label for="currentPassword">Contraseña actual</label>
                     <div class="input-wrapper">
@@ -361,7 +338,6 @@
                     </div>
                 </div>
 
-                <!-- Nueva contraseña -->
                 <div class="form-group blue-box">
                     <label for="newPassword">Nueva contraseña</label>
                     <div class="input-wrapper">
@@ -379,7 +355,6 @@
                     </div>
                 </div>
 
-                <!-- Guía de contraseña (misma de signup) -->
                 <div class="password-guide">
                     <p>Tu contraseña deberá incluir:</p>
                     <ul>
@@ -390,7 +365,6 @@
                     </ul>
                 </div>
 
-                <!-- Confirmar nueva contraseña -->
                 <div class="form-group blue-box">
                     <label for="confirmNewPassword">Confirmar nueva contraseña</label>
                     <div class="input-wrapper">
@@ -405,7 +379,6 @@
                     </div>
                 </div>
 
-                <!-- Botones -->
                 <div class="password-actions">
                     <button type="submit" id="btnSavePassword" class="btn btn-primary-rect">
                     Guardar contraseña

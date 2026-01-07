@@ -24,7 +24,7 @@
     <!-- Notificación global -->
     <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
 
-    <!-- Buscador + filtros (reusa el estilo del index) -->
+    <!-- Buscador + filtros -->
     <nav class="search-bar-container">
         <div class="search-input-wrapper">
         <input type="text" id="searchInput" class="search-input" placeholder="Buscar publicación..." />
@@ -39,7 +39,6 @@
                 <option value="RECHAZADA">Rechazada</option>
             </select>
 
-            <!-- tipo es Integer en backend; aquí mando vacío o número -->
             <select class="filter-box" id="tipoSelect">
                 <option value="">Tipo (todos)</option>
                 <option value="1">Casa</option>
@@ -55,7 +54,7 @@
     <main class="main-content">
         <div class="properties-grid" id="propertiesContainer"></div>
 
-        <!-- Sentinel para infinite scroll -->
+        <!-- Infinite scroll -->
         <div id="infiniteSentinel" aria-hidden="true"></div>
         <p id="infiniteStatus" class="main-content-message" style="margin: 40px 0;"></p>
     </main>
