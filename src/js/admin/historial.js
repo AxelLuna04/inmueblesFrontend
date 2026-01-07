@@ -79,7 +79,7 @@ function displayHistorial() {
         titleLabel.classList.add("movement-title");
         titleLabel.innerHTML = `<strong>${m.descripcion}</strong>`
         const dateLabel = document.createElement("label");
-        let innitDate = m.fechaInicio.split('-').reverse().join('/');
+        let innitDate = m.fecha.split('-').reverse().join('/');
         dateLabel.innerHTML = innitDate;
         const movementType = document.createElement("div");
         movementType.innerHTML = '<br>';
