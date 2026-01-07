@@ -197,13 +197,20 @@ function fillProfileUI(p) {
   // Fecha
   const fechaLabel = document.getElementById("fechaNacimientoLabel");
   const fechaInput = document.getElementById("fechaNacimiento");
+  const fechaValor = p.fechaNacimiento || "";
+
+  // 1. Si existe el input, lo actualizamos (aunque esté hidden)
   if (fechaInput) {
-    if (p.fechaNacimiento) {
-      fechaInput.value = p.fechaNacimiento; 
-      if (fechaLabel) fechaLabel.textContent = p.fechaNacimiento;
+    fechaInput.value = fechaValor;
+  }
+
+  // 2. Si existe el label, lo actualizamos (INDEPENDIENTE del input)
+  if (fechaLabel) {
+    if (fechaValor) {
+        // O simplemente mostrar lo que manda el back:
+        fechaLabel.textContent = fechaValor; 
     } else {
-      fechaInput.value = "";
-      if (fechaLabel) fechaLabel.textContent = "—";
+        fechaLabel.textContent = "—";
     }
   }
 
