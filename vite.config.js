@@ -24,7 +24,7 @@ export default defineConfig({
         verifySuccess: resolve(__dirname, 'pages/auth/verifySuccess.html'),
         profile: resolve(__dirname, 'pages/shared/profile.html'),
 
-        appointments: resolve(__dirname, 'pages/client/scheduleApppointment.html'),
+        appointments: resolve(__dirname, 'pages/client/scheduleAppointment.html'),
         
         postListing: resolve(__dirname, 'pages/lister/postListing.html'),
         editListing: resolve(__dirname, 'pages/lister/editListing.html'),
