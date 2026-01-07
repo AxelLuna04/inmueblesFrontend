@@ -1,6 +1,7 @@
-/* ===== Not Found Page ===== */
+/* ===== Page Info (Generic Layout) ===== */
 
-.not-found-main{
+/* Contenedor principal para centrar la tarjeta */
+.page-info-main {
   min-height: calc(100vh - var(--header-h));
   display: flex;
   justify-content: center;
@@ -8,7 +9,8 @@
   padding: 32px 16px;
 }
 
-.not-found-card{
+/* La tarjeta blanca */
+.page-info-card {
   width: min(920px, 95vw);
   background: none;
   border-radius: 20px;
@@ -16,14 +18,16 @@
   text-align: center;
 }
 
-.not-found-title{
+/* Títulos (404, Éxito, etc.) */
+.page-info-title {
   font-family: var(--font-title);
   color: var(--color-primary-dark);
   font-size: clamp(1.6rem, 3vw, 2.2rem);
   margin-bottom: 18px;
 }
 
-.not-found-illustration{
+/* Ilustraciones o Íconos grandes */
+.page-info-illustration {
   width: min(180px, 65vw);
   height: auto;
   display: block;
@@ -33,14 +37,16 @@
   border-radius: 0;
 }
 
-.not-found-text{
+/* Texto descriptivo */
+.page-info-text {
   font-family: var(--font-card);
   color: #555;
   font-size: 1.05rem;
   margin-bottom: 22px;
 }
 
-.not-found-btn{
+/* Botones de acción en estas páginas */
+.page-info-btn {
   display: inline-flex;
   gap: 8px;
   padding: 12px 22px;

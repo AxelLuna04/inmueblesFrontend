@@ -34,34 +34,29 @@ export async function getPayMethods() {
  * Cuando tengas la ruta real en backend, ajusta la URL y descomenta el fetch.
  */
 export async function fetchOcupaciones() {
-  // ======== IMPLEMENTACIÓN REAL (dejar comentada por ahora) ========
-  /*
   const token = localStorage.getItem("accessToken");
-  if (!token) throw new Error("No hay sesión activa");
+  
+  // Si no hay token, podemos decidir si lanzar error o permitirlo.
+  // Generalmente los catálogos son públicos, pero si tu backend pide auth, la enviamos.
+  const headers = {
+      "Accept": "application/json",
+  };
+  
+  if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+  }
 
-
-  // AJUSTA LA RUTA REAL AL SERVIDOR
-
-  const res = await fetch(`${API_BASE}/catalogos/ocupaciones`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/json",
-    },
+  // RUTA CORREGIDA: Quitamos '/catalogos' porque tu backend lo tiene directo en /api/v1/ocupaciones
+  const res = await fetch(`${API_BASE}/ocupaciones`, {
+    method: "GET",
+    headers: headers,
   });
 
   if (!res.ok) {
-    throw new Error("Error al cargar catálogo de ocupaciones.");
+    // Manejo robusto de errores
+    throw new ErrorApi("Error al cargar catálogo de ocupaciones.");
   }
 
-  // Esperando algo tipo: [{ id: 1, nombre: "Empleado" }, ...]
-  return res.json();
-  */
-
-  // ======== MODO DEV: datos fake para no romper nada ========
-  return [
-    { id: 1, nombre: "Empleado" },
-    { id: 2, nombre: "Independiente" },
-    { id: 3, nombre: "Estudiante" },
-    { id: 4, nombre: "Jubilado" },
-  ];
+  // Retorna: [{ id: 1, nombre: "..." }, ...]
+  return await res.json();
 }

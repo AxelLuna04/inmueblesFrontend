@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificación de Cuenta | Inmuebles a tu Alcance</title>
+    <title>Cuenta Verificada | Inmuebles a tu Alcance</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,8 +13,8 @@
 
     <link rel="stylesheet" href="/src/css/styles.css">
     <link rel="stylesheet" href="/src/css/pages/pageInfo.css">
-    <script type="module" src="/src/js/auth/verifyEmail.js"></script>
-</head>
+    <script type="module" src="/src/js/auth/verifySuccess.js"></script>
+    </head>
 
 <body>
     <header class="main-header">
@@ -25,7 +25,7 @@
                     <i class="fa-solid fa-building"></i> Inmuebles
                 </div>
             </a>
-            <h1 class="site-title">Verifica tu Correo</h1>
+            <h1 class="site-title">Verificación Exitosa</h1>
         </div>
         <div class="header-actions">
             <div id="guestHeaderActions" class="header-actions-guest">
@@ -34,29 +34,26 @@
         </div>
     </header>
 
-    <div id="notification" class="notif" role="status" aria-live="polite" aria-atomic="true"></div>
-
     <main class="page-info-main">
-        <section class="page-info-card" role="main" aria-labelledby="verifyTitle">
+        <section class="page-info-card" role="main" aria-labelledby="successTitle">
             <div class="page-info-container">
-                <img src="/src/assets/icons/email-sent-icon.png" alt="Correo enviado" class="page-info-illustration">
+                <img src="/src/assets/icons/green-checkmark-icon.png" alt="Verificación exitosa" class="page-info-illustration">
                 
-                <h1 id="verifyTitle" class="page-info-title">¡Tu cuenta está casi lista!</h1>
+                <h1 id="successTitle" class="page-info-title">¡Todo listo!</h1>
                 
                 <p class="page-info-text">
-                    Un enlace de verificación ha sido enviado a tu correo.<br>
-                    Después de dar clic al enlace tu cuenta será verificada y podrás cerrar esta ventana.
+                    Ya puedes usar tu cuenta. Bienvenid@
                 </p>
 
-                <p class="page-info-text" style="margin-top: 24px; margin-bottom: 8px; font-size: 0.95rem;">
-                    ¿No recibiste un enlace de verificación?
-                </p>
-                
-                <br>
-                
-                <button class="btn btn-login page-info-btn" id="resendBtn">
-                    <i class="fa-regular fa-paper-plane"></i> Reenviar Correo
-                </button>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 24px;">
+                    <a href="/" class="btn btn-primary-rect">
+                        Volver al inicio
+                    </a>
+
+                    <a href="/pages/auth/login.html" class="btn btn-login">
+                        Iniciar Sesión
+                    </a>
+                </div>
             </div>
         </section>
     </main>

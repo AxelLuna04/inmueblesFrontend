@@ -509,11 +509,14 @@ function buildProfilePatchBody(original) {
 
     if (newOcupIdStr) {
       const newOcupId = Number(newOcupIdStr);
+      // Validar si cambió respecto al original
       if (newOcupId !== (original.ocupacion ?? original.idOcupacion ?? null)) {
         body.idOcupacion = newOcupId;
       }
     } else if (original.ocupacion || original.idOcupacion) {
-      body.idOcupacion = null;
+      // El usuario tenía ocupación y seleccionó la opción vacía
+      // ENVIAMOS -1 PARA QUE EL BACKEND SEPA QUE DEBE BORRARLA
+      body.idOcupacion = -1; 
     }
   }
 
@@ -906,7 +909,6 @@ function wirePasswordAccordion() {
 
   if (!card || !header) return;
 
-  // Helper para habilitar/deshabilitar inputs
   const setPasswordEditing = (isOpen) => {
     [currentPwd, newPwd, confirmPwd].forEach((el) => {
       if (el) el.disabled = !isOpen;
@@ -925,22 +927,20 @@ function wirePasswordAccordion() {
       }
   };
 
-  // Click en Header para abrir/cerrar
-  header.addEventListener("click", (e) => {
-    // IMPORTANTE: Ya no verificamos si es button para evitar el bloqueo que tenías antes
+  header.addEventListener("click", () => {
     toggleCard();
   });
 
-  // Listener para actualizar reglas visuales mientras escribe
   if (newPwd) {
     newPwd.addEventListener("input", () => updatePasswordRulesUI(newPwd.value));
   }
 
-  // BOTÓN CANCELAR
   if (btnCancel) {
     btnCancel.addEventListener("click", (e) => {
-      e.stopPropagation();
-      // Limpiamos campos
+      e.stopPropagation(); // Evita burbujeo
+      // No necesitamos preventDefault aquí porque suele ser type="button", 
+      // pero si fuera submit, también se requeriría.
+      
       if (currentPwd) currentPwd.value = "";
       if (newPwd)     newPwd.value = "";
       if (confirmPwd) confirmPwd.value = "";
@@ -948,66 +948,57 @@ function wirePasswordAccordion() {
       resetPasswordRulesUI();
       clearMainError();
       
-      // Cerramos si estaba abierto
       if (isOpen()) toggleCard();
     });
   }
 
-  // BOTÓN GUARDAR (Aquí agregamos la retroalimentación visual)
+  // === AQUÍ ESTÁ LA CORRECCIÓN ===
   if (btnSave) {
     btnSave.addEventListener("click", async (e) => {
-      e.stopPropagation();
-      clearMainError(); // Limpiar errores previos en pantalla
+      e.stopPropagation(); 
+      e.preventDefault(); // <--- ¡IMPORTANTE! Evita que el formulario recargue la página
+      
+      clearMainError();
 
       const actual = currentPwd ? currentPwd.value.trim() : "";
       const nueva  = newPwd ? newPwd.value.trim() : "";
       const conf   = confirmPwd ? confirmPwd.value.trim() : "";
 
-      // 1. VALIDACIÓN: Campos vacíos
+      // Validaciones con feedback visual
       if (!actual || !nueva || !conf) {
-        uiWarn("Por favor, completa todos los campos de contraseña."); // <--- Feedback visual
+        uiWarn("Por favor, completa todos los campos de contraseña.");
         return;
       }
 
-      // 2. VALIDACIÓN: Coincidencia
       if (nueva !== conf) {
-        uiWarn("La nueva contraseña y su confirmación no coinciden."); // <--- Feedback visual
+        uiWarn("La nueva contraseña y la confirmación no coinciden.");
         return;
       }
 
-      // 3. VALIDACIÓN: Fortaleza (Reglas de regex)
       if (!isPasswordStrong(nueva)) {
-        uiWarn("La nueva contraseña no cumple con los requisitos de seguridad."); // <--- Feedback visual
-        updatePasswordRulesUI(nueva); // Resalta qué reglas faltan
+        uiWarn("La nueva contraseña no cumple con los requisitos de seguridad.");
+        updatePasswordRulesUI(nueva);
         return;
       }
 
-      // 4. VALIDACIÓN: Misma contraseña
       if (actual === nueva) {
-        uiWarn("La nueva contraseña no puede ser igual a la actual."); // <--- Feedback visual
+        uiWarn("La nueva contraseña no puede ser igual a la actual.");
         return;
       }
 
-      // 5. INTENTO DE GUARDADO (Backend)
       try {
         await changeMyPassword({ actual, nueva });
-        
-        // ÉXITO: Mostramos notificación verde
-        uiSuccess("¡Contraseña actualizada correctamente!"); // <--- Feedback visual
-        
-        // Limpiamos todo tras el éxito
+        uiSuccess("¡Contraseña actualizada correctamente!");
+
         if (currentPwd) currentPwd.value = "";
         if (newPwd)     newPwd.value = "";
         if (confirmPwd) confirmPwd.value = "";
         resetPasswordRulesUI();
-        
-        // Cerramos el acordeón automáticamente
         toggleCard(); 
 
       } catch (err) {
         console.error(err);
-        // ERROR: Mostramos notificación roja (ej: contraseña actual incorrecta)
-        uiError(err.message || "No se pudo cambiar la contraseña. Verifica tus datos."); // <--- Feedback visual
+        uiError(err.message || "No se pudo cambiar la contraseña. Verifica tu contraseña actual.");
       }
     });
   }

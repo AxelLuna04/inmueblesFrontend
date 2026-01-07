@@ -21,6 +21,7 @@ export default defineConfig({
         login: resolve(__dirname, 'pages/auth/login.html'),
         signup: resolve(__dirname, 'pages/auth/signup.html'),
         verifyEmail: resolve(__dirname, 'pages/auth/verifyEmail.html'),
+        verifySuccess: resolve(__dirname, 'pages/auth/verifySuccess.html'),
         profile: resolve(__dirname, 'pages/shared/profile.html'),
 
         appointments: resolve(__dirname, 'pages/client/scheduleApppointment.html'),
