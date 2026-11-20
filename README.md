@@ -1,92 +1,89 @@
-🏠 Frontend - Inmuebles a tu Alcance
-Este repositorio contiene el código fuente del cliente web para el sistema de Inmuebles.
+# 🏠 Inmuebles a tu Alcance — Frontend
 
-El proyecto utiliza Vite como servidor de desarrollo y empaquetador. Está configurado para trabajar en conjunto con la API de Spring Boot sin necesidad de configuraciones complejas de CORS.
+Cliente web de una plataforma de compra, venta y renta de inmuebles. Los vendedores publican sus propiedades, los clientes las buscan, agendan visitas y contactan al vendedor, y un administrador modera las publicaciones.
 
-🛠️ Prerrequisitos
-Para trabajar en este proyecto necesitas tener instalado:
+Este repositorio es el **frontend**. La API está en [InmueblesApi](https://github.com/AxelLuna04/InmueblesApi).
 
-Node.js (Versión LTS recomendada, ej. v18 o superior).
+<!-- Agrega aquí capturas de pantalla, por ejemplo:
+![Catálogo de inmuebles](docs/catalogo.png)
+-->
 
-La API (Backend) corriendo localmente en el puerto 8080.
+## ✨ Pantallas
 
-🚀 Configuración Inicial (Solo la primera vez)
-Clona este repositorio en tu computadora.
+| Rol | Pantallas |
+|---|---|
+| Todos | Catálogo, detalle del inmueble, perfil, registro, login y verificación de correo |
+| Cliente | Agendar visita y pagar el acceso al contacto del vendedor |
+| Vendedor | Panel de publicaciones, publicar, editar y marcar un inmueble como vendido |
+| Administrador | Panel de moderación, detalle de la publicación a revisar e historial |
 
-Abre la terminal en la carpeta del proyecto.
+## 🧰 Tecnologías
 
-Instala las dependencias (esto descargará Vite y otras herramientas):
+- HTML, CSS y **JavaScript** sin framework (módulos ES)
+- **Vite** como servidor de desarrollo, proxy hacia la API y empaquetador
+- Autenticación con **JWT** guardado en el navegador y protección de rutas por rol (`src/utils/routeGuard.js`)
+- CSS organizado en tokens, componentes y páginas
 
-Bash
+## 🗂️ Estructura
 
+```
+├── index.html          # Catálogo principal
+├── pages/              # Páginas por rol: auth, client, lister, admin, shared, error
+└── src/
+    ├── api/            # Llamadas a la API (un servicio por módulo)
+    ├── js/             # Lógica de cada página
+    ├── utils/          # Sesión, protección de rutas, notificaciones y utilidades
+    ├── errors/         # Manejo de errores de la API
+    └── css/            # base/ (tokens, reset, tipografía), components/ y pages/
+```
+
+## ⚙️ Cómo correrlo en local
+
+### Prerrequisitos
+
+- Node.js 18 o superior
+- La [API](https://github.com/AxelLuna04/InmueblesApi) corriendo en `http://localhost:8080`
+
+### Pasos
+
+```bash
+git clone https://github.com/AxelLuna04/inmueblesFrontend.git
+cd inmueblesFrontend
 npm install
-💻 Cómo trabajar día a día
-1. Enciende el Backend
-Para que la página funcione y pueda traer datos, necesitas tener la API de Java corriendo en tu equipo (NetBeans o terminal) en el puerto 8080.
-
-2. Enciende el Frontend
-En la terminal de este proyecto (VS Code), ejecuta:
-
-Bash
-
 npm run dev
-Esto iniciará un servidor local en http://localhost:5173. Abre esa dirección en tu navegador.
+```
 
-⚠️ Regla de Oro: Conexión con la API (IMPORTANTE)
-Para conectarnos con el backend, NO escriban la URL completa (http://localhost:8080/...).
+Abre `http://localhost:5173`.
 
-El proyecto ya tiene configurado un Proxy en vite.config.js. Esto significa que el servidor de frontend redirige automáticamente las peticiones a la API.
+## 🔌 Conexión con la API
 
-✅ Forma Correcta (Rutas Relativas)
-Usen siempre rutas que empiecen con /.
+Vite tiene configurado un **proxy** en `vite.config.js`: las peticiones a `/api` y `/uploads` se redirigen a `http://localhost:8080`. Por eso en el código siempre se usan **rutas relativas**:
 
-JavaScript
-
-// BIEN: El proxy sabrá mandarlo al backend
+```js
+// ✅ Bien: el proxy la manda al backend
 const respuesta = await fetch('/api/v1/auth/login', { ... });
 
-// BIEN: Para imágenes
-<img src="/uploads/publicaciones/foto1.jpg">
-❌ Forma Incorrecta (URLs Absolutas)
-No pongan el dominio ni el puerto.
-
-JavaScript
-
-// MAL: Esto dará errores de CORS y fallará en producción
+// ❌ Mal: da errores de CORS y falla en producción
 const respuesta = await fetch('http://localhost:8080/api/v1/auth/login', { ... });
-¿Por qué hacemos esto? Al usar rutas relativas (/api/...), el código funciona igual en:
+```
 
-Tu casa: El proxy de Vite lo manda a localhost:8080.
+Así el mismo código funciona en local (proxy de Vite) y en producción (Nginx redirige al servidor real).
 
-Producción: Nginx lo mandará al servidor real. ¡No tendrán que cambiar ni una línea de código al entregar!
+## 📦 Generar la versión de producción
 
-📦 Cómo entregar el proyecto (Build)
-Cuando terminen una funcionalidad o vayamos a hacer deploy, no me pasen la carpeta de código completa. Sigan estos pasos para generar la versión optimizada:
-
-Detén el servidor de desarrollo (Ctrl + C).
-
-Ejecuta el comando de construcción:
-
-Bash
-
+```bash
 npm run build
-Esto creará una carpeta nueva llamada dist.
+```
 
-Esa carpeta dist es lo único que deben enviar/entregar. Contiene el HTML, CSS y JS final y optimizado para producción.
+Se crea la carpeta `dist/` con el HTML, CSS y JS optimizados. Esa carpeta es la que se publica.
 
-❓ Solución de Problemas Comunes
-Error: "vite no se reconoce como un comando..."
+## ❓ Problemas comunes
 
-Te faltó ejecutar npm install. Hazlo e intenta de nuevo.
+- **"vite no se reconoce como un comando"**: falta ejecutar `npm install`.
+- **"Script execution disabled" en PowerShell**: abre PowerShell como administrador y ejecuta `Set-ExecutionPolicy RemoteSigned`, o usa CMD.
+- **La página carga pero no inicia sesión ni trae datos**: revisa que la API esté corriendo sin errores y que uses rutas relativas (`/api/v1/...`).
 
-Error: "Script execution disabled" (en PowerShell)
-
-Abre PowerShell como Administrador y ejecuta: Set-ExecutionPolicy RemoteSigned. O usa la terminal "Command Prompt" (CMD) en lugar de PowerShell.
-
-La página carga pero no hace Login / No trae datos
-
-Revisa que tu API de Java esté corriendo y no tenga errores.
-
-Revisa que estés usando rutas relativas (/api/v1...) en tus fetch.
-
-Abre la consola del navegador (F12) para ver si hay errores de JavaScript.
+<!--
+## 👤 Mi participación
+Este fue un proyecto en equipo. Describe aquí qué partes desarrollaste tú.
+-->
